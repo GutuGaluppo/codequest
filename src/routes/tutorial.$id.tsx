@@ -11,15 +11,11 @@ import {
 	progressQueryOptions,
 	tutorialQueryOptions,
 } from "../queries/tutorialQueries";
+import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
 
 export const Route = createFileRoute("/tutorial/$id")({
-	loader: async ({ context: { queryClient }, params }) => {
-		await queryClient.ensureQueryData(
-			tutorialQueryOptions(params.id, "gemini", {}),
-		);
-	},
 	pendingComponent: () => <p>Gerando Tutorial</p>,
 	errorComponent: ({ error }) => (
 		<div className="flex flex-col items-center justify-center min-h-[50vh] gap-3 text-center">
@@ -27,7 +23,6 @@ export const Route = createFileRoute("/tutorial/$id")({
 			<p className="text-sm text-muted font-mono">{String(error)}</p>
 		</div>
 	),
-
 	component: TutorialPage,
 });
 
@@ -37,7 +32,18 @@ function TutorialPage() {
 	const { currentStep, setCurrentStep } = useEditorStore();
 	const queryClient = useQueryClient();
 
-	const { data: tutorial } = useQuery(tutorialQueryOptions(id, "gemini", {}));
+	const { data: profile } = useQuery({
+		...userProfileQueryOptions(user?.uid ?? ""),
+		enabled: !!user,
+	});
+
+	const model = profile?.preferredModel ?? "gemini";
+	const userKeys = profile?.apiKeys ?? {};
+
+	const { data: tutorial, isPending: tutorialPending } = useQuery(
+		tutorialQueryOptions(id, model, userKeys),
+	);
+
 	const { data: progress } = useQuery({
 		...progressQueryOptions(id, user?.uid ?? ""),
 		enabled: !!user,
@@ -61,7 +67,12 @@ function TutorialPage() {
 		onError: () => toast.error("Erro ao salvar progresso."),
 	});
 
-	if (!tutorial || !step) return null;
+	if (tutorialPending || !tutorial || !step)
+		return (
+			<div className="flex items-center justify-center min-h-[70vh]">
+				<p className="text-muted font-mono text-sm">Gerando tutorial...</p>
+			</div>
+		);
 
 	return (
 		<div className="flex flex-col gap-3 h-[calc(100vh-5rem)] px-6 pb-4">
