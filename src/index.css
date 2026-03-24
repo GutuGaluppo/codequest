@@ -1,1 +1,27 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--color-background: #0d0f14;
+	--color-surface: #13161e;
+	--color-border: #1e2130;
+	--color-text: #e8eaf0;
+	--color-muted: #6b7280;
+	--color-amber: #f5a623;
+	--color-green: #4ade80;
+
+	--font-sans: "Inter", system-ui, sans-serif;
+	--font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+@layer base {
+	body {
+		background-color: var(--color-background);
+		color: var(--color-text);
+		font-family: var(--font-sans);
+	}
+
+	* {
+		border-color: var(--color-border);
+	}
+}
