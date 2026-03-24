@@ -14,6 +14,7 @@ import {
 import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
+import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
 
 export const Route = createFileRoute("/tutorial/$id")({
 	pendingComponent: () => <p>Gerando Tutorial</p>,
@@ -67,12 +68,7 @@ function TutorialPage() {
 		onError: () => toast.error("Erro ao salvar progresso."),
 	});
 
-	if (tutorialPending || !tutorial || !step)
-		return (
-			<div className="flex items-center justify-center min-h-[70vh]">
-				<p className="text-muted font-mono text-sm">Gerando tutorial...</p>
-			</div>
-		);
+	if (tutorialPending || !tutorial || !step) return <TutorialSkeleton />;
 
 	return (
 		<div className="flex flex-col gap-3 h-[calc(100vh-5rem)] px-6 pb-4">
