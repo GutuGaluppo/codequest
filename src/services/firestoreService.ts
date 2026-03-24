@@ -1,4 +1,10 @@
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+	arrayUnion,
+	doc,
+	getDoc,
+	serverTimestamp,
+	setDoc,
+} from "firebase/firestore";
 import { db } from "../lib/firebase";
 import type { UserProfile } from "../types/user";
 import { getAuth } from "firebase/auth";
@@ -29,5 +35,23 @@ export const firestoreService = {
 		const ref = doc(db, "users", uid, "progress", tutorialId);
 		const snap = await getDoc(ref);
 		return snap.exists() ? snap.data() : null;
+	},
+
+	async markStepComplete(
+		tutorialId: string,
+		uid: string,
+		stepId: string,
+	): Promise<void> {
+		const ref = doc(db, "users", uid, "progress", tutorialId);
+		await setDoc(
+			ref,
+			{
+				tutorialId,
+				completedSteps: arrayUnion(stepId),
+				lastAccessedStep: 0,
+				lastAccessedAt: serverTimestamp(),
+			},
+			{ merge: true },
+		);
 	},
 };
