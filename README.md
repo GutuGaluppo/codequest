@@ -8,9 +8,11 @@ An AI-powered interactive programming learning platform that generates progressi
 
 - **AI-generated tutorials** — Enter any programming topic and get a 5-step structured tutorial with concepts, code examples, and hands-on challenges
 - **Multi-model support** — Uses Google Gemini by default (system key); users can bring their own Anthropic or OpenAI API keys
-- **Interactive code editor** — Monaco Editor (same engine as VS Code) for each challenge
-- **Progress tracking** — Step completion saved in real-time via Firebase Firestore
+- **Interactive code editor** — Monaco Editor (same engine as VS Code) with Run and Verify Solution buttons
+- **Code execution** — Run JavaScript code directly in the browser and see output inline
+- **Progress tracking** — Step completion saved in real-time via Firebase Firestore with `onSnapshot` sync
 - **Google Authentication** — Sign in with Google to save preferences and API keys
+- **Collapsible step navigation** — Completed steps collapse to an icon and expand on hover
 
 ---
 
@@ -20,16 +22,16 @@ An AI-powered interactive programming learning platform that generates progressi
 |---|---|
 | Framework | React 19 + TypeScript (strict) |
 | Bundler | Vite |
-| Routing | TanStack Router (file-based, typed) |
+| Routing | TanStack Router (file-based, typed loaders) |
 | Data fetching | TanStack Query |
 | UI state | Zustand |
-| Styling | TailwindCSS |
+| Styling | TailwindCSS 4 |
 | Animations | Motion |
 | Code editor | Monaco Editor |
-| Auth | Firebase Authentication |
+| Auth | Firebase Authentication (Google) |
 | Database | Cloud Firestore |
-| AI — default | Google Gemini (`@google/genai`) |
-| AI — user keys | Anthropic Claude, OpenAI GPT-4o |
+| AI — default | Google Gemini 2.5 Flash Lite (`@google/genai`) |
+| AI — user keys | Anthropic Claude (`@anthropic-ai/sdk`), OpenAI GPT-4o (`openai`) |
 
 ---
 
@@ -39,7 +41,7 @@ An AI-powered interactive programming learning platform that generates progressi
 
 - Node.js 18+
 - A Firebase project with Authentication (Google provider) and Firestore enabled
-- A Google Gemini API key
+- A Google Gemini API key ([Google AI Studio](https://aistudio.google.com))
 
 ### Setup
 
@@ -80,12 +82,19 @@ VITE_FIREBASE_APP_ID=...
 ```
 src/
 ├── routes/          # TanStack Router file-based routes
+│   ├── __root.tsx   # Root layout with Header
+│   ├── index.tsx    # Landing page with topic search
+│   ├── tutorial.$id.tsx  # Tutorial viewer with step navigation
+│   └── profile.tsx  # Protected profile and API key management
 ├── queries/         # Reusable TanStack Query options
-├── services/        # AI and Firestore service layer
-├── hooks/           # useAuth, useProgressSync
-├── stores/          # Zustand stores (editor state)
-├── components/      # UI, layout, tutorial, editor components
-├── types/           # Shared TypeScript interfaces
+├── services/        # AI orchestrator, model services, Firestore
+├── hooks/           # useAuth, useProgressSync (onSnapshot bridge)
+├── stores/          # Zustand: editor code, current step, output
+├── components/
+│   ├── layout/      # Header
+│   ├── tutorial/    # StepNav, TutorialStep, ConceptBlock, ChallengeBlock
+│   └── editor/      # MonacoWrapper, OutputPanel
+├── types/           # Tutorial, UserProfile, ModelProvider
 └── lib/             # Firebase, QueryClient, Router initialization
 ```
 
@@ -96,8 +105,12 @@ The `aiService` tries the user's preferred model first, then silently falls back
 ```
 User preferred model (claude / openai)
   └─ key available? → call that SDK
-  └─ key missing or error? → fallback to Gemini
+  └─ key missing or error? → fallback to Gemini (system key)
 ```
+
+### Real-time Progress Sync
+
+Firestore `onSnapshot` is bridged to TanStack Query via `useProgressSync` — when a step is completed, the Firestore document updates and the hook calls `invalidateQueries` to keep the UI in sync without managing separate state.
 
 ---
 
@@ -123,8 +136,6 @@ This way the API key never touches the browser after being saved. Implementation
 1. A `functions/` directory with a `generateTutorial` Cloud Function
 2. Firestore Security Rules to prevent client-side key reads
 3. Replacing direct SDK calls in `claudeService.ts` / `openaiService.ts` with `httpsCallable` from `firebase/functions`
-
-For this portfolio project, the current approach is acceptable since users are providing their own keys and the scope is demonstrating AI integration patterns.
 
 ---
 
