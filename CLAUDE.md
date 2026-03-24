@@ -1,5 +1,3 @@
-Crie este arquivo na raiz do projeto para que o Claude Code mantenha contexto entre sessões:
-
 ```markdown
 # CodeQuest — Contexto do projeto
 
