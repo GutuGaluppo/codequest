@@ -1,3 +1,4 @@
+import type { FieldValue, Timestamp } from "firebase/firestore";
 import type { ModelProvider, UserApiKeys } from "./tutorial";
 
 export interface UserProfile {
@@ -7,7 +8,7 @@ export interface UserProfile {
 	photoURL: string | null;
 	preferredModel: ModelProvider;
 	apiKeys: UserApiKeys;
-	createdAt: number;
+	createdAt: FieldValue | Timestamp;
 }
 
 export type { ModelProvider, UserApiKeys };

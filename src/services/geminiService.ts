@@ -9,7 +9,7 @@ export const geminiService = {
 		const prompt = `${SYSTEM_PROMPT} Generate exactly 5 steps with progressive difficulty. Topic: ${topic}`;
 
 		const result = await ai.models.generateContent({
-			model: "gemini-2.0-flash",
+			model: "gemini-2.0-flash-lite",
 			contents: prompt,
 		});
 
