@@ -16,7 +16,7 @@ function RootLayout() {
 	return (
 		<div className="min-h-screen flex flex-col">
 			<Header />
-			<main className="flex-1 px-6 py-8 max-w-6xl mx-auto w-full">
+			<main className="flex-1 w-full overflow-hidden">
 				<Outlet />
 			</main>
 		</div>

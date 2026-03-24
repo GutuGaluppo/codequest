@@ -64,11 +64,12 @@ function TutorialPage() {
 	if (!tutorial || !step) return null;
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-3 h-[calc(100vh-5rem)] px-6 pb-4">
 			<StepNav
 				steps={tutorial.steps}
 				currentStep={step.order}
 				completedSteps={completedSteps}
+				onSelectStep={setCurrentStep}
 			/>
 			<TutorialStepView step={step} onComplete={() => completeStep(step.id)} />
 		</div>

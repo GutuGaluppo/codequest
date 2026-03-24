@@ -16,7 +16,7 @@ function IndexPage() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-[70vh] gap-8 text-center">
+		<div className="flex flex-col items-center justify-center min-h-[70vh] gap-8 text-center px-6">
 			<div className="flex flex-col gap-3">
 				<h1 className="text-5xl font-mono font-medium text-text tracking-tight">
 					Aprenda qualquer coisa,{" "}

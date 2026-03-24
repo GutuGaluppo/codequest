@@ -1,39 +1,46 @@
 import { CheckCircle } from "lucide-react";
+import { motion } from "motion/react";
 import type { TutorialStep } from "../../types/tutorial";
 
 interface StepNavProps {
 	steps: TutorialStep[];
 	currentStep: number;
 	completedSteps: string[];
+	onSelectStep: (stepIndex: number) => void;
 }
 
-export function StepNav({ steps, currentStep, completedSteps }: StepNavProps) {
+export function StepNav({ steps, currentStep, completedSteps, onSelectStep }: StepNavProps) {
 	return (
-		<ul className="flex gap-1 overflow-x-auto">
+		<ul className="flex gap-1">
 			{steps.map((step) => {
 				const isCompleted = completedSteps.includes(step.id);
 				const isActive = step.order === currentStep;
 
 				return (
-					<li
+					<motion.li
 						key={step.id}
-						className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm whitespace-nowrap ${
+						initial={false}
+						animate={{ width: isCompleted ? 32 : "auto" }}
+						whileHover={{ width: "auto" }}
+						transition={{ duration: 0.2 }}
+						onClick={() => (isCompleted || isActive) && onSelectStep(step.order - 1)}
+						className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm whitespace-nowrap overflow-hidden ${
 							isCompleted
-								? "text-green"
+								? "text-green cursor-pointer"
 								: isActive
 									? "text-amber border border-amber"
 									: "text-muted"
 						}`}
 					>
 						{isCompleted ? (
-							<CheckCircle size={14} />
+							<CheckCircle size={14} className="shrink-0" />
 						) : (
-							<span className="w-4 h-4 rounded-full border flex items-center justify-center text-xs leading-none">
+							<span className="w-4 h-4 rounded-full border flex items-center justify-center text-xs leading-none shrink-0">
 								{step.order}
 							</span>
 						)}
 						<span>{step.title}</span>
-					</li>
+					</motion.li>
 				);
 			})}
 		</ul>
