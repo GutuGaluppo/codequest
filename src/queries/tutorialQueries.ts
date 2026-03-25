@@ -13,6 +13,13 @@ export const tutorialQueryOptions = (
 	retry: false,
 });
 
+export const userTutorialsQueryOptions = (uid: string) => ({
+	queryKey: ["tutorials", uid],
+	queryFn: () => firestoreService.getUserTutorials(uid),
+	staleTime: 30_000,
+	enabled: !!uid,
+});
+
 export const progressQueryOptions = (tutorialId: string, uid: string) => ({
 	queryKey: ["progress", tutorialId, uid],
 	queryFn: () => firestoreService.getProgress(tutorialId, uid),

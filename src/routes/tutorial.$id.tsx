@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { StepNav } from "../components/tutorial/StepNav";
 import { TutorialStepView } from "../components/tutorial/TutorialStep";
@@ -51,6 +52,11 @@ function TutorialPage() {
 	});
 
 	useProgressSync(id, user?.uid ?? "");
+
+	useEffect(() => {
+		if (!tutorial || !user) return;
+		firestoreService.saveTutorial(user.uid, tutorial);
+	}, [tutorial, user]);
 
 	const completedSteps = (progress?.completedSteps as string[]) ?? [];
 	const step = tutorial?.steps[currentStep];

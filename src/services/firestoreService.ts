@@ -1,11 +1,16 @@
 import {
 	arrayUnion,
+	collection,
 	doc,
 	getDoc,
+	getDocs,
+	orderBy,
+	query,
 	serverTimestamp,
 	setDoc,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import type { Tutorial } from "../types/tutorial";
 import type { UserProfile } from "../types/user";
 import { getAuth } from "firebase/auth";
 
@@ -35,6 +40,24 @@ export const firestoreService = {
 		const ref = doc(db, "users", uid, "progress", tutorialId);
 		const snap = await getDoc(ref);
 		return snap.exists() ? snap.data() : null;
+	},
+
+	async saveTutorial(uid: string, tutorial: Tutorial): Promise<void> {
+		const ref = doc(db, "users", uid, "tutorials", tutorial.id);
+		await setDoc(ref, {
+			id: tutorial.id,
+			topic: tutorial.topic,
+			generatedWith: tutorial.generatedWith,
+			createdAt: serverTimestamp(),
+			stepCount: tutorial.steps.length,
+		});
+	},
+
+	async getUserTutorials(uid: string) {
+		const ref = collection(db, "users", uid, "tutorials");
+		const q = query(ref, orderBy("createdAt", "desc"));
+		const snap = await getDocs(q);
+		return snap.docs.map((d) => d.data());
 	},
 
 	async markStepComplete(
