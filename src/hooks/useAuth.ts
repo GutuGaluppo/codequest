@@ -3,6 +3,10 @@ import {
 	onAuthStateChanged,
 	signInWithPopup,
 	GoogleAuthProvider,
+	GithubAuthProvider,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	updateProfile,
 	signOut,
 } from "firebase/auth";
 import type { User } from "firebase/auth";
@@ -21,14 +25,51 @@ export function useAuth() {
 		return unsubscribe;
 	}, []);
 
-	const signIn = async (): Promise<void> => {
-		const provider = new GoogleAuthProvider();
-		await signInWithPopup(auth, provider);
+	const signInWithGoogle = async (): Promise<void> => {
+		await signInWithPopup(auth, new GoogleAuthProvider());
+	};
+
+	const signInWithGitHub = async (): Promise<void> => {
+		await signInWithPopup(auth, new GithubAuthProvider());
+	};
+
+	const signInWithEmail = async (
+		email: string,
+		password: string,
+	): Promise<void> => {
+		await signInWithEmailAndPassword(auth, email, password);
+	};
+
+	const signUpWithEmail = async (
+		name: string,
+		email: string,
+		password: string,
+	): Promise<void> => {
+		const { user } = await createUserWithEmailAndPassword(
+			auth,
+			email,
+			password,
+		);
+		await updateProfile(user, { displayName: name });
 	};
 
 	const signOutUser = async (): Promise<void> => {
 		await signOut(auth);
 	};
 
-	return { user, loading, signIn, signOut: signOutUser };
+	const reloadUser = async (): Promise<void> => {
+		await auth.currentUser?.reload();
+		setUser(auth.currentUser);
+	};
+
+	return {
+		user,
+		loading,
+		signInWithGoogle,
+		signInWithGitHub,
+		signInWithEmail,
+		signUpWithEmail,
+		signOut: signOutUser,
+		reloadUser,
+	};
 }

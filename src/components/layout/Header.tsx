@@ -1,8 +1,31 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { LayoutDashboard } from "lucide-react";
+import { useAuthStore } from "../../stores/authStore";
+import { useEditorStore } from "../../stores/editorStore";
+
+function Avatar({ photoURL, displayName }: { photoURL: string | null; displayName: string | null }) {
+	const [imgError, setImgError] = useState(false);
+	const initial = displayName?.charAt(0).toUpperCase() ?? "?";
+	return photoURL && !imgError ? (
+		<img src={photoURL} alt={displayName ?? ""} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+	) : (
+		<span className="text-xs font-mono font-medium text-muted">{initial}</span>
+	);
+}
 
 export function Header() {
-	const { user, signIn, signOut } = useAuth();
+	const { user, signOut } = useAuth();
+const { openDrawer } = useAuthStore();
+	const navigate = useNavigate();
+	const { reset } = useEditorStore();
+
+	async function handleSignOut() {
+		await signOut();
+		reset();
+		navigate({ to: "/" });
+	}
 
 	return (
 		<header className="border-b px-6 py-4 flex items-center justify-between">
@@ -17,13 +40,19 @@ export function Header() {
 				{user ? (
 					<>
 						<Link
-							to="/profile"
-							className="text-sm text-muted hover:text-text transition-colors"
+							to="/dashboard"
+							className="text-muted hover:text-text transition-colors"
 						>
-							{user.displayName}
+							<LayoutDashboard size={18} />
+						</Link>
+						<Link
+							to="/profile"
+							className="w-8 h-8 rounded-full overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
+						>
+							<Avatar photoURL={user.photoURL} displayName={user.displayName} />
 						</Link>
 						<button
-							onClick={signOut}
+							onClick={handleSignOut}
 							className="text-sm text-muted hover:text-text transition-colors"
 						>
 							Sair
@@ -31,10 +60,10 @@ export function Header() {
 					</>
 				) : (
 					<button
-						onClick={signIn}
+						onClick={openDrawer}
 						className="text-sm bg-amber text-background px-3 py-1.5 rounded font-medium hover:opacity-90 transition-opacity"
 					>
-						Entrar com Google
+						Log In
 					</button>
 				)}
 			</div>
