@@ -23,16 +23,20 @@ export function TutorialStepView({ step, onComplete }: TutorialStepProps) {
 					animate={{ opacity: 1, x: 0 }}
 					exit={{ opacity: 0, x: -20 }}
 					transition={{ duration: 0.2 }}
-					className="flex flex-col gap-5 p-6 overflow-y-auto border-r"
+					className="flex flex-col gap-5 p-6 overflow-y-auto border-r bg-amber-50"
 				>
-					<h2 className="text-xl font-mono font-medium text-text">
+					<h2 className="text-xl font-mono font-medium text-background">
 						{step.title}
 					</h2>
 					<ConceptBlock concept={step.concept} />
-					<pre className="bg-surface border rounded p-4 text-sm font-mono text-text overflow-x-auto shrink-0">
+					<span className="text-xs font-mono font-medium text-stone-400 uppercase tracking-widest">
+						Exemplo
+					</span>
+					<pre className="bg-white/80 border rounded p-4 text-sm font-mono text-background overflow-x-auto shrink-0">
 						{step.codeExample}
 					</pre>
-					<ChallengeBlock challenge={step.challenge} />
+					<hr className="border-stone-200" />
+				<ChallengeBlock challenge={step.challenge} />
 					<motion.button
 						onClick={onComplete}
 						whileTap={{ scale: 0.95 }}

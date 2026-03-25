@@ -6,7 +6,7 @@ interface ConceptBlockProps {
 
 export function ConceptBlock({ concept }: ConceptBlockProps) {
 	return (
-		<div className="prose prose-invert max-w-none text-text">
+		<div className="prose max-w-none text-background">
 			<ReactMarkdown>{concept}</ReactMarkdown>
 		</div>
 	);

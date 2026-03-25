@@ -10,6 +10,7 @@ export function ChallengeBlock({ challenge }: ChallengeProps) {
 
 	return (
 		<div className="flex flex-col gap-4 p-4 bg-surface rounded border">
+			<span className="text-xs font-mono font-medium text-muted uppercase tracking-widest">Desafio</span>
 			<p className="text-text">{challenge.prompt}</p>
 
 			<button
