@@ -126,6 +126,18 @@
       "generic": "Ocurrió un error. Inténtalo de nuevo."
     }
   },
+  "notFound": {
+    "subtitle": "Página no encontrada",
+    "message": "La página que buscas no existe o ha sido eliminada.",
+    "buttonBack": "Volver al inicio"
+  },
+  "error": {
+    "title": "¡Vaya!",
+    "subtitle": "Algo salió mal",
+    "message": "Ocurrió un error inesperado. Inténtalo de nuevo o vuelve a la página de inicio.",
+    "buttonBack": "Volver",
+    "buttonRetry": "Intentar de nuevo"
+  },
   "profile": {
     "title": "Perfil",
     "subtitle": "Gestiona tus claves de API y modelo preferido.",

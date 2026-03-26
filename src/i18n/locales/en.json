@@ -126,6 +126,18 @@
       "generic": "An error occurred. Please try again."
     }
   },
+  "notFound": {
+    "subtitle": "Page not found",
+    "message": "The page you are looking for doesn't exist or has been removed.",
+    "buttonBack": "Back to home"
+  },
+  "error": {
+    "title": "Oops!",
+    "subtitle": "Something went wrong",
+    "message": "An unexpected error occurred. Please try again or go back to the home page.",
+    "buttonBack": "Go back",
+    "buttonRetry": "Try again"
+  },
   "profile": {
     "title": "Profile",
     "subtitle": "Manage your API keys and preferred model.",

@@ -126,6 +126,18 @@
       "generic": "Wystąpił błąd. Spróbuj ponownie."
     }
   },
+  "notFound": {
+    "subtitle": "Strona nie znaleziona",
+    "message": "Strona, której szukasz, nie istnieje lub została usunięta.",
+    "buttonBack": "Wróć do strony głównej"
+  },
+  "error": {
+    "title": "Ups!",
+    "subtitle": "Coś poszło nie tak",
+    "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie lub wróć do strony głównej.",
+    "buttonBack": "Wróć",
+    "buttonRetry": "Spróbuj ponownie"
+  },
   "profile": {
     "title": "Profil",
     "subtitle": "Zarządzaj kluczami API i preferowanym modelem.",

@@ -126,6 +126,18 @@
       "generic": "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
     }
   },
+  "notFound": {
+    "subtitle": "Seite nicht gefunden",
+    "message": "Die gesuchte Seite existiert nicht oder wurde entfernt.",
+    "buttonBack": "Zurück zur Startseite"
+  },
+  "error": {
+    "title": "Hoppla!",
+    "subtitle": "Etwas ist schiefgelaufen",
+    "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut oder gehe zurück zur Startseite.",
+    "buttonBack": "Zurück",
+    "buttonRetry": "Erneut versuchen"
+  },
   "profile": {
     "title": "Profil",
     "subtitle": "Verwalte deine API-Schlüssel und dein bevorzugtes Modell.",

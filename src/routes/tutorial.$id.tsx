@@ -16,17 +16,13 @@ import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
 import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
-import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
+import { ErrorScreen } from "../components/ErrorScreen";
+import i18n from "../i18n";
 
 export const Route = createFileRoute("/tutorial/$id")({
-	pendingComponent: () => <p>{i18n.t("tutorial.pending")}</p>,
-	errorComponent: ({ error }) => (
-		<div className="flex flex-col items-center justify-center min-h-[50vh] gap-3 text-center">
-			<p className="text-muted">{i18n.t("tutorial.error.message")}</p>
-			<p className="text-sm text-muted font-mono">{String(error)}</p>
-		</div>
-	),
+	pendingComponent: () => <p className="text-muted p-8">{i18n.t("tutorial.pending")}</p>,
+	errorComponent: ({ error, reset }) => <ErrorScreen error={error} reset={reset} />,
 	component: TutorialPage,
 });
 
