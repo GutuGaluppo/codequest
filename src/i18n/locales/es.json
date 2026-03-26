@@ -135,6 +135,7 @@
     "title": "¡Vaya!",
     "subtitle": "Algo salió mal",
     "message": "Ocurrió un error inesperado. Inténtalo de nuevo o vuelve a la página de inicio.",
+    "rateLimit": "Límite de solicitudes alcanzado. Espera un momento e inténtalo de nuevo.",
     "buttonBack": "Volver",
     "buttonRetry": "Intentar de nuevo"
   },

@@ -135,6 +135,7 @@
     "title": "Ops!",
     "subtitle": "Algo deu errado",
     "message": "Ocorreu um erro inesperado. Tente novamente ou volte para a página inicial.",
+    "rateLimit": "Limite de requisições atingido. Aguarde alguns instantes e tente novamente.",
     "buttonBack": "Voltar",
     "buttonRetry": "Tentar novamente"
   },

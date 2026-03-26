@@ -135,6 +135,7 @@
     "title": "Ups!",
     "subtitle": "Coś poszło nie tak",
     "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie lub wróć do strony głównej.",
+    "rateLimit": "Limit żądań osiągnięty. Poczekaj chwilę i spróbuj ponownie.",
     "buttonBack": "Wróć",
     "buttonRetry": "Spróbuj ponownie"
   },

@@ -135,6 +135,7 @@
     "title": "Oops!",
     "subtitle": "Something went wrong",
     "message": "An unexpected error occurred. Please try again or go back to the home page.",
+    "rateLimit": "Rate limit exceeded. Please wait a moment and try again.",
     "buttonBack": "Go back",
     "buttonRetry": "Try again"
   },

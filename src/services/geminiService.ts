@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import type { Tutorial } from "../types/tutorial";
 import { SYSTEM_PROMPT } from "./systemPrompt";
+import { handleServiceError } from "./serviceErrors";
 
 export const geminiService = {
 	async generate(topic: string, apiKey: string): Promise<Tutorial> {
@@ -8,12 +9,17 @@ export const geminiService = {
 
 		const prompt = `${SYSTEM_PROMPT} Generate exactly 5 steps with progressive difficulty. Topic: ${topic}`;
 
-		const result = await ai.models.generateContent({
-			model: "gemini-2.5-flash-lite",
-			contents: prompt,
-		});
+		let result;
+		try {
+			result = await ai.models.generateContent({
+				model: "gemini-2.5-flash-lite",
+				contents: prompt,
+			});
+		} catch (error) {
+			handleServiceError(error);
+		}
 
-		const text = (result.text ?? "")
+		const text = (result!.text ?? "")
 			.replace(/^```json\s*/m, "")
 			.replace(/```\s*$/m, "")
 			.trim();

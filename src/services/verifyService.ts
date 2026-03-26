@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import type { ModelProvider, UserApiKeys } from "../types/tutorial";
 import type { Feedback } from "../stores/editorStore";
+import { handleServiceError } from "./serviceErrors";
 
 interface VerifyParams {
 	prompt: string;
@@ -42,38 +43,42 @@ export const verifyService = {
 	async verify(params: VerifyParams): Promise<Feedback> {
 		const userPrompt = buildPrompt(params);
 
-		if (params.model === "claude" && params.userKeys.anthropic) {
-			const client = new Anthropic({
-				apiKey: params.userKeys.anthropic,
-				dangerouslyAllowBrowser: true,
-			});
-			const res = await client.messages.create({
-				model: "claude-3-5-sonnet-20241022",
-				max_tokens: 256,
-				messages: [{ role: "user", content: userPrompt }],
-			});
-			return parseResponse((res.content[0] as { text: string }).text);
-		}
+		try {
+			if (params.model === "claude" && params.userKeys.anthropic) {
+				const client = new Anthropic({
+					apiKey: params.userKeys.anthropic,
+					dangerouslyAllowBrowser: true,
+				});
+				const res = await client.messages.create({
+					model: "claude-3-5-sonnet-20241022",
+					max_tokens: 256,
+					messages: [{ role: "user", content: userPrompt }],
+				});
+				return parseResponse((res.content[0] as { text: string }).text);
+			}
 
-		if (params.model === "openai" && params.userKeys.openai) {
-			const client = new OpenAI({
-				apiKey: params.userKeys.openai,
-				dangerouslyAllowBrowser: true,
-			});
-			const res = await client.chat.completions.create({
-				model: "gpt-4o",
-				messages: [{ role: "user", content: userPrompt }],
-				max_tokens: 256,
-			});
-			return parseResponse(res.choices[0].message.content ?? "");
-		}
+			if (params.model === "openai" && params.userKeys.openai) {
+				const client = new OpenAI({
+					apiKey: params.userKeys.openai,
+					dangerouslyAllowBrowser: true,
+				});
+				const res = await client.chat.completions.create({
+					model: "gpt-4o",
+					messages: [{ role: "user", content: userPrompt }],
+					max_tokens: 256,
+				});
+				return parseResponse(res.choices[0].message.content ?? "");
+			}
 
-		// fallback: Gemini
-		const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-		const res = await ai.models.generateContent({
-			model: "gemini-2.5-flash-lite",
-			contents: userPrompt,
-		});
-		return parseResponse(res.text ?? "");
+			// fallback: Gemini
+			const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+			const res = await ai.models.generateContent({
+				model: "gemini-2.5-flash-lite",
+				contents: userPrompt,
+			});
+			return parseResponse(res.text ?? "");
+		} catch (error) {
+			handleServiceError(error);
+		}
 	},
 };

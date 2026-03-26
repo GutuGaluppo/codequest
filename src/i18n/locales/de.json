@@ -135,6 +135,7 @@
     "title": "Hoppla!",
     "subtitle": "Etwas ist schiefgelaufen",
     "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut oder gehe zurück zur Startseite.",
+    "rateLimit": "Anfragelimit erreicht. Bitte warte einen Moment und versuche es erneut.",
     "buttonBack": "Zurück",
     "buttonRetry": "Erneut versuchen"
   },
