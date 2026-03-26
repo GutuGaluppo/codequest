@@ -16,12 +16,14 @@ import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
 import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/tutorial/$id")({
-	pendingComponent: () => <p>Gerando Tutorial</p>,
+	pendingComponent: () => <p>{i18n.t("tutorial.pending")}</p>,
 	errorComponent: ({ error }) => (
 		<div className="flex flex-col items-center justify-center min-h-[50vh] gap-3 text-center">
-			<p className="text-muted">Não foi possível gerar o tutorial.</p>
+			<p className="text-muted">{i18n.t("tutorial.error.message")}</p>
 			<p className="text-sm text-muted font-mono">{String(error)}</p>
 		</div>
 	),
@@ -33,6 +35,7 @@ function TutorialPage() {
 	const { user } = useAuth();
 	const { currentStep, setCurrentStep } = useEditorStore();
 	const queryClient = useQueryClient();
+	const { t } = useTranslation();
 
 	const { data: profile } = useQuery({
 		...userProfileQueryOptions(user?.uid ?? ""),
@@ -66,12 +69,12 @@ function TutorialPage() {
 			firestoreService.markStepComplete(id, user!.uid, stepId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["progress", id, user?.uid] });
-			toast.success("Step concluído!");
+			toast.success(t("tutorial.stepComplete.success"));
 			if (currentStep < (tutorial?.steps.length ?? 1) - 1) {
 				setCurrentStep(currentStep + 1);
 			}
 		},
-		onError: () => toast.error("Erro ao salvar progresso."),
+		onError: () => toast.error(t("tutorial.stepComplete.error")),
 	});
 
 	function detectLanguage(topic: string): string {

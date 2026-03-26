@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SUGGESTED_TOPICS = ["JavaScript", "React", "Node.js", "Python", "TypeScript"];
 
@@ -9,6 +10,7 @@ interface TopicSearchProps {
 }
 
 export function TopicSearch({ topic, onChange, onSubmit }: TopicSearchProps) {
+	const { t } = useTranslation();
 	return (
 		<div className="w-full max-w-xl flex flex-col gap-4">
 			<form onSubmit={onSubmit} className="flex gap-2">
@@ -17,7 +19,7 @@ export function TopicSearch({ topic, onChange, onSubmit }: TopicSearchProps) {
 					<input
 						value={topic}
 						onChange={(e) => onChange(e.target.value)}
-						placeholder="O que você quer aprender? (ex: React, Python, Rust...)"
+						placeholder={t("landing.search.placeholder")}
 						className="w-full bg-surface border rounded pl-10 pr-4 py-3 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors text-base"
 					/>
 				</div>
@@ -25,7 +27,7 @@ export function TopicSearch({ topic, onChange, onSubmit }: TopicSearchProps) {
 					type="submit"
 					className="bg-amber text-background px-6 py-3 rounded font-medium text-base hover:opacity-90 transition-opacity whitespace-nowrap"
 				>
-					Gerar →
+					{t("landing.search.button")}
 				</button>
 			</form>
 

@@ -1,0 +1,150 @@
+{
+  "landing": {
+    "badge": {
+      "text": "AI-Powered Interactive Learning"
+    },
+    "hero": {
+      "titlePart1": "Master any technology by ",
+      "titlePart2": "doing.",
+      "subtitle": "CodeQuest generates interactive tutorials with code challenges on any topic. Stop watching, start building."
+    },
+    "features": {
+      "editor": {
+        "title": "Interactive Editor",
+        "description": "Write and test code directly in the browser with real-time feedback."
+      },
+      "ai": {
+        "title": "AI-Generated",
+        "description": "Personalized tutorials for your topic, from beginner to advanced."
+      },
+      "progressive": {
+        "title": "Progressive Learning",
+        "description": "Difficulty increases gradually, ensuring a smooth learning curve."
+      }
+    },
+    "search": {
+      "placeholder": "What do you want to learn? (e.g. React, Python, Rust...)",
+      "button": "Generate →"
+    },
+    "apiKeys": {
+      "title": "Use your own AI model",
+      "configured": "Keys configured",
+      "description": "Link your Anthropic or OpenAI key to use your favorite models for tutorial generation.",
+      "buttonManage": "Manage",
+      "buttonSetup": "Set up"
+    }
+  },
+  "dashboard": {
+    "title": "Your Learning Journey",
+    "subtitle": "Track your progress and continue mastering new technologies.",
+    "newTutorialButton": "+ New Tutorial",
+    "empty": {
+      "message": "No tutorials generated yet.",
+      "link": "Generate my first tutorial →"
+    },
+    "card": {
+      "generatedWith": "Generated with ",
+      "steps": " steps",
+      "button": "Continue →"
+    },
+    "timeAgo": {
+      "justNow": "just now",
+      "minutes": "{{count}}m ago",
+      "hours": "{{count}}h ago",
+      "days": "{{count}}d ago"
+    }
+  },
+  "tutorial": {
+    "pending": "Generating Tutorial",
+    "error": {
+      "message": "Could not generate the tutorial."
+    },
+    "stepComplete": {
+      "success": "Step completed!",
+      "error": "Error saving progress."
+    },
+    "step": {
+      "exampleLabel": "Example",
+      "completeButton": "Complete step"
+    },
+    "challenge": {
+      "label": "Challenge",
+      "showHints": "Show hints",
+      "hideHints": "Hide hints"
+    }
+  },
+  "editor": {
+    "buttons": {
+      "run": "Run",
+      "verify": "Verify Solution",
+      "verifying": "Verifying..."
+    },
+    "verify": {
+      "requireRun": "Run your code first."
+    },
+    "output": {
+      "label": "Output",
+      "placeholder": "Run your code to see the output here...",
+      "noOutput": "✓ Code ran with no output."
+    }
+  },
+  "header": {
+    "logo": "CodeQuest",
+    "signOut": "Sign Out",
+    "logIn": "Log In"
+  },
+  "auth": {
+    "modal": {
+      "loginTitle": "Log in",
+      "signupTitle": "Sign Up",
+      "divider": "or"
+    },
+    "form": {
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "loading": "Please wait...",
+      "loginButton": "Log in",
+      "signupButton": "Create account"
+    },
+    "providers": {
+      "google": "Continue with Google",
+      "github": "Continue with GitHub"
+    },
+    "toggle": {
+      "noAccount": "Don't have an account? ",
+      "signupLink": "Sign up",
+      "hasAccount": "Already have an account? ",
+      "loginLink": "Log in"
+    },
+    "errors": {
+      "emailExists": "This email is already registered.",
+      "invalidCredentials": "Incorrect email or password.",
+      "accountWithDifferentProvider": "You already have an account with this email. Try logging in with Google.",
+      "userNotFound": "No account found with this email.",
+      "weakPassword": "Password must be at least 6 characters.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your API keys and preferred model.",
+    "loading": "Loading...",
+    "photoLabel": "Profile photo",
+    "photoChangeLabel": "Change photo",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "anthropicKeyLabel": "Anthropic Key",
+    "anthropicKeyPlaceholder": "sk-ant-...",
+    "openaiKeyLabel": "OpenAI Key",
+    "openaiKeyPlaceholder": "sk-...",
+    "modelLabel": "Preferred model",
+    "modelOptionGemini": "Gemini (default)",
+    "modelOptionClaude": "Claude",
+    "modelOptionOpenai": "OpenAI",
+    "buttonSaving": "Saving...",
+    "buttonSave": "Save",
+    "success": "Profile saved!",
+    "error": "Error saving profile."
+  }
+}

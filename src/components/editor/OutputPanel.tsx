@@ -1,4 +1,5 @@
 import { useEditorStore } from "../../stores/editorStore";
+import { useTranslation } from "react-i18next";
 
 const statusStyles = {
 	correct: "border-green text-green",
@@ -8,12 +9,13 @@ const statusStyles = {
 
 export function OutputPanel() {
 	const { output, feedback } = useEditorStore();
+	const { t } = useTranslation();
 
 	return (
 		<div className="border-t bg-surface px-4 py-3 h-36 overflow-y-auto flex flex-col gap-3">
 			<div>
 				<p className="text-xs text-muted uppercase tracking-widest mb-2 font-mono">
-					Output
+					{t("editor.output.label")}
 				</p>
 				{output ? (
 					<pre className="text-sm font-mono text-text whitespace-pre-wrap">
@@ -21,7 +23,7 @@ export function OutputPanel() {
 					</pre>
 				) : (
 					<p className="text-sm font-mono text-muted">
-						Run your code to see the output here...
+						{t("editor.output.placeholder")}
 					</p>
 				)}
 			</div>

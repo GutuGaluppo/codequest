@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 export function Toggle({
 	mode,
 	setMode,
@@ -5,26 +7,27 @@ export function Toggle({
 	mode: "login" | "signup";
 	setMode: (mode: "login" | "signup") => void;
 }) {
+	const { t } = useTranslation();
 	return (
 		<p className="text-sm text-muted text-center">
 			{mode === "login" ? (
 				<>
-					Não tem conta?{" "}
+					{t("auth.toggle.noAccount")}
 					<button
 						onClick={() => setMode("signup")}
 						className="text-amber hover:opacity-80 transition-opacity"
 					>
-						Cadastrar
+						{t("auth.toggle.signupLink")}
 					</button>
 				</>
 			) : (
 				<>
-					Já tem conta?{" "}
+					{t("auth.toggle.hasAccount")}
 					<button
 						onClick={() => setMode("login")}
 						className="text-amber hover:opacity-80 transition-opacity"
 					>
-						Entrar
+						{t("auth.toggle.loginLink")}
 					</button>
 				</>
 			)}

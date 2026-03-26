@@ -1,0 +1,150 @@
+{
+  "landing": {
+    "badge": {
+      "text": "Aprendizaje Interactivo con IA"
+    },
+    "hero": {
+      "titlePart1": "Domina cualquier tecnología ",
+      "titlePart2": "haciéndolo.",
+      "subtitle": "CodeQuest genera tutoriales interactivos con desafíos de código sobre cualquier tema. Deja de ver, empieza a construir."
+    },
+    "features": {
+      "editor": {
+        "title": "Editor Interactivo",
+        "description": "Escribe y prueba código directamente en el navegador con retroalimentación en tiempo real."
+      },
+      "ai": {
+        "title": "Generado por IA",
+        "description": "Tutoriales personalizados para tu tema, desde principiante hasta avanzado."
+      },
+      "progressive": {
+        "title": "Aprendizaje Progresivo",
+        "description": "La dificultad aumenta gradualmente, garantizando una curva de aprendizaje suave."
+      }
+    },
+    "search": {
+      "placeholder": "¿Qué quieres aprender? (ej: React, Python, Rust...)",
+      "button": "Generar →"
+    },
+    "apiKeys": {
+      "title": "Usa tu propio modelo de IA",
+      "configured": "Claves configuradas",
+      "description": "Vincula tu clave de Anthropic u OpenAI para usar tus modelos favoritos en la generación de tutoriales.",
+      "buttonManage": "Gestionar",
+      "buttonSetup": "Configurar"
+    }
+  },
+  "dashboard": {
+    "title": "Tu Camino de Aprendizaje",
+    "subtitle": "Sigue tu progreso y continúa dominando nuevas tecnologías.",
+    "newTutorialButton": "+ Nuevo Tutorial",
+    "empty": {
+      "message": "Aún no se han generado tutoriales.",
+      "link": "Generar mi primer tutorial →"
+    },
+    "card": {
+      "generatedWith": "Generado con ",
+      "steps": " pasos",
+      "button": "Continuar →"
+    },
+    "timeAgo": {
+      "justNow": "ahora mismo",
+      "minutes": "hace {{count}}min",
+      "hours": "hace {{count}}h",
+      "days": "hace {{count}}d"
+    }
+  },
+  "tutorial": {
+    "pending": "Generando Tutorial",
+    "error": {
+      "message": "No se pudo generar el tutorial."
+    },
+    "stepComplete": {
+      "success": "¡Paso completado!",
+      "error": "Error al guardar el progreso."
+    },
+    "step": {
+      "exampleLabel": "Ejemplo",
+      "completeButton": "Completar paso"
+    },
+    "challenge": {
+      "label": "Desafío",
+      "showHints": "Ver pistas",
+      "hideHints": "Ocultar pistas"
+    }
+  },
+  "editor": {
+    "buttons": {
+      "run": "Ejecutar",
+      "verify": "Verificar Solución",
+      "verifying": "Verificando..."
+    },
+    "verify": {
+      "requireRun": "Ejecuta el código primero."
+    },
+    "output": {
+      "label": "Salida",
+      "placeholder": "Ejecuta tu código para ver el resultado aquí...",
+      "noOutput": "✓ Código ejecutado sin salida."
+    }
+  },
+  "header": {
+    "logo": "CodeQuest",
+    "signOut": "Cerrar sesión",
+    "logIn": "Iniciar sesión"
+  },
+  "auth": {
+    "modal": {
+      "loginTitle": "Iniciar sesión",
+      "signupTitle": "Crear cuenta",
+      "divider": "o"
+    },
+    "form": {
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "loading": "Espera...",
+      "loginButton": "Iniciar sesión",
+      "signupButton": "Crear cuenta"
+    },
+    "providers": {
+      "google": "Continuar con Google",
+      "github": "Continuar con GitHub"
+    },
+    "toggle": {
+      "noAccount": "¿No tienes cuenta? ",
+      "signupLink": "Registrarse",
+      "hasAccount": "¿Ya tienes cuenta? ",
+      "loginLink": "Iniciar sesión"
+    },
+    "errors": {
+      "emailExists": "Este correo ya está registrado.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "accountWithDifferentProvider": "Ya tienes una cuenta con este correo. Intenta iniciar sesión con Google.",
+      "userNotFound": "No se encontró ninguna cuenta con este correo.",
+      "weakPassword": "La contraseña debe tener al menos 6 caracteres.",
+      "generic": "Ocurrió un error. Inténtalo de nuevo."
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "subtitle": "Gestiona tus claves de API y modelo preferido.",
+    "loading": "Cargando...",
+    "photoLabel": "Foto de perfil",
+    "photoChangeLabel": "Cambiar foto",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "anthropicKeyLabel": "Clave Anthropic",
+    "anthropicKeyPlaceholder": "sk-ant-...",
+    "openaiKeyLabel": "Clave OpenAI",
+    "openaiKeyPlaceholder": "sk-...",
+    "modelLabel": "Modelo preferido",
+    "modelOptionGemini": "Gemini (predeterminado)",
+    "modelOptionClaude": "Claude",
+    "modelOptionOpenai": "OpenAI",
+    "buttonSaving": "Guardando...",
+    "buttonSave": "Guardar",
+    "success": "¡Perfil guardado!",
+    "error": "Error al guardar el perfil."
+  }
+}

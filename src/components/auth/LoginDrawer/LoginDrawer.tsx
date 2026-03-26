@@ -8,6 +8,7 @@ import { Providers } from "./Providers";
 import { Toggle } from "./Toggle";
 import { friendlyError } from "./errorMessage";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function LoginDrawer() {
 	const { drawerOpen, closeDrawer } = useAuthStore();
@@ -16,6 +17,8 @@ export function LoginDrawer() {
 	const [mode, setMode] = useState<"login" | "signup">("login");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+
+	const { t } = useTranslation();
 
 	const [formData, setFormData] = useState({
 		name: "",
@@ -100,7 +103,7 @@ export function LoginDrawer() {
 
 						<div className="flex items-center gap-3">
 							<hr className="flex-1 border-border" />
-							<span className="text-xs text-muted">or</span>
+							<span className="text-xs text-muted">{t("auth.modal.divider")}</span>
 							<hr className="flex-1 border-border" />
 						</div>
 

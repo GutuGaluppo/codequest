@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface LoginFormProps {
 	formData: { name: string; email: string; password: string };
 	error: string;
@@ -15,6 +17,7 @@ export function Form({
 	handleChange,
 	handleSubmit,
 }: LoginFormProps) {
+	const { t } = useTranslation();
 	const { name, email, password } = formData;
 
 	const inputClass =
@@ -26,7 +29,7 @@ export function Form({
 				<input
 					type="text"
 					name="name"
-					placeholder="Nome"
+					placeholder={t("auth.form.nameLabel")}
 					value={name}
 					onChange={handleChange}
 					className={inputClass}
@@ -36,7 +39,7 @@ export function Form({
 			<input
 				type="email"
 				name="email"
-				placeholder="Email"
+				placeholder={t("auth.form.emailLabel")}
 				value={email}
 				onChange={handleChange}
 				className={inputClass}
@@ -45,7 +48,7 @@ export function Form({
 			<input
 				type="password"
 				name="password"
-				placeholder="Senha"
+				placeholder={t("auth.form.passwordLabel")}
 				value={password}
 				onChange={handleChange}
 				className={inputClass}
@@ -59,7 +62,7 @@ export function Form({
 				disabled={loading}
 				className="bg-amber text-background px-4 py-2.5 rounded font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
 			>
-				{loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
+				{loading ? t("auth.form.loading") : mode === "login" ? t("auth.form.loginButton") : t("auth.form.signupButton")}
 			</button>
 		</form>
 	);

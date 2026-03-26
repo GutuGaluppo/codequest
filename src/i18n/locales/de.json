@@ -1,0 +1,150 @@
+{
+  "landing": {
+    "badge": {
+      "text": "KI-gestütztes Interaktives Lernen"
+    },
+    "hero": {
+      "titlePart1": "Meistere jede Technologie durch ",
+      "titlePart2": "Tun.",
+      "subtitle": "CodeQuest generiert interaktive Tutorials mit Code-Herausforderungen zu jedem Thema. Höre auf zuzuschauen, fange an zu bauen."
+    },
+    "features": {
+      "editor": {
+        "title": "Interaktiver Editor",
+        "description": "Schreibe und teste Code direkt im Browser mit Echtzeit-Feedback."
+      },
+      "ai": {
+        "title": "KI-generiert",
+        "description": "Personalisierte Tutorials für dein Thema, vom Anfänger bis zum Fortgeschrittenen."
+      },
+      "progressive": {
+        "title": "Progressives Lernen",
+        "description": "Der Schwierigkeitsgrad steigt schrittweise, was eine sanfte Lernkurve gewährleistet."
+      }
+    },
+    "search": {
+      "placeholder": "Was möchtest du lernen? (z.B. React, Python, Rust...)",
+      "button": "Generieren →"
+    },
+    "apiKeys": {
+      "title": "Verwende dein eigenes KI-Modell",
+      "configured": "Schlüssel konfiguriert",
+      "description": "Verknüpfe deinen Anthropic- oder OpenAI-Schlüssel, um deine bevorzugten Modelle für die Tutorial-Generierung zu verwenden.",
+      "buttonManage": "Verwalten",
+      "buttonSetup": "Einrichten"
+    }
+  },
+  "dashboard": {
+    "title": "Deine Lernreise",
+    "subtitle": "Verfolge deinen Fortschritt und meistere weiterhin neue Technologien.",
+    "newTutorialButton": "+ Neues Tutorial",
+    "empty": {
+      "message": "Noch keine Tutorials generiert.",
+      "link": "Mein erstes Tutorial generieren →"
+    },
+    "card": {
+      "generatedWith": "Generiert mit ",
+      "steps": " Schritte",
+      "button": "Weiter →"
+    },
+    "timeAgo": {
+      "justNow": "gerade eben",
+      "minutes": "vor {{count}}min",
+      "hours": "vor {{count}}h",
+      "days": "vor {{count}}d"
+    }
+  },
+  "tutorial": {
+    "pending": "Tutorial wird generiert",
+    "error": {
+      "message": "Das Tutorial konnte nicht generiert werden."
+    },
+    "stepComplete": {
+      "success": "Schritt abgeschlossen!",
+      "error": "Fehler beim Speichern des Fortschritts."
+    },
+    "step": {
+      "exampleLabel": "Beispiel",
+      "completeButton": "Schritt abschließen"
+    },
+    "challenge": {
+      "label": "Aufgabe",
+      "showHints": "Hinweise anzeigen",
+      "hideHints": "Hinweise ausblenden"
+    }
+  },
+  "editor": {
+    "buttons": {
+      "run": "Ausführen",
+      "verify": "Lösung prüfen",
+      "verifying": "Wird geprüft..."
+    },
+    "verify": {
+      "requireRun": "Führe zuerst den Code aus."
+    },
+    "output": {
+      "label": "Ausgabe",
+      "placeholder": "Führe deinen Code aus, um das Ergebnis hier zu sehen...",
+      "noOutput": "✓ Code wurde ohne Ausgabe ausgeführt."
+    }
+  },
+  "header": {
+    "logo": "CodeQuest",
+    "signOut": "Abmelden",
+    "logIn": "Anmelden"
+  },
+  "auth": {
+    "modal": {
+      "loginTitle": "Anmelden",
+      "signupTitle": "Konto erstellen",
+      "divider": "oder"
+    },
+    "form": {
+      "nameLabel": "Name",
+      "emailLabel": "E-Mail",
+      "passwordLabel": "Passwort",
+      "loading": "Bitte warten...",
+      "loginButton": "Anmelden",
+      "signupButton": "Konto erstellen"
+    },
+    "providers": {
+      "google": "Mit Google fortfahren",
+      "github": "Mit GitHub fortfahren"
+    },
+    "toggle": {
+      "noAccount": "Noch kein Konto? ",
+      "signupLink": "Registrieren",
+      "hasAccount": "Bereits ein Konto? ",
+      "loginLink": "Anmelden"
+    },
+    "errors": {
+      "emailExists": "Diese E-Mail ist bereits registriert.",
+      "invalidCredentials": "Falsche E-Mail oder falsches Passwort.",
+      "accountWithDifferentProvider": "Du hast bereits ein Konto mit dieser E-Mail. Versuche, dich mit Google anzumelden.",
+      "userNotFound": "Kein Konto mit dieser E-Mail gefunden.",
+      "weakPassword": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+      "generic": "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Verwalte deine API-Schlüssel und dein bevorzugtes Modell.",
+    "loading": "Wird geladen...",
+    "photoLabel": "Profilbild",
+    "photoChangeLabel": "Foto ändern",
+    "nameLabel": "Name",
+    "namePlaceholder": "Dein Name",
+    "anthropicKeyLabel": "Anthropic-Schlüssel",
+    "anthropicKeyPlaceholder": "sk-ant-...",
+    "openaiKeyLabel": "OpenAI-Schlüssel",
+    "openaiKeyPlaceholder": "sk-...",
+    "modelLabel": "Bevorzugtes Modell",
+    "modelOptionGemini": "Gemini (Standard)",
+    "modelOptionClaude": "Claude",
+    "modelOptionOpenai": "OpenAI",
+    "buttonSaving": "Wird gespeichert...",
+    "buttonSave": "Speichern",
+    "success": "Profil gespeichert!",
+    "error": "Fehler beim Speichern des Profils."
+  }
+}

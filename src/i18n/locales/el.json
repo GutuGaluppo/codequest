@@ -1,0 +1,150 @@
+{
+  "landing": {
+    "badge": {
+      "text": "Διαδραστική Μάθηση με ΤΝ"
+    },
+    "hero": {
+      "titlePart1": "Κατακτήστε κάθε τεχνολογία ",
+      "titlePart2": "πράττοντας.",
+      "subtitle": "Το CodeQuest δημιουργεί διαδραστικά σεμινάρια με προκλήσεις κώδικα για οποιοδήποτε θέμα. Σταματήστε να παρακολουθείτε, ξεκινήστε να δημιουργείτε."
+    },
+    "features": {
+      "editor": {
+        "title": "Διαδραστικός Επεξεργαστής",
+        "description": "Γράψτε και δοκιμάστε κώδικα απευθείας στο πρόγραμμα περιήγησης με ανατροφοδότηση σε πραγματικό χρόνο."
+      },
+      "ai": {
+        "title": "Δημιουργείται από ΤΝ",
+        "description": "Εξατομικευμένα σεμινάρια για το θέμα σας, από αρχάριους έως προχωρημένους."
+      },
+      "progressive": {
+        "title": "Προοδευτική Μάθηση",
+        "description": "Η δυσκολία αυξάνεται σταδιακά, εξασφαλίζοντας ομαλή καμπύλη μάθησης."
+      }
+    },
+    "search": {
+      "placeholder": "Τι θέλετε να μάθετε; (π.χ. React, Python, Rust...)",
+      "button": "Δημιουργία →"
+    },
+    "apiKeys": {
+      "title": "Χρησιμοποιήστε το δικό σας μοντέλο ΤΝ",
+      "configured": "Κλειδιά διαμορφωμένα",
+      "description": "Συνδέστε το κλειδί Anthropic ή OpenAI για να χρησιμοποιήσετε τα αγαπημένα σας μοντέλα για τη δημιουργία σεμιναρίων.",
+      "buttonManage": "Διαχείριση",
+      "buttonSetup": "Διαμόρφωση"
+    }
+  },
+  "dashboard": {
+    "title": "Το Ταξίδι Μάθησής Σας",
+    "subtitle": "Παρακολουθήστε την πρόοδό σας και συνεχίστε να κατακτάτε νέες τεχνολογίες.",
+    "newTutorialButton": "+ Νέο Σεμινάριο",
+    "empty": {
+      "message": "Δεν έχουν δημιουργηθεί σεμινάρια ακόμα.",
+      "link": "Δημιουργία του πρώτου μου σεμιναρίου →"
+    },
+    "card": {
+      "generatedWith": "Δημιουργήθηκε με ",
+      "steps": " βήματα",
+      "button": "Συνέχεια →"
+    },
+    "timeAgo": {
+      "justNow": "μόλις τώρα",
+      "minutes": "πριν {{count}}λ",
+      "hours": "πριν {{count}}ω",
+      "days": "πριν {{count}}η"
+    }
+  },
+  "tutorial": {
+    "pending": "Δημιουργία Σεμιναρίου",
+    "error": {
+      "message": "Δεν ήταν δυνατή η δημιουργία του σεμιναρίου."
+    },
+    "stepComplete": {
+      "success": "Βήμα ολοκληρώθηκε!",
+      "error": "Σφάλμα αποθήκευσης προόδου."
+    },
+    "step": {
+      "exampleLabel": "Παράδειγμα",
+      "completeButton": "Ολοκλήρωση βήματος"
+    },
+    "challenge": {
+      "label": "Πρόκληση",
+      "showHints": "Εμφάνιση υποδείξεων",
+      "hideHints": "Απόκρυψη υποδείξεων"
+    }
+  },
+  "editor": {
+    "buttons": {
+      "run": "Εκτέλεση",
+      "verify": "Επαλήθευση Λύσης",
+      "verifying": "Επαλήθευση..."
+    },
+    "verify": {
+      "requireRun": "Εκτελέστε πρώτα τον κώδικα."
+    },
+    "output": {
+      "label": "Έξοδος",
+      "placeholder": "Εκτελέστε τον κώδικά σας για να δείτε το αποτέλεσμα εδώ...",
+      "noOutput": "✓ Ο κώδικας εκτελέστηκε χωρίς έξοδο."
+    }
+  },
+  "header": {
+    "logo": "CodeQuest",
+    "signOut": "Αποσύνδεση",
+    "logIn": "Σύνδεση"
+  },
+  "auth": {
+    "modal": {
+      "loginTitle": "Σύνδεση",
+      "signupTitle": "Δημιουργία λογαριασμού",
+      "divider": "ή"
+    },
+    "form": {
+      "nameLabel": "Όνομα",
+      "emailLabel": "Email",
+      "passwordLabel": "Κωδικός",
+      "loading": "Παρακαλώ περιμένετε...",
+      "loginButton": "Σύνδεση",
+      "signupButton": "Δημιουργία λογαριασμού"
+    },
+    "providers": {
+      "google": "Συνέχεια με Google",
+      "github": "Συνέχεια με GitHub"
+    },
+    "toggle": {
+      "noAccount": "Δεν έχετε λογαριασμό; ",
+      "signupLink": "Εγγραφή",
+      "hasAccount": "Έχετε ήδη λογαριασμό; ",
+      "loginLink": "Σύνδεση"
+    },
+    "errors": {
+      "emailExists": "Αυτό το email είναι ήδη καταχωρημένο.",
+      "invalidCredentials": "Λάθος email ή κωδικός.",
+      "accountWithDifferentProvider": "Έχετε ήδη λογαριασμό με αυτό το email. Δοκιμάστε να συνδεθείτε με Google.",
+      "userNotFound": "Δεν βρέθηκε λογαριασμός με αυτό το email.",
+      "weakPassword": "Ο κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες.",
+      "generic": "Παρουσιάστηκε σφάλμα. Παρακαλώ δοκιμάστε ξανά."
+    }
+  },
+  "profile": {
+    "title": "Προφίλ",
+    "subtitle": "Διαχειριστείτε τα κλειδιά API και το προτιμώμενο μοντέλο σας.",
+    "loading": "Φόρτωση...",
+    "photoLabel": "Φωτογραφία προφίλ",
+    "photoChangeLabel": "Αλλαγή φωτογραφίας",
+    "nameLabel": "Όνομα",
+    "namePlaceholder": "Το όνομά σας",
+    "anthropicKeyLabel": "Κλειδί Anthropic",
+    "anthropicKeyPlaceholder": "sk-ant-...",
+    "openaiKeyLabel": "Κλειδί OpenAI",
+    "openaiKeyPlaceholder": "sk-...",
+    "modelLabel": "Προτιμώμενο μοντέλο",
+    "modelOptionGemini": "Gemini (προεπιλογή)",
+    "modelOptionClaude": "Claude",
+    "modelOptionOpenai": "OpenAI",
+    "buttonSaving": "Αποθήκευση...",
+    "buttonSave": "Αποθήκευση",
+    "success": "Το προφίλ αποθηκεύτηκε!",
+    "error": "Σφάλμα αποθήκευσης προφίλ."
+  }
+}

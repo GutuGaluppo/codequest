@@ -4,6 +4,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { LayoutDashboard } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useEditorStore } from "../../stores/editorStore";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 function Avatar({ photoURL, displayName }: { photoURL: string | null; displayName: string | null }) {
 	const [imgError, setImgError] = useState(false);
@@ -17,9 +19,10 @@ function Avatar({ photoURL, displayName }: { photoURL: string | null; displayNam
 
 export function Header() {
 	const { user, signOut } = useAuth();
-const { openDrawer } = useAuthStore();
+	const { openDrawer } = useAuthStore();
 	const navigate = useNavigate();
 	const { reset } = useEditorStore();
+	const { t } = useTranslation();
 
 	async function handleSignOut() {
 		await signOut();
@@ -33,10 +36,11 @@ const { openDrawer } = useAuthStore();
 				to="/"
 				className="text-amber font-mono font-medium text-lg tracking-tight"
 			>
-				CodeQuest
+				{t("header.logo")}
 			</Link>
 
 			<div className="flex items-center gap-4">
+				<LanguageSwitcher />
 				{user ? (
 					<>
 						<Link
@@ -55,7 +59,7 @@ const { openDrawer } = useAuthStore();
 							onClick={handleSignOut}
 							className="text-sm text-muted hover:text-text transition-colors"
 						>
-							Sair
+							{t("header.signOut")}
 						</button>
 					</>
 				) : (
@@ -63,7 +67,7 @@ const { openDrawer } = useAuthStore();
 						onClick={openDrawer}
 						className="text-sm bg-amber text-background px-3 py-1.5 rounded font-medium hover:opacity-90 transition-opacity"
 					>
-						Log In
+						{t("header.logIn")}
 					</button>
 				)}
 			</div>

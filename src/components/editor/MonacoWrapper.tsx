@@ -9,6 +9,7 @@ import type {
 import { useState } from "react";
 import { verifyService } from "../../services/verifyService";
 import { transform } from "sucrase";
+import { useTranslation } from "react-i18next";
 
 interface MonacoWrapperProps {
 	defaultValue: string;
@@ -29,6 +30,7 @@ export function MonacoWrapper({
 }: MonacoWrapperProps) {
 	const { editorCode, output, setOutput, setFeedback } = useEditorStore();
 	const [verifying, setVerifying] = useState(false);
+	const { t } = useTranslation();
 
 	function transpile(code: string): string {
 		return transform(code, { transforms: ["typescript"] }).code;
@@ -42,7 +44,7 @@ export function MonacoWrapper({
 		try {
 			const compiled = transpile(editorCode);
 			new Function(compiled)();
-			setOutput(logs.join("\n") || "✓ Código executado sem output.");
+			setOutput(logs.join("\n") || t("editor.output.noOutput"));
 		} catch (err) {
 			setOutput(String(err));
 		} finally {
@@ -52,7 +54,7 @@ export function MonacoWrapper({
 
 	async function handleVerify() {
 		if (!output) {
-			setOutput("Execute o código primeiro com Run.");
+			setOutput(t("editor.verify.requireRun"));
 			return;
 		}
 		setVerifying(true);
@@ -83,14 +85,14 @@ export function MonacoWrapper({
 					onClick={handleRun}
 					className="text-xs px-3 py-1.5 bg-amber text-background rounded font-medium hover:opacity-90 transition-opacity"
 				>
-					Run
+					{t("editor.buttons.run")}
 				</button>
 				<button
 					onClick={handleVerify}
 					disabled={verifying}
 					className="text-xs px-3 py-1.5 border text-muted rounded hover:text-text transition-colors disabled:opacity-50"
 				>
-					{verifying ? "Verificando..." : "Verify Solution"}
+					{verifying ? t("editor.buttons.verifying") : t("editor.buttons.verify")}
 				</button>
 			</div>
 

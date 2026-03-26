@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import type {
 	ModelProvider,
 	TutorialStep,
@@ -25,6 +26,7 @@ export function TutorialStepView({
 	onComplete,
 }: TutorialStepProps) {
 	const { setEditorCode } = useEditorStore();
+	const { t } = useTranslation();
 
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-2 gap-0 flex-1 min-h-0 border rounded overflow-hidden">
@@ -43,7 +45,7 @@ export function TutorialStepView({
 					</h2>
 					<ConceptBlock concept={step.concept} />
 					<span className="text-xs font-mono font-medium text-stone-400 uppercase tracking-widest">
-						Exemplo
+						{t("tutorial.step.exampleLabel")}
 					</span>
 					<pre className="bg-white/80 border rounded p-4 text-sm font-mono text-background overflow-x-auto shrink-0">
 						{step.codeExample}
@@ -56,7 +58,7 @@ export function TutorialStepView({
 						whileHover={{ scale: 1.02 }}
 						className="self-start bg-green text-background px-5 py-2.5 rounded font-medium mt-auto"
 					>
-						Concluir step
+						{t("tutorial.step.completeButton")}
 					</motion.button>
 				</motion.div>
 			</AnimatePresence>
