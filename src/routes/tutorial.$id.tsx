@@ -74,6 +74,17 @@ function TutorialPage() {
 		onError: () => toast.error("Erro ao salvar progresso."),
 	});
 
+	function detectLanguage(topic: string): string {
+		const t = topic.toLowerCase();
+		if (t.includes("typescript")) return "typescript";
+		if (t.includes("python")) return "python";
+		if (t.includes("rust")) return "rust";
+		if (t.includes("go") || t.includes("golang")) return "go";
+		return "javascript";
+	}
+
+	const language = detectLanguage(id);
+
 	if (tutorialPending || !tutorial || !step) return <TutorialSkeleton />;
 
 	return (
@@ -84,7 +95,13 @@ function TutorialPage() {
 				completedSteps={completedSteps}
 				onSelectStep={setCurrentStep}
 			/>
-			<TutorialStepView step={step} onComplete={() => completeStep(step.id)} />
+			<TutorialStepView
+				step={step}
+				model={model}
+				userKeys={userKeys}
+				language={language}
+				onComplete={() => completeStep(step.id)}
+			/>
 		</div>
 	);
 }

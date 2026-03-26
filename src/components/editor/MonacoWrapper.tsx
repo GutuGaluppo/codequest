@@ -1,22 +1,38 @@
 import Editor from "@monaco-editor/react";
 import { useEditorStore } from "../../stores/editorStore";
 import { OutputPanel } from "./OutputPanel";
-import type { Challenge } from "../../types/tutorial";
+import type {
+	Challenge,
+	ModelProvider,
+	UserApiKeys,
+} from "../../types/tutorial";
+import { useState } from "react";
+import { verifyService } from "../../services/verifyService";
+import { transform } from "sucrase";
 
 interface MonacoWrapperProps {
 	defaultValue: string;
 	onChange: (value: string) => void;
 	language?: string;
 	challenge: Challenge;
+	model: ModelProvider;
+	userKeys: UserApiKeys;
 }
 
 export function MonacoWrapper({
 	defaultValue,
 	onChange,
-	language = "javascript",
+	language,
 	challenge,
+	model,
+	userKeys,
 }: MonacoWrapperProps) {
-	const { editorCode, setOutput } = useEditorStore();
+	const { editorCode, output, setOutput, setFeedback } = useEditorStore();
+	const [verifying, setVerifying] = useState(false);
+
+	function transpile(code: string): string {
+		return transform(code, { transforms: ["typescript"] }).code;
+	}
 
 	function handleRun() {
 		const logs: string[] = [];
@@ -24,7 +40,8 @@ export function MonacoWrapper({
 		console.log = (...args) => logs.push(args.map(String).join(" "));
 
 		try {
-			new Function(editorCode)();
+			const compiled = transpile(editorCode);
+			new Function(compiled)();
 			setOutput(logs.join("\n") || "✓ Código executado sem output.");
 		} catch (err) {
 			setOutput(String(err));
@@ -33,8 +50,30 @@ export function MonacoWrapper({
 		}
 	}
 
-	function handleVerify() {
-		setOutput(`// Solução:\n${challenge.solution}`);
+	async function handleVerify() {
+		if (!output) {
+			setOutput("Execute o código primeiro com Run.");
+			return;
+		}
+		setVerifying(true);
+		try {
+			const feedback = await verifyService.verify({
+				prompt: challenge.prompt,
+				solution: challenge.solution,
+				userCode: editorCode,
+				output,
+				model,
+				userKeys,
+			});
+			setFeedback(feedback);
+		} catch {
+			setFeedback({
+				status: "incorrect",
+				message: "Não foi possível verificar a solução.",
+			});
+		} finally {
+			setVerifying(false);
+		}
 	}
 
 	return (
@@ -48,9 +87,10 @@ export function MonacoWrapper({
 				</button>
 				<button
 					onClick={handleVerify}
-					className="text-xs px-3 py-1.5 border text-muted rounded hover:text-text transition-colors"
+					disabled={verifying}
+					className="text-xs px-3 py-1.5 border text-muted rounded hover:text-text transition-colors disabled:opacity-50"
 				>
-					Verify Solution
+					{verifying ? "Verificando..." : "Verify Solution"}
 				</button>
 			</div>
 

@@ -1,5 +1,9 @@
 import { AnimatePresence, motion } from "motion/react";
-import type { TutorialStep } from "../../types/tutorial";
+import type {
+	ModelProvider,
+	TutorialStep,
+	UserApiKeys,
+} from "../../types/tutorial";
 import { MonacoWrapper } from "../editor/MonacoWrapper";
 import { ChallengeBlock } from "./ChallengeBlock";
 import { ConceptBlock } from "./ConceptBlock";
@@ -7,10 +11,19 @@ import { useEditorStore } from "../../stores/editorStore";
 
 interface TutorialStepProps {
 	step: TutorialStep;
+	model: ModelProvider;
+	userKeys: UserApiKeys;
+	language?: string;
 	onComplete: () => void;
 }
 
-export function TutorialStepView({ step, onComplete }: TutorialStepProps) {
+export function TutorialStepView({
+	step,
+	model,
+	userKeys,
+	language,
+	onComplete,
+}: TutorialStepProps) {
 	const { setEditorCode } = useEditorStore();
 
 	return (
@@ -36,7 +49,7 @@ export function TutorialStepView({ step, onComplete }: TutorialStepProps) {
 						{step.codeExample}
 					</pre>
 					<hr className="border-stone-200" />
-				<ChallengeBlock challenge={step.challenge} />
+					<ChallengeBlock challenge={step.challenge} />
 					<motion.button
 						onClick={onComplete}
 						whileTap={{ scale: 0.95 }}
@@ -54,6 +67,9 @@ export function TutorialStepView({ step, onComplete }: TutorialStepProps) {
 					defaultValue={step.challenge.starterCode}
 					onChange={setEditorCode}
 					challenge={step.challenge}
+					model={model}
+					userKeys={userKeys}
+					language={language}
 				/>
 			</div>
 		</div>
