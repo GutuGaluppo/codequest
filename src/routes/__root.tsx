@@ -15,7 +15,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 	component: RootLayout,
 	notFoundComponent: () => (
 		<div className="min-h-screen flex flex-col">
-			<Header />
 			<main className="flex-1 w-full overflow-hidden">
 				<NotFound />
 			</main>
@@ -23,7 +22,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 	),
 	errorComponent: ({ error, reset }) => (
 		<div className="min-h-screen flex flex-col">
-			<Header />
 			<main className="flex-1 w-full overflow-hidden">
 				<ErrorScreen error={error} reset={reset} />
 			</main>

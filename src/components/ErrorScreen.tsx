@@ -31,7 +31,7 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 							fontSize: "clamp(100px, 20vw, 200px)",
 							letterSpacing: "-0.12em",
 							color: "var(--color-text, #e5e1d8)",
-							textShadow: "-8px 0px 0px #1e2130",
+							textShadow: "-8px 0px 0px #13161e",
 						}}
 					>
 						{"Ops!".split("").map((char, i) => (

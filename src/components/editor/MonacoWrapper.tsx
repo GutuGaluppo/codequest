@@ -92,7 +92,9 @@ export function MonacoWrapper({
 					disabled={verifying}
 					className="text-xs px-3 py-1.5 border text-muted rounded hover:text-text transition-colors disabled:opacity-50"
 				>
-					{verifying ? t("editor.buttons.verifying") : t("editor.buttons.verify")}
+					{verifying
+						? t("editor.buttons.verifying")
+						: t("editor.buttons.verify")}
 				</button>
 			</div>
 

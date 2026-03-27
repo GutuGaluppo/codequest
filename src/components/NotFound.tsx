@@ -8,8 +8,7 @@ export function NotFound() {
 
 	return (
 		<div className="w-full min-h-[80vh] flex items-center justify-center px-6">
-			<div className="max-w-[520px] w-full text-center flex flex-col items-center gap-6">
-
+			<div className="max-w-130 w-full text-center flex flex-col items-center gap-6">
 				<motion.div
 					initial={{ opacity: 0, y: -20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -22,9 +21,9 @@ export function NotFound() {
 						className="font-mono font-black leading-none select-none"
 						style={{
 							fontSize: "clamp(120px, 22vw, 220px)",
-							letterSpacing: "-0.05em",
+							letterSpacing: "-0.12em",
 							color: "var(--color-text, #e5e1d8)",
-							textShadow: "-8px 0px 0px rgba(217,119,6,0.35)",
+							textShadow: "-10px 4px 0px #13161e",
 						}}
 					>
 						{"404".split("").map((char, i) => (
@@ -54,7 +53,6 @@ export function NotFound() {
 						{t("notFound.buttonBack")}
 					</button>
 				</motion.div>
-
 			</div>
 		</div>
 	);
