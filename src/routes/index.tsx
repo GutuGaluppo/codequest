@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthStore } from "../stores/authStore";
-import { HeroBadge } from "../components/landing/HeroBadge";
 import { HeroHeadline } from "../components/landing/HeroHeadline";
 import { ApiKeysCard } from "../components/landing/ApiKeysCard";
 import { TopicSearch } from "../components/landing/TopicSearch";
@@ -30,7 +29,6 @@ function IndexPage() {
 
 	return (
 		<div className="flex flex-col items-center min-h-[80vh] gap-10 text-center px-6 pt-16 pb-24">
-			<HeroBadge />
 			<HeroHeadline />
 			{user && <ApiKeysCard uid={user.uid} />}
 			<TopicSearch topic={topic} onChange={setTopic} onSubmit={handleSubmit} />

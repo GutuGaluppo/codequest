@@ -6,12 +6,24 @@ import { useAuthStore } from "../../stores/authStore";
 import { useEditorStore } from "../../stores/editorStore";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { HeroBadge } from "../landing/HeroBadge";
 
-function Avatar({ photoURL, displayName }: { photoURL: string | null; displayName: string | null }) {
+function Avatar({
+	photoURL,
+	displayName,
+}: {
+	photoURL: string | null;
+	displayName: string | null;
+}) {
 	const [imgError, setImgError] = useState(false);
 	const initial = displayName?.charAt(0).toUpperCase() ?? "?";
 	return photoURL && !imgError ? (
-		<img src={photoURL} alt={displayName ?? ""} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+		<img
+			src={photoURL}
+			alt={displayName ?? ""}
+			className="w-full h-full object-cover"
+			onError={() => setImgError(true)}
+		/>
 	) : (
 		<span className="text-xs font-mono font-medium text-muted">{initial}</span>
 	);
@@ -31,13 +43,16 @@ export function Header() {
 	}
 
 	return (
-		<header className="border-b px-6 py-4 flex items-center justify-between">
-			<Link
-				to="/"
-				className="text-amber font-mono font-medium text-lg tracking-tight"
-			>
-				{t("header.logo")}
-			</Link>
+		<header className="fixed z-50 w-full bg-background border-b px-6 py-4 flex items-center justify-between">
+			<div className="flex items-center gap-2">
+				<Link
+					to="/"
+					className="text-amber font-mono font-medium text-lg tracking-tight"
+				>
+					{t("header.logo")}
+				</Link>
+				<HeroBadge />
+			</div>
 
 			<div className="flex items-center gap-4">
 				<LanguageSwitcher />
