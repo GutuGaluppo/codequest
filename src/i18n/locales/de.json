@@ -198,6 +198,150 @@
     "subtitle": "Entwicklungsweg von CodeQuest — Entscheidungen, Bugs und Strategieänderungen.",
     "counter": "{{entries}} Einträge · {{bugs}} Bugs behoben",
     "bugsLabel": "Behobene Bugs",
-    "decisionsLabel": "Entscheidungen"
+    "decisionsLabel": "Entscheidungen",
+    "phases": {
+      "foundation": "Grundlagen",
+      "interface": "Interface",
+      "features": "Features",
+      "auth": "Auth",
+      "profile": "Profil",
+      "landing": "Landing",
+      "editor": "Editor",
+      "i18n": "i18n",
+      "ux": "UX",
+      "polish": "Feinschliff",
+      "tests": "Tests",
+      "design_system": "Design System"
+    },
+    "entry": {
+      "setup": {
+        "title": "Initiales Projekt-Setup",
+        "description": "Projekt initialisiert mit Vite + React + TypeScript. TailwindCSS mit benutzerdefiniertem Theme (background, surface, amber), Firebase, TanStack Router mit file-based Routing und TanStack Query konfiguriert."
+      },
+      "data_layer": {
+        "title": "Datenschicht — Types, Hooks, Stores und AI-Services",
+        "description": "Grundlage erstellt: TypeScript-Typen für Tutorial und Step, useAuth-Hook mit Firebase Google Login, Zustand-Store für den Editor und erster AI-Service (Gemini) für die Generierung strukturierter JSON-Tutorials.",
+        "decisions": [
+          "Zustand für lokalen UI-State gewählt — einfacher als Context für synchronisierten State",
+          "Gemini als Standardmodell, da kostenlos, mit Claude- und OpenAI-Unterstützung über Benutzerschlüssel"
+        ]
+      },
+      "routing": {
+        "title": "Routing-Schicht — root, index, tutorial und profile",
+        "description": "Routenstruktur mit TanStack Router: __root.tsx mit QueryClientProvider und AuthProvider, dynamische Tutorial-Route (/tutorial/$id) und Profil-Route."
+      },
+      "queries": {
+        "title": "Query-Schicht — TanStack Query + Firestore",
+        "description": "Queries mit TanStack Query implementiert: AI-Tutorial-Generierung, Abruf des Benutzerprofils aus Firestore und Fortschritt pro Tutorial. Query-Options-Muster für Wiederverwendung."
+      },
+      "tailwind_config": {
+        "title": "ESLint-, Schriftarten- und Tailwind-Theme-Konfiguration",
+        "description": "JetBrains Mono als Monospace-Schriftart, Inter als Sans-Serif. Farb-Tokens über CSS Custom Properties im @theme von Tailwind v4 definiert: background #0d0f14, surface #13161e, amber #f5a623.",
+        "decisions": [
+          "CSS Custom Properties in @theme (Tailwind v4) statt tailwind.config.js — keine separate Konfigurationsdatei nötig",
+          "JetBrains Mono gewählt, da es die Logo-Schriftart und für Code-Blöcke verwendet wird"
+        ]
+      },
+      "components": {
+        "title": "Layout-, Tutorial- und Editor-Komponenten",
+        "description": "Komponentenschicht erstellt: Header mit Navigation, TutorialStep mit ConceptBlock und ChallengeBlock, MonacoWrapper für Code-Bearbeitung und OutputPanel zur Ergebnisanzeige."
+      },
+      "ui_refactor": {
+        "title": "UI-Refaktorierung — Full-Viewport-Layout und Run/Verify-Editor",
+        "description": "Redesign auf Full-Viewport-Layout: linkes Inhaltspanel + rechtes Editor-Panel nebeneinander. Getrennte Run- und Verify-Schaltflächen. Einklappbares StepNav."
+      },
+      "animations": {
+        "title": "Animationen mit Motion",
+        "description": "Animierte Übergänge zwischen Tutorial-Schritten mit Motion (AnimatePresence). Abschluss-Schaltfläche mit visuellem Feedback."
+      },
+      "dashboard": {
+        "title": "Dashboard und Firestore-Tutorial-Persistenz",
+        "description": "Route /dashboard mit einem Grid der vom Benutzer generierten Tutorials. Persistenz in Firestore mit Unterkollektion /users/{uid}/tutorials. Schrittweiser Fortschritt mit markStepComplete.",
+        "bugs": [
+          "Zugriff verweigert bei saveTutorial: match /tutorials/{id} war im falschen Block verschachtelt (außerhalb von /users/{userId})",
+          "Zugriff verweigert bei markStepComplete: match /progress/{id} Block versehentlich aus den Security Rules entfernt",
+          "isValidUserProgress schlägt fehl: serverTimestamp() kann in den Rules nicht als 'is timestamp' validiert werden — Validator entfernt"
+        ]
+      },
+      "left_panel": {
+        "title": "Helles linkes Panel mit Beispiel- und Herausforderungs-Sektionen",
+        "description": "Tutorial-Inhaltspanel mit hellem Hintergrund (amber-50) für den Beispielblock und dunklem Hintergrund für den Herausforderungsblock — visuelle Unterscheidung der beiden Inhaltstypen. Labels 'Beispiel' und 'Herausforderung' hinzugefügt. Trennlinie zwischen den Blöcken.",
+        "decisions": [
+          "ChallengeBlock behält dunklen Hintergrund zur Unterscheidung vom Beispiel — Vorschlag des Benutzers"
+        ]
+      },
+      "auth": {
+        "title": "Multi-Provider-Auth: GitHub + E-Mail, animierter Drawer und Avatar",
+        "description": "LoginDrawer mit animiertem Slide-in (Motion). Unterstützung für Google, GitHub und E-Mail/Passwort. Avatar im Header mit Fallback auf Namensinitialen. Beim Abmelden: editorStore wird zurückgesetzt und Benutzer wird zu / weitergeleitet.",
+        "bugs": [
+          "GitHubIcon existiert nicht in lucide-react — durch Inline-SVG ersetzt",
+          "Namenskonflikt: Hook exportiert signInWithGitHub, Komponente rief signInWithGithub auf",
+          "React.FormEvent veraltet — ersetzt durch React.SyntheticEvent<HTMLFormElement>",
+          "Doppelter State im LoginDrawer: hatte individuelle name/email/password-States UND formData — individuelle States entfernt",
+          "onChange={() => handleChange} in Form.tsx — korrekt ist onChange={handleChange}",
+          "Avatar brach ab, wenn photoURL vorhanden ist, das Bild aber fehlschlägt — onError-Handler und imgError-State hinzugefügt",
+          "auth/operation-not-allowed für E-Mail — Email/Password war in der Firebase Console nicht aktiviert",
+          "auth/account-exists-with-different-credential — Behandlung in friendlyError() hinzugefügt"
+        ],
+        "decisions": [
+          "authStore (Zustand) erstellt, um das Öffnen/Schließen des Drawers von jeder Komponente aus zu steuern"
+        ]
+      },
+      "cloudinary": {
+        "title": "Foto-Upload über Cloudinary und Profilbearbeitung",
+        "description": "Profilformular mit Foto-Upload, Namensbearbeitung und API-Schlüssel-Konfiguration (Anthropic, OpenAI) und bevorzugtem Modell. Foto wird über einen unsignierten Upload-Preset an Cloudinary gesendet.",
+        "decisions": [
+          "Cloudinary gegenüber Firebase Storage gewählt — Firebase Storage erfordert den Blaze-Plan (kostenpflichtig), Cloudinary hat ein großzügiges kostenloses Kontingent"
+        ]
+      },
+      "landing_redesign": {
+        "title": "Redesign der Landing Page mit Komponentenarchitektur",
+        "description": "Landing Page von einer 183-Zeilen-Datei in 5 unabhängige Komponenten refaktoriert: HeroBadge, HeroHeadline, TopicSearch, ApiKeysCard und FeatureCards. Größere und wirkungsvollere Typografie."
+      },
+      "ai_verify": {
+        "title": "AI-Lösungsverifizierung und automatische Spracherkennung",
+        "description": "Der Button 'Lösung verifizieren' sendet Code + Herausforderung an das konfigurierte Modell des Benutzers (Gemini/Claude/OpenAI). Feedback im OutputPanel mit Status: correct (grün), partial (bernstein) oder incorrect (rot). Monaco-Sprache automatisch vom Tutorial-Thema erkannt.",
+        "bugs": [
+          "Monaco unterstützte TypeScript nicht nativ über new Function() — sucrase zum Transpilieren vor der Ausführung hinzugefügt"
+        ],
+        "decisions": [
+          "Run bleibt manuell — Benutzer führt den Code aus und klickt dann auf Verifizieren",
+          "verifyService von der Komponente entkoppelt — erhält model, keys und Code als reine Parameter"
+        ]
+      },
+      "i18n_feature": {
+        "title": "Internationalisierung mit 6 Sprachen",
+        "description": "Unterstützung für PT-BR, EN, ES, DE, EL (Griechisch) und PL (Polnisch) über react-i18next + i18next-browser-languagedetector. 122 Strings aus 22 Dateien extrahiert. LanguageSwitcher-Dropdown im Header. Automatische Browsersprachenerkennung."
+      },
+      "error_screen": {
+        "title": "Fehlerbildschirm und 404-Seite",
+        "description": "ErrorScreen inspiriert vom Colorlib-404-3-Design: riesiger 'Hoppla!'-Titel mit text-shadow für 3D-Effekt, Eingangsanimationen, optionale technische Meldung und Zurück/Wiederholen-Buttons. Als errorComponent in der Root-Route und der Tutorial-Route integriert. NotFound mit gleichem Design für 404."
+      },
+      "polish": {
+        "title": "Cursor pointer, stärkere Hover-Effekte und 429-Fehlerbehandlung",
+        "description": "cursor:pointer und brightness(1.12) im globalen Hover für alle Buttons und Links. active:scale(0.97) für Druckfeedback. 429-Fehler (Rate Limit) werden in den AI-Services abgefangen und mit benutzerfreundlicher Meldung angezeigt."
+      },
+      "tests": {
+        "title": "Vitest-Einrichtung mit Unit-Tests",
+        "description": "Vitest mit jsdom und @testing-library/jest-dom konfiguriert. vitest.config.ts von vite.config.ts getrennt (Typinkompatibilität zwischen Vite 6/rolldown und Vitest). Tests für serviceErrors, NotFound, ErrorScreen und friendlyError.",
+        "bugs": [
+          "defineConfig von vitest/config kollidiert mit Vite 6 (rolldown) Plugins — as any bei den Plugins erforderlich",
+          "getByText('404') schlägt fehl, weil jede Ziffer ein eigenes <span> ist — Lösung: textContent-Matcher",
+          "vi.mock('react-i18next') unvollständig: i18n/index.ts ruft initReactI18next auf, das im Mock fehlte"
+        ],
+        "decisions": [
+          "vitest.config.ts von vite.config.ts getrennt, um Vite-6-Typkonflikte zu vermeiden",
+          "Nur das react()-Plugin in vitest.config — tanstackRouter und tailwindcss sind Build-Plugins, in Tests nicht benötigt"
+        ]
+      },
+      "design_system": {
+        "title": "Design-System-Seite",
+        "description": "Route /design mit visueller Token-Dokumentation: Farbpalette mit Swatches, typografische Skala (sans und mono), Schriftgewichte, Button-Varianten, Badges, Inputs, Karten, Abstände und Border Radius."
+      },
+      "herobadge": {
+        "title": "HeroBadge in den Header verschoben",
+        "description": "Badge 'AI-Powered Interactive Learning' wurde neben das Logo im Header verschoben. Verhalten: zeigt nur das Icon mit Rahmen; Hover expandiert den Text mit max-width-Animation. Zuvor im Mittelpunkt der Landing Page, wo es unnötig Platz beanspruchte."
+      }
+    }
   }
 }

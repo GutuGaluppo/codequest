@@ -198,6 +198,150 @@
     "subtitle": "Πορεία ανάπτυξης του CodeQuest — αποφάσεις, bugs και αλλαγές στρατηγικής.",
     "counter": "{{entries}} καταχωρήσεις · {{bugs}} bugs επιλύθηκαν",
     "bugsLabel": "Bugs που επιλύθηκαν",
-    "decisionsLabel": "Αποφάσεις"
+    "decisionsLabel": "Αποφάσεις",
+    "phases": {
+      "foundation": "Θεμέλιο",
+      "interface": "Διεπαφή",
+      "features": "Λειτουργίες",
+      "auth": "Auth",
+      "profile": "Προφίλ",
+      "landing": "Landing",
+      "editor": "Editor",
+      "i18n": "i18n",
+      "ux": "UX",
+      "polish": "Γυάλισμα",
+      "tests": "Δοκιμές",
+      "design_system": "Design System"
+    },
+    "entry": {
+      "setup": {
+        "title": "Αρχική ρύθμιση έργου",
+        "description": "Το έργο αρχικοποιήθηκε με Vite + React + TypeScript. Το TailwindCSS ρυθμίστηκε με προσαρμοσμένο θέμα (background, surface, amber), Firebase, TanStack Router με file-based routing και TanStack Query."
+      },
+      "data_layer": {
+        "title": "Στρώμα δεδομένων — types, hooks, stores και υπηρεσίες AI",
+        "description": "Δημιουργήθηκε η βάση: τύποι TypeScript για Tutorial και Step, hook useAuth με Firebase Google Login, Zustand store για τον editor, και πρώτη υπηρεσία AI (Gemini) για δημιουργία δομημένων JSON tutorials.",
+        "decisions": [
+          "Επιλέχθηκε το Zustand για τοπική κατάσταση UI — απλούστερο από το Context για συγχρονισμένη κατάσταση",
+          "Το Gemini ως προεπιλεγμένο μοντέλο επειδή είναι δωρεάν, με υποστήριξη Claude και OpenAI μέσω κλειδιού χρήστη"
+        ]
+      },
+      "routing": {
+        "title": "Στρώμα δρομολόγησης — root, index, tutorial και profile",
+        "description": "Δομή δρομολόγησης με TanStack Router: __root.tsx με QueryClientProvider και AuthProvider, δυναμική διαδρομή tutorial (/tutorial/$id) και διαδρομή προφίλ."
+      },
+      "queries": {
+        "title": "Στρώμα queries — TanStack Query + Firestore",
+        "description": "Υλοποιήθηκαν queries με TanStack Query: δημιουργία tutorial μέσω AI, ανάκτηση προφίλ χρήστη από Firestore και πρόοδος ανά tutorial. Μοτίβο query options για επαναχρησιμοποίηση."
+      },
+      "tailwind_config": {
+        "title": "Ρύθμιση ESLint, γραμματοσειρών και θέματος Tailwind",
+        "description": "JetBrains Mono ως μονοδιαστημική γραμματοσειρά, Inter ως sans-serif. Χρωματικά tokens ορίστηκαν μέσω CSS custom properties στο @theme του Tailwind v4: background #0d0f14, surface #13161e, amber #f5a623.",
+        "decisions": [
+          "CSS custom properties στο @theme (Tailwind v4) αντί για tailwind.config.js — χωρίς ξεχωριστό αρχείο ρύθμισης",
+          "Επιλέχθηκε η JetBrains Mono ως γραμματοσειρά λογοτύπου και μπλοκ κώδικα"
+        ]
+      },
+      "components": {
+        "title": "Στοιχεία layout, tutorial και editor",
+        "description": "Δημιουργήθηκε το στρώμα στοιχείων: Header με πλοήγηση, TutorialStep με ConceptBlock και ChallengeBlock, MonacoWrapper για επεξεργασία κώδικα και OutputPanel για εμφάνιση αποτελεσμάτων."
+      },
+      "ui_refactor": {
+        "title": "Αναδιάρθρωση UI — full-viewport layout και editor Run/Verify",
+        "description": "Επανασχεδιασμός σε full-viewport layout: αριστερό πάνελ περιεχομένου + δεξί πάνελ editor δίπλα-δίπλα. Ξεχωριστά κουμπιά Run και Verify. Αναδιπλούμενο StepNav."
+      },
+      "animations": {
+        "title": "Κινούμενα σχέδια με Motion",
+        "description": "Κινούμενες μεταβάσεις μεταξύ βημάτων tutorial με Motion (AnimatePresence). Κουμπί ολοκλήρωσης με οπτική ανατροφοδότηση."
+      },
+      "dashboard": {
+        "title": "Dashboard και εμμονή tutorials στο Firestore",
+        "description": "Διαδρομή /dashboard με πλέγμα tutorials που δημιουργήθηκαν από τον χρήστη. Εμμονή στο Firestore με υποσυλλογή /users/{uid}/tutorials. Πρόοδος ανά βήμα με markStepComplete.",
+        "bugs": [
+          "Άρνηση πρόσβασης στο saveTutorial: ο κανόνας match /tutorials/{id} ήταν φωλιασμένος στο λάθος μπλοκ (εκτός /users/{userId})",
+          "Άρνηση πρόσβασης στο markStepComplete: το μπλοκ match /progress/{id} αφαιρέθηκε κατά λάθος από τους κανόνες",
+          "Αποτυχία isValidUserProgress: το serverTimestamp() δεν μπορεί να επικυρωθεί ως 'is timestamp' στους κανόνες — ο validator αφαιρέθηκε"
+        ]
+      },
+      "left_panel": {
+        "title": "Φωτεινό αριστερό πάνελ με τμήματα Παράδειγμα και Πρόκληση",
+        "description": "Πάνελ περιεχομένου tutorial με φωτεινό φόντο (amber-50) για το μπλοκ παραδείγματος και σκούρο φόντο στο μπλοκ πρόκλησης — οπτική διαφοροποίηση των δύο τύπων περιεχομένου. Προστέθηκαν labels 'Παράδειγμα' και 'Πρόκληση'. Διαχωριστικό μεταξύ μπλοκ.",
+        "decisions": [
+          "Το ChallengeBlock διατηρεί σκούρο φόντο για να διαφέρει από το παράδειγμα — πρόταση χρήστη"
+        ]
+      },
+      "auth": {
+        "title": "Multi-provider auth: GitHub + email, κινούμενο drawer και avatar",
+        "description": "LoginDrawer με κινούμενο slide-in (Motion). Υποστήριξη Google, GitHub και email/κωδικού. Avatar στο Header με fallback στο αρχικό του ονόματος. Κατά την αποσύνδεση: το editorStore επαναφέρεται και ο χρήστης πηγαίνει στο /.",
+        "bugs": [
+          "Το GitHubIcon δεν υπάρχει στο lucide-react — αντικαταστάθηκε με inline SVG",
+          "Ασυμφωνία ονομάτων: το hook εξάγει signInWithGitHub, το στοιχείο καλούσε signInWithGithub",
+          "Το React.FormEvent είναι deprecated — αντικαταστάθηκε με React.SyntheticEvent<HTMLFormElement>",
+          "Διπλή κατάσταση στο LoginDrawer: είχε μεμονωμένες καταστάσεις name/email/password ΚΑΙ formData — αφαιρέθηκαν οι μεμονωμένες",
+          "onChange={() => handleChange} στο Form.tsx — σωστό είναι onChange={handleChange}",
+          "Το Avatar έσπαγε όταν υπάρχει photoURL αλλά η εικόνα αποτυγχάνει — προστέθηκε handler onError και κατάσταση imgError",
+          "auth/operation-not-allowed για email — το Email/Password δεν ήταν ενεργοποιημένο στο Firebase Console",
+          "auth/account-exists-with-different-credential — προστέθηκε χειρισμός στο friendlyError()"
+        ],
+        "decisions": [
+          "Δημιουργήθηκε authStore (Zustand) για τον έλεγχο ανοίγματος/κλεισίματος του drawer από οποιοδήποτε στοιχείο"
+        ]
+      },
+      "cloudinary": {
+        "title": "Μεταφόρτωση φωτογραφίας μέσω Cloudinary και επεξεργασία προφίλ",
+        "description": "Φόρμα προφίλ με μεταφόρτωση φωτογραφίας, επεξεργασία ονόματος και ρύθμιση κλειδιών API (Anthropic, OpenAI) και προτιμώμενου μοντέλου. Η φωτογραφία αποστέλλεται στο Cloudinary μέσω unsigned upload preset.",
+        "decisions": [
+          "Επιλέχθηκε το Cloudinary αντί για Firebase Storage — το Firebase Storage απαιτεί το πρόγραμμα Blaze (επί πληρωμή), το Cloudinary έχει γενναιόδωρο δωρεάν επίπεδο"
+        ]
+      },
+      "landing_redesign": {
+        "title": "Επανασχεδιασμός landing page με αρχιτεκτονική στοιχείων",
+        "description": "Η landing page αναδιαρθρώθηκε από ένα αρχείο 183 γραμμών σε 5 ανεξάρτητα στοιχεία: HeroBadge, HeroHeadline, TopicSearch, ApiKeysCard και FeatureCards. Μεγαλύτερη και πιο εντυπωσιακή τυπογραφία."
+      },
+      "ai_verify": {
+        "title": "Επαλήθευση λύσης με AI και αυτόματη ανίχνευση γλώσσας",
+        "description": "Το κουμπί 'Επαλήθευση Λύσης' στέλνει κώδικα + πρόκληση στο ρυθμισμένο μοντέλο χρήστη (Gemini/Claude/OpenAI). Ανατροφοδότηση στο OutputPanel με κατάσταση: correct (πράσινο), partial (κεχριμπάρι) ή incorrect (κόκκινο). Γλώσσα Monaco ανιχνεύεται αυτόματα από το θέμα tutorial.",
+        "bugs": [
+          "Το Monaco δεν υποστήριζε TypeScript εγγενώς μέσω new Function() — προστέθηκε το sucrase για μεταγλώττιση πριν την εκτέλεση"
+        ],
+        "decisions": [
+          "Το Run παραμένει χειροκίνητο — ο χρήστης εκτελεί τον κώδικα και μετά κάνει κλικ στο Επαλήθευση",
+          "Το verifyService αποσυνδέθηκε από το στοιχείο — λαμβάνει model, keys και κώδικα ως καθαρές παραμέτρους"
+        ]
+      },
+      "i18n_feature": {
+        "title": "Διεθνοποίηση με 6 γλώσσες",
+        "description": "Υποστήριξη PT-BR, EN, ES, DE, EL (ελληνικά) και PL (πολωνικά) μέσω react-i18next + i18next-browser-languagedetector. 122 συμβολοσειρές εξήχθησαν από 22 αρχεία. LanguageSwitcher dropdown στο Header. Αυτόματη ανίχνευση γλώσσας προγράμματος περιήγησης."
+      },
+      "error_screen": {
+        "title": "Οθόνη σφάλματος και σελίδα 404",
+        "description": "ErrorScreen εμπνευσμένο από το σχέδιο Colorlib-404-3: τεράστιος τίτλος 'Ωχ!' με text-shadow για τρισδιάστατο εφέ, κινούμενα εισαγωγής, προαιρετικό τεχνικό μήνυμα και κουμπιά Πίσω/Επανάληψη. Ενσωματώθηκε ως errorComponent στη ριζική διαδρομή και στη διαδρομή tutorial. NotFound με ίδιο σχεδιασμό για 404."
+      },
+      "polish": {
+        "title": "Cursor pointer, ισχυρότερα εφέ hover και χειρισμός σφάλματος 429",
+        "description": "cursor:pointer και brightness(1.12) στο καθολικό hover για όλα τα κουμπιά και συνδέσμους. active:scale(0.97) για ανατροφοδότηση πίεσης. Σφάλματα 429 (rate limit) συλλαμβάνονται στις υπηρεσίες AI και εμφανίζονται με φιλικό μήνυμα."
+      },
+      "tests": {
+        "title": "Ρύθμιση Vitest με μοναδιαίες δοκιμές",
+        "description": "Το Vitest ρυθμίστηκε με jsdom και @testing-library/jest-dom. Το vitest.config.ts διαχωρίστηκε από το vite.config.ts (ασυμβατότητα τύπων μεταξύ Vite 6/rolldown και Vitest). Δοκιμές για serviceErrors, NotFound, ErrorScreen και friendlyError.",
+        "bugs": [
+          "Το defineConfig του vitest/config έρχεται σε σύγκρουση με plugins του Vite 6 (rolldown) — απαιτείται as any στα plugins",
+          "Το getByText('404') αποτυγχάνει επειδή κάθε ψηφίο είναι ξεχωριστό <span> — λύση: matcher μέσω textContent",
+          "Το vi.mock('react-i18next') ελλιπές: το i18n/index.ts καλεί initReactI18next που έλειπε από το mock"
+        ],
+        "decisions": [
+          "Το vitest.config.ts διαχωρίστηκε από το vite.config.ts για αποφυγή συγκρούσεων τύπων Vite 6",
+          "Μόνο το plugin react() στο vitest.config — τα tanstackRouter και tailwindcss είναι build plugins, περιττά στις δοκιμές"
+        ]
+      },
+      "design_system": {
+        "title": "Σελίδα design system",
+        "description": "Διαδρομή /design με τεκμηρίωση οπτικών tokens: παλέτα χρωμάτων με swatches, τυπογραφική κλίμακα (sans και mono), βάρη γραμματοσειράς, παραλλαγές κουμπιών, badges, inputs, κάρτες, αποστάσεις και border radius."
+      },
+      "herobadge": {
+        "title": "HeroBadge μετακινήθηκε στο Header",
+        "description": "Το badge 'AI-Powered Interactive Learning' μετακινήθηκε δίπλα στο λογότυπο στο Header. Συμπεριφορά: εμφανίζει μόνο το εικονίδιο με περίγραμμα· το hover επεκτείνει το κείμενο με κινούμενο max-width. Πριν βρισκόταν στο κέντρο της landing page καταλαμβάνοντας περιττό χώρο."
+      }
+    }
   }
 }
