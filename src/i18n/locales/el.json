@@ -159,5 +159,45 @@
     "buttonSave": "Αποθήκευση",
     "success": "Το προφίλ αποθηκεύτηκε!",
     "error": "Σφάλμα αποθήκευσης προφίλ."
+  },
+  "design": {
+    "title": "Design System",
+    "subtitle": "CodeQuest — tokens, τυπογραφία και components",
+    "sections": {
+      "colors": "Χρώματα",
+      "typography": "Τυπογραφία",
+      "fontWeights": "Βάρος Γραμματοσειράς",
+      "buttons": "Κουμπιά",
+      "badges": "Badges",
+      "inputs": "Πεδία εισαγωγής",
+      "cards": "Κάρτες",
+      "spacing": "Απόσταση (βάση 4px)",
+      "borderRadius": "Border Radius"
+    },
+    "typography": {
+      "sansLabel": "Sans — Inter",
+      "monoLabel": "Mono — JetBrains Mono",
+      "sansSample": "Η γρήγορη αλεπού",
+      "monoSample": "const αλεπού = \"γρήγορη\""
+    },
+    "buttons": {
+      "primary": "Κύριο",
+      "secondary": "Δευτερεύον",
+      "ghost": "Ghost",
+      "disabled": "Απενεργοποιημένο"
+    },
+    "cards": {
+      "defaultLabel": "Προεπιλεγμένη κάρτα",
+      "defaultSub": "bg-surface + border-border",
+      "highlightLabel": "Επισημασμένη κάρτα",
+      "highlightSub": "border-amber/30"
+    }
+  },
+  "devlog": {
+    "title": "Dev Log",
+    "subtitle": "Πορεία ανάπτυξης του CodeQuest — αποφάσεις, bugs και αλλαγές στρατηγικής.",
+    "counter": "{{entries}} καταχωρήσεις · {{bugs}} bugs επιλύθηκαν",
+    "bugsLabel": "Bugs που επιλύθηκαν",
+    "decisionsLabel": "Αποφάσεις"
   }
 }

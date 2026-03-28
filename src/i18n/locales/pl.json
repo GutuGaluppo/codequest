@@ -159,5 +159,45 @@
     "buttonSave": "Zapisz",
     "success": "Profil zapisany!",
     "error": "Błąd podczas zapisywania profilu."
+  },
+  "design": {
+    "title": "Design System",
+    "subtitle": "CodeQuest — tokeny, typografia i komponenty",
+    "sections": {
+      "colors": "Kolory",
+      "typography": "Typografia",
+      "fontWeights": "Grubość czcionki",
+      "buttons": "Przyciski",
+      "badges": "Odznaki",
+      "inputs": "Pola wejściowe",
+      "cards": "Karty",
+      "spacing": "Odstępy (skala bazowa 4px)",
+      "borderRadius": "Border Radius"
+    },
+    "typography": {
+      "sansLabel": "Sans — Inter",
+      "monoLabel": "Mono — JetBrains Mono",
+      "sansSample": "Szybki brązowy lis",
+      "monoSample": "const lis = \"szybki\""
+    },
+    "buttons": {
+      "primary": "Podstawowy",
+      "secondary": "Drugorzędny",
+      "ghost": "Ghost",
+      "disabled": "Wyłączony"
+    },
+    "cards": {
+      "defaultLabel": "Domyślna karta",
+      "defaultSub": "bg-surface + border-border",
+      "highlightLabel": "Wyróżniona karta",
+      "highlightSub": "border-amber/30"
+    }
+  },
+  "devlog": {
+    "title": "Dev Log",
+    "subtitle": "Ścieżka rozwoju CodeQuest — decyzje, bugi i zmiany strategii.",
+    "counter": "{{entries}} wpisów · {{bugs}} bugów naprawionych",
+    "bugsLabel": "Naprawione bugi",
+    "decisionsLabel": "Decyzje"
   }
 }

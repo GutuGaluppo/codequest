@@ -159,5 +159,45 @@
     "buttonSave": "Guardar",
     "success": "¡Perfil guardado!",
     "error": "Error al guardar el perfil."
+  },
+  "design": {
+    "title": "Design System",
+    "subtitle": "CodeQuest — tokens, tipografía y componentes",
+    "sections": {
+      "colors": "Colores",
+      "typography": "Tipografía",
+      "fontWeights": "Peso de Fuente",
+      "buttons": "Botones",
+      "badges": "Badges",
+      "inputs": "Inputs",
+      "cards": "Tarjetas",
+      "spacing": "Espaciado (escala base 4px)",
+      "borderRadius": "Border Radius"
+    },
+    "typography": {
+      "sansLabel": "Sans — Inter",
+      "monoLabel": "Mono — JetBrains Mono",
+      "sansSample": "El veloz zorro marrón",
+      "monoSample": "const zorro = \"veloz\""
+    },
+    "buttons": {
+      "primary": "Primario",
+      "secondary": "Secundario",
+      "ghost": "Ghost",
+      "disabled": "Deshabilitado"
+    },
+    "cards": {
+      "defaultLabel": "Tarjeta por defecto",
+      "defaultSub": "bg-surface + border-border",
+      "highlightLabel": "Tarjeta destacada",
+      "highlightSub": "border-amber/30"
+    }
+  },
+  "devlog": {
+    "title": "Dev Log",
+    "subtitle": "Trayectoria de desarrollo de CodeQuest — decisiones, bugs y cambios de estrategia.",
+    "counter": "{{entries}} entradas · {{bugs}} bugs resueltos",
+    "bugsLabel": "Bugs resueltos",
+    "decisionsLabel": "Decisiones"
   }
 }

@@ -159,5 +159,45 @@
     "buttonSave": "Salvar",
     "success": "Perfil salvo!",
     "error": "Erro ao salvar perfil."
+  },
+  "design": {
+    "title": "Design System",
+    "subtitle": "CodeQuest — tokens, tipografia e componentes",
+    "sections": {
+      "colors": "Cores",
+      "typography": "Tipografia",
+      "fontWeights": "Peso de Fonte",
+      "buttons": "Botões",
+      "badges": "Badges",
+      "inputs": "Inputs",
+      "cards": "Cards",
+      "spacing": "Espaçamento (escala base 4px)",
+      "borderRadius": "Border Radius"
+    },
+    "typography": {
+      "sansLabel": "Sans — Inter",
+      "monoLabel": "Mono — JetBrains Mono",
+      "sansSample": "A raposa veloz salta",
+      "monoSample": "const fox = \"veloz\""
+    },
+    "buttons": {
+      "primary": "Primário",
+      "secondary": "Secundário",
+      "ghost": "Ghost",
+      "disabled": "Desabilitado"
+    },
+    "cards": {
+      "defaultLabel": "Card padrão",
+      "defaultSub": "bg-surface + border-border",
+      "highlightLabel": "Card destacado",
+      "highlightSub": "border-amber/30"
+    }
+  },
+  "devlog": {
+    "title": "Dev Log",
+    "subtitle": "Trajetória de desenvolvimento do CodeQuest — decisões, bugs e mudanças de estratégia.",
+    "counter": "{{entries}} entradas · {{bugs}} bugs resolvidos",
+    "bugsLabel": "Bugs resolvidos",
+    "decisionsLabel": "Decisões"
   }
 }
