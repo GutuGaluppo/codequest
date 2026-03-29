@@ -68,10 +68,10 @@ export function MonacoWrapper({
 				userKeys,
 			});
 			setFeedback(feedback);
-		} catch {
+		} catch (err) {
 			setFeedback({
 				status: "incorrect",
-				message: "Não foi possível verificar a solução.",
+				message: err instanceof Error ? err.message : "Não foi possível verificar a solução.",
 			});
 		} finally {
 			setVerifying(false);

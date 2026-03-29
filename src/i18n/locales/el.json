@@ -65,7 +65,8 @@
     },
     "step": {
       "exampleLabel": "Παράδειγμα",
-      "completeButton": "Ολοκλήρωση βήματος"
+      "completeButton": "Ολοκλήρωση βήματος",
+      "nextButton": "Επόμενο"
     },
     "challenge": {
       "label": "Πρόκληση",

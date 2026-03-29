@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type {
 	ModelProvider,
@@ -25,12 +26,26 @@ export function TutorialStepView({
 	language,
 	onComplete,
 }: TutorialStepProps) {
-	const { setEditorCode } = useEditorStore();
+	const { setEditorCode, feedback, setFeedback, setOutput } = useEditorStore();
 	const { t } = useTranslation();
 
+	// Reset editor state whenever the step changes
+	useEffect(() => {
+		setFeedback(null);
+		setOutput("");
+	}, [step.id, setFeedback, setOutput]);
+
+	const canAdvance = feedback?.status === "correct";
+
+	function handleNext() {
+		setFeedback(null);
+		setOutput("");
+		onComplete();
+	}
+
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 gap-0 flex-1 min-h-0 border rounded overflow-hidden">
-			{/* Coluna esquerda */}
+		<div className="grid grid-cols-1 lg:grid-cols-2 gap-0 flex-1 min-h-0 border overflow-hidden">
+			{/* Left column — instructions */}
 			<AnimatePresence mode="wait">
 				<motion.div
 					key={step.id}
@@ -47,24 +62,29 @@ export function TutorialStepView({
 					<span className="text-xs font-mono font-medium text-stone-400 uppercase tracking-widest">
 						{t("tutorial.step.exampleLabel")}
 					</span>
-					<pre className="bg-white/80 border rounded p-4 text-sm font-mono text-background overflow-x-auto shrink-0">
+					<pre className="bg-white/80 border p-4 text-sm font-mono text-background overflow-x-auto shrink-0">
 						{step.codeExample}
 					</pre>
 					<hr className="border-stone-200" />
 					<ChallengeBlock challenge={step.challenge} />
 					<motion.button
-						onClick={onComplete}
-						whileTap={{ scale: 0.95 }}
-						whileHover={{ scale: 1.02 }}
-						className="self-start bg-green text-background px-5 py-2.5 rounded font-medium mt-auto"
+						onClick={handleNext}
+						disabled={!canAdvance}
+						whileTap={canAdvance ? { scale: 0.95 } : {}}
+						whileHover={canAdvance ? { scale: 1.02 } : {}}
+						className={`self-start px-5 py-2.5 font-black text-xs uppercase tracking-wide mt-auto transition-opacity ${
+							canAdvance
+								? "bg-green text-background"
+								: "bg-green/30 text-background/50 cursor-not-allowed"
+						}`}
 					>
-						{t("tutorial.step.completeButton")}
+						{t("tutorial.step.nextButton")}
 					</motion.button>
 				</motion.div>
 			</AnimatePresence>
 
-			{/* Coluna direita */}
-			<div className="flex flex-col min-h-0">
+			{/* Right column — Monaco (key forces remount on step change) */}
+			<div key={step.id} className="flex flex-col min-h-0">
 				<MonacoWrapper
 					defaultValue={step.challenge.starterCode}
 					onChange={setEditorCode}

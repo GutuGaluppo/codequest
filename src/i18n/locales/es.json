@@ -65,7 +65,8 @@
     },
     "step": {
       "exampleLabel": "Ejemplo",
-      "completeButton": "Completar paso"
+      "completeButton": "Completar paso",
+      "nextButton": "Siguiente"
     },
     "challenge": {
       "label": "Desafío",
