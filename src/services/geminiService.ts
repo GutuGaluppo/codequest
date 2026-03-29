@@ -7,7 +7,7 @@ export const geminiService = {
 	async generate(topic: string, apiKey: string): Promise<Tutorial> {
 		const ai = new GoogleGenAI({ apiKey });
 
-		const prompt = `${SYSTEM_PROMPT} Generate exactly 5 steps with progressive difficulty. Topic: ${topic}`;
+		const prompt = `${SYSTEM_PROMPT} Topic: ${topic}`;
 
 		let result;
 		try {

@@ -6,7 +6,7 @@ export const claudeService = {
 	async generate(topic: string, apiKey: string): Promise<Tutorial> {
 		const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${SYSTEM_PROMPT} Generate exactly 5 steps with progressive difficulty. Topic: ${topic}`;
+		const prompt = `${SYSTEM_PROMPT} Topic: ${topic}`;
 
 		const message = await client.messages.create({
 			model: "claude-3-5-sonnet-20241022",
