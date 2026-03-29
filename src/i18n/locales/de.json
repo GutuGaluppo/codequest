@@ -212,7 +212,8 @@
       "ux": "UX",
       "polish": "Feinschliff",
       "tests": "Tests",
-      "design_system": "Design System"
+      "design_system": "Design System",
+      "redesign": "Redesign"
     },
     "entry": {
       "setup": {
@@ -342,6 +343,35 @@
       "herobadge": {
         "title": "HeroBadge in den Header verschoben",
         "description": "Badge 'AI-Powered Interactive Learning' wurde neben das Logo im Header verschoben. Verhalten: zeigt nur das Icon mit Rahmen; Hover expandiert den Text mit max-width-Animation. Zuvor im Mittelpunkt der Landing Page, wo es unnötig Platz beanspruchte."
+      },
+      "mux_layout": {
+        "title": "Mux-inspiriertes Layout-Redesign",
+        "description": "Vollständige visuelle Überarbeitung aller Seiten und gemeinsamer Komponenten nach dem Design Language von Mux: scharfe Kanten, Border-Grid-Layouts mit divide-x/divide-y, uppercase font-black Typografie und Full-Width-Abschnitte mit max-w-7xl-Containern. Route /mux als visuelle Referenz hinzugefügt.",
+        "decisions": [
+          "Rahmenteiler statt Schatten und abgerundete Karten für eine entwicklerorientierte Ästhetik",
+          "ProfileForm, Dashboard und Design auf dasselbe Full-Bleed-Sektionsmuster wie die Landing Page migriert"
+        ]
+      },
+      "step_count_fix": {
+        "title": "Fix: Override der Step-Anzahl in KI-Diensten",
+        "description": "Alle drei KI-Dienste (Gemini, Claude, OpenAI) hängten \"Generate exactly 5 steps\" an den Prompt nach SYSTEM_PROMPT an und überschrieben stillschweigend die Anweisung \"at least 10\". Override aus allen Diensten entfernt."
+      },
+      "dynamic_header": {
+        "title": "Dynamischer routen-bewusster Header",
+        "description": "Der Header passt sich jetzt je nach Route an: versteckt das Dashboard-Symbol auf /dashboard, kürzt das Logo auf CQ auf Tutorial-Routen und rendert die StepNav im zentralen Slot über einen dedizierten Zustand-Store (tutorialNavStore).",
+        "decisions": [
+          "tutorialNavStore erstellt, um Step-Daten zwischen TutorialPage und Header ohne Prop Drilling zu teilen",
+          "StepNav vom Tutorial-Body in den zentralen Header-Slot verschoben, um vertikalen Platz für den Editor freizugeben"
+        ]
+      },
+      "tutorial_flow": {
+        "title": "Fix: Step-Gate, Monaco-Remount und Fehlerweiterleitung",
+        "description": "Weiter-Schaltfläche deaktiviert bis der KI-Verifizierer den Status korrekt zurückgibt. Monaco wird bei Step-Wechsel via key={step.id} neu eingehängt. Editor-Zustand wird bei Transition zurückgesetzt. Fehler beim Verifizieren (inkl. 429) erscheinen jetzt im Feedback-Panel.",
+        "bugs": [
+          "Monaco behielt den Code des vorherigen Steps — defaultValue gilt nur beim initialen Mount, nicht bei Prop-Updates",
+          "Header wurde von Inhalten verdeckt, da mt-10 (40px) kleiner als die tatsächliche Header-Höhe (60px) war",
+          "catch-Block in handleVerify verwarf die Fehlermeldung und zeigte generischen Fallback auch für spezifische API-Fehler wie 429"
+        ]
       }
     }
   }

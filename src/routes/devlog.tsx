@@ -36,6 +36,10 @@ const entries: EntryMeta[] = [
 	{ date: "2026-03-27", commit: "e9ee9a4", phaseKey: "tests", tags: ["tests"], key: "tests", hasBugs: true, hasDecisions: true },
 	{ date: "2026-03-28", phaseKey: "design_system", tags: ["design", "docs"], key: "design_system" },
 	{ date: "2026-03-28", phaseKey: "ux", tags: ["ux", "design"], key: "herobadge" },
+	{ date: "2026-03-29", commit: "a8d6d34", phaseKey: "redesign", tags: ["design", "layout", "refactor"], key: "mux_layout", hasDecisions: true },
+	{ date: "2026-03-29", commit: "d0d1eb3", phaseKey: "polish", tags: ["ai", "fix"], key: "step_count_fix" },
+	{ date: "2026-03-29", commit: "4a8fdd2", phaseKey: "ux", tags: ["ux", "feature", "layout"], key: "dynamic_header", hasDecisions: true },
+	{ date: "2026-03-29", commit: "acdc49f", phaseKey: "editor", tags: ["editor", "fix", "ux", "error-handling"], key: "tutorial_flow", hasBugs: true },
 ];
 
 const tagColors: Record<string, string> = {
@@ -77,6 +81,7 @@ const phaseColors: Record<string, string> = {
 	polish: "text-green",
 	tests: "text-blue-400",
 	design_system: "text-purple-400",
+	redesign: "text-amber",
 };
 
 function DevlogPage() {

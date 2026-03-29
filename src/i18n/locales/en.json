@@ -212,7 +212,8 @@
       "ux": "UX",
       "polish": "Polish",
       "tests": "Tests",
-      "design_system": "Design System"
+      "design_system": "Design System",
+      "redesign": "Redesign"
     },
     "entry": {
       "setup": {
@@ -342,6 +343,35 @@
       "herobadge": {
         "title": "HeroBadge repositioned to the Header",
         "description": "Badge 'AI-Powered Interactive Learning' moved to sit next to the logo in the Header. Behavior: displays only the icon with a border; hover expands the text with a max-width animation. Previously centered in the landing page, taking up unnecessary space."
+      },
+      "mux_layout": {
+        "title": "Mux-inspired layout redesign",
+        "description": "Complete visual overhaul of all pages and shared components inspired by Mux's design language: sharp edges, border-grid layouts with divide-x/divide-y, uppercase font-black typography, and full-width sections with max-w-7xl containers. Added /mux route as a visual reference.",
+        "decisions": [
+          "Adopted border dividers instead of shadows and rounded cards to reinforce an engineering-first aesthetic",
+          "ProfileForm, Dashboard, and Design pages migrated to the same full-bleed section pattern as the landing page"
+        ]
+      },
+      "step_count_fix": {
+        "title": "Fix: AI step count override",
+        "description": "All three AI services (Gemini, Claude, OpenAI) appended \"Generate exactly 5 steps\" to the prompt after SYSTEM_PROMPT, silently overriding the \"at least 10\" instruction. Removed the override from all services."
+      },
+      "dynamic_header": {
+        "title": "Dynamic route-aware header",
+        "description": "Header now adapts per route: hides the Dashboard icon on /dashboard, collapses the logo to CQ on tutorial routes, and renders the StepNav in the center slot via a dedicated Zustand store (tutorialNavStore).",
+        "decisions": [
+          "Created tutorialNavStore to share step data between TutorialPage and Header without prop drilling through the root layout",
+          "StepNav moved from the tutorial page body into the Header center slot, freeing vertical space for the editor"
+        ]
+      },
+      "tutorial_flow": {
+        "title": "Fix: tutorial step gate, Monaco remount, error propagation",
+        "description": "Next button disabled until AI verifier returns correct status. Monaco remounts on step change via key={step.id} so defaultValue loads fresh for each step. Editor state resets on transition. Verify errors (including 429 rate limit) now propagate to the feedback panel.",
+        "bugs": [
+          "Monaco retained the previous step's code after advancing — defaultValue only applies on initial mount, not on prop updates",
+          "Header covered by content due to mt-10 (40px) being smaller than actual header height (60px)",
+          "catch block in handleVerify discarded the error message, showing a generic fallback even for specific API errors"
+        ]
       }
     }
   }

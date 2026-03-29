@@ -212,7 +212,8 @@
       "ux": "UX",
       "polish": "Szlif",
       "tests": "Testy",
-      "design_system": "Design System"
+      "design_system": "Design System",
+      "redesign": "Redesign"
     },
     "entry": {
       "setup": {
@@ -342,6 +343,35 @@
       "herobadge": {
         "title": "HeroBadge przeniesiony do Header",
         "description": "Badge 'AI-Powered Interactive Learning' przeniesiony obok logo w Header. Zachowanie: wyświetla tylko ikonę z obramowaniem; hover rozszerza tekst z animacją max-width. Wcześniej był wyśrodkowany na stronie głównej, zajmując niepotrzebne miejsce."
+      },
+      "mux_layout": {
+        "title": "Przeprojektowanie layoutu inspirowane Mux",
+        "description": "Kompletna wizualna przebudowa wszystkich stron i komponented inspirowana design language Mux: ostre krawedzie, uklady grid z divide-x/divide-y, typografia uppercase font-black oraz pelnoszerokosciowe sekcje z kontenerami max-w-7xl. Dodano trase /mux jako wizualna referencje.",
+        "decisions": [
+          "Zastosowano separatory obramowania zamiast cieni i zaokraglonych kart dla estetyki developer-first",
+          "ProfileForm, Dashboard i Design przeniesione do tego samego wzorca full-bleed co landing page"
+        ]
+      },
+      "step_count_fix": {
+        "title": "Fix: nadpisanie liczby krokow w uslugach AI",
+        "description": "Wszystkie trzy uslugi AI (Gemini, Claude, OpenAI) dolaczaly do promptu \"Generate exactly 5 steps\" po SYSTEM_PROMPT, po cichu nadpisujac instrukcje \"at least 10\". Usunieto nadpisanie ze wszystkich uslug."
+      },
+      "dynamic_header": {
+        "title": "Dynamiczny header swiadomy biezacej trasy",
+        "description": "Header teraz dostosowuje sie do trasy: ukrywa ikone Dashboard na /dashboard, skraca logo do CQ na trasach tutoriala i renderuje StepNav w centralnym slocie przez dedykowany Zustand store (tutorialNavStore).",
+        "decisions": [
+          "Stworzono tutorialNavStore do wspoldzielenia danych krokow miedzy TutorialPage a Header bez prop drillingu",
+          "StepNav przeniesiony z body tutoriala do centralnego slotu Header, zwalniajac pionowe miejsce dla edytora"
+        ]
+      },
+      "tutorial_flow": {
+        "title": "Fix: bramka krokow, remount Monaco i propagacja bledow",
+        "description": "Przycisk Next jest wylaczony do momentu, gdy weryfikator zwroci status poprawny. Monaco odswiezy sie przy zmianie kroku przez key={step.id}. Stan edytora resetuje sie przy przejsciu. Bledy weryfikacji (w tym limit 429) pojawiaja sie teraz w panelu feedbacku.",
+        "bugs": [
+          "Monaco zachowywalo kod poprzedniego kroku po przejsciu — defaultValue dziala tylko przy pierwszym montowaniu",
+          "Header byl zasloniety przez tresc z powodu mt-10 (40px) mniejszego niz rzeczywista wysokosc headera (60px)",
+          "Blok catch w handleVerify odrzucal komunikat bledu, wyswietlajac ogolny fallback nawet dla bledow 429"
+        ]
       }
     }
   }

@@ -212,7 +212,8 @@
       "ux": "UX",
       "polish": "Γυάλισμα",
       "tests": "Δοκιμές",
-      "design_system": "Design System"
+      "design_system": "Design System",
+      "redesign": "Redesign"
     },
     "entry": {
       "setup": {
@@ -342,6 +343,35 @@
       "herobadge": {
         "title": "HeroBadge μετακινήθηκε στο Header",
         "description": "Το badge 'AI-Powered Interactive Learning' μετακινήθηκε δίπλα στο λογότυπο στο Header. Συμπεριφορά: εμφανίζει μόνο το εικονίδιο με περίγραμμα· το hover επεκτείνει το κείμενο με κινούμενο max-width. Πριν βρισκόταν στο κέντρο της landing page καταλαμβάνοντας περιττό χώρο."
+      },
+      "mux_layout": {
+        "title": "Επανασχεδιασμός με layout εμπνευσμένο από το Mux",
+        "description": "Πλήρης οπτική ανακαίνιση όλων των σελίδων βασισμένη στο design language του Mux: αιχμηρές άκρες, grid layouts με divide-x/divide-y, τυπογραφία uppercase font-black και full-width ενότητες με max-w-7xl containers. Προστέθηκε διαδρομή /mux ως οπτική αναφορά.",
+        "decisions": [
+          "Χρήση διαιρετών περιγράμματος αντί σκιών και στρογγυλεμένων καρτών για αισθητική developer-first",
+          "ProfileForm, Dashboard και Design μεταφέρθηκαν στο ίδιο μοτίβο full-bleed ενοτήτων με τη landing page"
+        ]
+      },
+      "step_count_fix": {
+        "title": "Fix: override αριθμού βημάτων στις ΤΝ υπηρεσίες",
+        "description": "Και οι τρεις υπηρεσίες ΤΝ πρόσθεταν \"Generate exactly 5 steps\" στο prompt μετά το SYSTEM_PROMPT, υπερκαλύπτοντας αθόρυβα την οδηγία \"at least 10\". Το override αφαιρέθηκε από όλες τις υπηρεσίες."
+      },
+      "dynamic_header": {
+        "title": "Δυναμικό Header με συμπεριφορά ανά διαδρομή",
+        "description": "Το Header προσαρμόζεται πλέον ανά διαδρομή: αποκρύπτει το εικονίδιο Dashboard στο /dashboard, συμπτύσσει το λογότυπο σε CQ στις διαδρομές tutorial και αποδίδει το StepNav στο κεντρικό slot μέσω αποκλειστικού Zustand store (tutorialNavStore).",
+        "decisions": [
+          "Δημιουργία tutorialNavStore για κοινή χρήση δεδομένων βημάτων χωρίς prop drilling",
+          "Το StepNav μεταφέρθηκε στο κεντρικό slot του Header, ελευθερώνοντας κατακόρυφο χώρο για τον editor"
+        ]
+      },
+      "tutorial_flow": {
+        "title": "Fix: gate βημάτων, remount Monaco και διάδοση σφαλμάτων",
+        "description": "Το κουμπί Next απενεργοποιείται μέχρι ο επαληθευτής να επιστρέψει κατάσταση σωστή. Το Monaco επαναφορτώνεται κατά την εναλλαγή βήματος μέσω key={step.id}. Η κατάσταση του editor επαναφέρεται στη μετάβαση. Τα σφάλματα (συμπ. 429) εμφανίζονται πλέον στο feedback.",
+        "bugs": [
+          "Το Monaco διατηρούσε τον κώδικα του προηγούμενου βήματος — το defaultValue εφαρμόζεται μόνο στο αρχικό mount",
+          "Το Header καλυπτόταν από περιεχόμενο λόγω mt-10 (40px) μικρότερο από την πραγματική ύψος (60px)",
+          "Το catch στο handleVerify απέρριπτε το μήνυμα σφάλματος, εμφανίζοντας γενικό fallback για σφάλματα 429"
+        ]
       }
     }
   }
