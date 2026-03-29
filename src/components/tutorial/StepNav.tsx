@@ -20,7 +20,7 @@ export function StepNav({ steps, currentStep, completedSteps, onSelectStep }: St
 					<motion.li
 						key={step.id}
 						initial={false}
-						animate={{ width: isCompleted ? 32 : "auto" }}
+						animate={{ width: 32 }}
 						whileHover={{ width: "auto" }}
 						transition={{ duration: 0.2 }}
 						onClick={() => (isCompleted || isActive) && onSelectStep(step.order - 1)}

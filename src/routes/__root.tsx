@@ -34,7 +34,7 @@ function RootLayout() {
 		<div className="min-h-screen flex flex-col">
 			<Header />
 			<LoginDrawer />
-			<main className="flex-1 w-full overflow-hidden mt-10">
+			<main className="flex-1 w-full overflow-hidden mt-15">
 				<Outlet />
 			</main>
 		</div>

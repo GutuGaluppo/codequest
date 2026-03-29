@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { StepNav } from "../components/tutorial/StepNav";
 import { TutorialStepView } from "../components/tutorial/TutorialStep";
 import { useAuth } from "../hooks/useAuth";
 import { useProgressSync } from "../hooks/useProgressSync";
@@ -15,14 +14,19 @@ import {
 import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
+import { useTutorialNavStore } from "../stores/tutorialNavStore";
 import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
 import { useTranslation } from "react-i18next";
 import { ErrorScreen } from "../components/ErrorScreen";
 import i18n from "../i18n";
 
 export const Route = createFileRoute("/tutorial/$id")({
-	pendingComponent: () => <p className="text-muted p-8">{i18n.t("tutorial.pending")}</p>,
-	errorComponent: ({ error, reset }) => <ErrorScreen error={error} reset={reset} />,
+	pendingComponent: () => (
+		<p className="text-muted p-8">{i18n.t("tutorial.pending")}</p>
+	),
+	errorComponent: ({ error, reset }) => (
+		<ErrorScreen error={error} reset={reset} />
+	),
 	component: TutorialPage,
 });
 
@@ -32,6 +36,9 @@ function TutorialPage() {
 	const { currentStep, setCurrentStep } = useEditorStore();
 	const queryClient = useQueryClient();
 	const { t } = useTranslation();
+	const setSteps = useTutorialNavStore((s) => s.setSteps);
+	const setCompletedSteps = useTutorialNavStore((s) => s.setCompletedSteps);
+	const clear = useTutorialNavStore((s) => s.clear);
 
 	const { data: profile } = useQuery({
 		...userProfileQueryOptions(user?.uid ?? ""),
@@ -58,6 +65,21 @@ function TutorialPage() {
 	}, [tutorial, user]);
 
 	const completedSteps = (progress?.completedSteps as string[]) ?? [];
+
+	// Sync steps and completedSteps to the Header store
+	useEffect(() => {
+		if (tutorial?.steps) setSteps(tutorial.steps);
+	}, [tutorial?.steps, setSteps]);
+
+	useEffect(() => {
+		setCompletedSteps(completedSteps);
+	}, [completedSteps, setCompletedSteps]);
+
+	// Clear Header store on unmount
+	useEffect(() => {
+		return () => clear();
+	}, [clear]);
+
 	const step = tutorial?.steps[currentStep];
 
 	const { mutate: completeStep } = useMutation({
@@ -87,13 +109,7 @@ function TutorialPage() {
 	if (tutorialPending || !tutorial || !step) return <TutorialSkeleton />;
 
 	return (
-		<div className="flex flex-col gap-3 h-[calc(100vh-5rem)] px-6 pb-4">
-			<StepNav
-				steps={tutorial.steps}
-				currentStep={step.order}
-				completedSteps={completedSteps}
-				onSelectStep={setCurrentStep}
-			/>
+		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">
 			<TutorialStepView
 				step={step}
 				model={model}

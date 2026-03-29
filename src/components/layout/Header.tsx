@@ -1,12 +1,14 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, LogOutIcon } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useEditorStore } from "../../stores/editorStore";
+import { useTutorialNavStore } from "../../stores/tutorialNavStore";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { HeroBadge } from "../landing/HeroBadge";
+import { StepNav } from "../tutorial/StepNav";
 
 function Avatar({
 	photoURL,
@@ -33,8 +35,13 @@ export function Header() {
 	const { user, signOut } = useAuth();
 	const { openDrawer } = useAuthStore();
 	const navigate = useNavigate();
-	const { reset } = useEditorStore();
+	const { reset, currentStep, setCurrentStep } = useEditorStore();
+	const { steps, completedSteps } = useTutorialNavStore();
 	const { t } = useTranslation();
+
+	const pathname = useRouterState({ select: (s) => s.location.pathname });
+	const isTutorial = pathname.startsWith("/tutorial/");
+	const isDashboard = pathname === "/dashboard";
 
 	async function handleSignOut() {
 		await signOut();
@@ -43,44 +50,60 @@ export function Header() {
 	}
 
 	return (
-		<header className="fixed z-50 w-full bg-background border-b px-6 py-4 flex items-center justify-between">
-			<div className="flex items-center gap-2">
+		<header className="fixed z-50 w-full bg-background border-b px-6 py-3.5 flex items-center justify-between gap-4">
+			{/* ─── LEFT: logo + badge (or CQ on tutorial) ─────────────────────── */}
+			<div className="flex items-center gap-3 shrink-0">
 				<Link
 					to="/"
-					className="text-amber font-mono font-medium text-lg tracking-tight"
+					className="text-amber font-mono font-black text-sm uppercase tracking-widest"
 				>
-					{t("header.logo")}
+					{isTutorial ? "CQ" : t("header.logo")}
 				</Link>
-				<HeroBadge />
+				{!isTutorial && <HeroBadge />}
 			</div>
 
-			<div className="flex items-center gap-4">
+			{/* ─── CENTER: StepNav on tutorial ─────────────────────────────────── */}
+			{isTutorial && steps.length > 0 && (
+				<div className="flex-1 overflow-hidden">
+					<StepNav
+						steps={steps}
+						currentStep={currentStep}
+						completedSteps={completedSteps}
+						onSelectStep={setCurrentStep}
+					/>
+				</div>
+			)}
+
+			{/* ─── RIGHT: user actions ─────────────────────────────────────────── */}
+			<div className="flex items-center gap-5 shrink-0">
 				<LanguageSwitcher />
 				{user ? (
 					<>
-						<Link
-							to="/dashboard"
-							className="text-muted hover:text-text transition-colors"
-						>
-							<LayoutDashboard size={18} />
-						</Link>
+						{!isDashboard && (
+							<Link
+								to="/dashboard"
+								className="text-muted hover:text-text transition-colors"
+							>
+								<LayoutDashboard size={20} />
+							</Link>
+						)}
 						<Link
 							to="/profile"
-							className="w-8 h-8 rounded-full overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
+							className="w-8 h-8 overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
 						>
 							<Avatar photoURL={user.photoURL} displayName={user.displayName} />
 						</Link>
 						<button
 							onClick={handleSignOut}
-							className="text-sm text-muted hover:text-text transition-colors"
+							className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
 						>
-							{t("header.signOut")}
+							<LogOutIcon size={20} />
 						</button>
 					</>
 				) : (
 					<button
 						onClick={openDrawer}
-						className="text-sm bg-amber text-background px-3 py-1.5 rounded font-medium hover:opacity-90 transition-opacity"
+						className="text-xs font-black uppercase tracking-wide bg-amber text-background px-4 py-2"
 					>
 						{t("header.logIn")}
 					</button>
