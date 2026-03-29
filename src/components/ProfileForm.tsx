@@ -102,22 +102,26 @@ export default function ProfileForm({
 	}
 
 	return (
-		<div className="min-h-[80vh] flex justify-center items-center">
-			<div className="max-w-lg flex flex-col gap-8">
-				<div>
-					<h1 className="text-2xl font-mono font-medium text-text">{t("profile.title")}</h1>
-					<p className="text-muted text-sm mt-1">
+		<div className="w-full">
+			<section className="border-b border-border">
+				<div className="max-w-7xl mx-auto px-6 py-10">
+					<span className="text-xs font-mono text-muted uppercase tracking-widest">
 						{t("profile.subtitle")}
-					</p>
+					</span>
+					<h1 className="text-4xl font-black uppercase text-text mt-1 leading-none">
+						{t("profile.title")}
+					</h1>
 				</div>
+			</section>
 
-				<form onSubmit={handleSubmit} className="flex flex-col gap-6">
+			<div className="max-w-7xl mx-auto px-6 py-10">
+				<form onSubmit={handleSubmit} className="max-w-lg flex flex-col gap-6">
 					<div className="flex flex-col gap-1.5">
-						<label className="text-sm font-medium text-text">
+						<label className="text-xs font-mono uppercase tracking-widest text-muted">
 							{t("profile.photoLabel")}
 						</label>
 						<div className="flex items-center gap-4">
-							<div className="w-16 h-16 rounded-full overflow-hidden border border-border bg-surface flex items-center justify-center shrink-0">
+							<div className="w-16 h-16 overflow-hidden border border-border bg-surface flex items-center justify-center shrink-0">
 								{photoPreview ? (
 									<img
 										src={photoPreview}
@@ -130,7 +134,7 @@ export default function ProfileForm({
 									</span>
 								)}
 							</div>
-							<label className="cursor-pointer text-sm text-muted hover:text-text transition-colors">
+							<label className="cursor-pointer text-xs font-mono text-muted hover:text-text transition-colors uppercase tracking-widest">
 								{t("profile.photoChangeLabel")}
 								<input
 									type="file"
@@ -141,18 +145,21 @@ export default function ProfileForm({
 							</label>
 						</div>
 					</div>
+
 					<div className="flex flex-col gap-1.5">
-						<label className="text-sm font-medium text-text">{t("profile.nameLabel")}</label>
+						<label className="text-xs font-mono uppercase tracking-widest text-muted">
+							{t("profile.nameLabel")}
+						</label>
 						<input
 							value={displayName}
 							onChange={(e) => setDisplayName(e.target.value)}
 							placeholder={t("profile.namePlaceholder")}
-							className="bg-surface border rounded px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors text-sm"
+							className="bg-surface border border-border px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors text-sm"
 						/>
 					</div>
 
 					<div className="flex flex-col gap-1.5">
-						<label className="text-sm font-medium text-text">
+						<label className="text-xs font-mono uppercase tracking-widest text-muted">
 							{t("profile.anthropicKeyLabel")}
 						</label>
 						<input
@@ -160,12 +167,12 @@ export default function ProfileForm({
 							type="password"
 							onChange={(e) => setAnthropicKey(e.target.value)}
 							placeholder={t("profile.anthropicKeyPlaceholder")}
-							className="bg-surface border rounded px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors font-mono text-sm"
+							className="bg-surface border border-border px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors font-mono text-sm"
 						/>
 					</div>
 
 					<div className="flex flex-col gap-1.5">
-						<label className="text-sm font-medium text-text">
+						<label className="text-xs font-mono uppercase tracking-widest text-muted">
 							{t("profile.openaiKeyLabel")}
 						</label>
 						<input
@@ -173,12 +180,12 @@ export default function ProfileForm({
 							type="password"
 							onChange={(e) => setOpenaiKey(e.target.value)}
 							placeholder={t("profile.openaiKeyPlaceholder")}
-							className="bg-surface border rounded px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors font-mono text-sm"
+							className="bg-surface border border-border px-4 py-2.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors font-mono text-sm"
 						/>
 					</div>
 
 					<div className="flex flex-col gap-1.5">
-						<label className="text-sm font-medium text-text">
+						<label className="text-xs font-mono uppercase tracking-widest text-muted">
 							{t("profile.modelLabel")}
 						</label>
 						<select
@@ -186,7 +193,7 @@ export default function ProfileForm({
 							onChange={(e) =>
 								setPreferredModel(e.target.value as ModelProvider)
 							}
-							className="bg-surface border rounded px-4 py-2.5 text-text focus:outline-none focus:border-amber transition-colors"
+							className="bg-surface border border-border px-4 py-2.5 text-text focus:outline-none focus:border-amber transition-colors"
 						>
 							<option value="gemini">{t("profile.modelOptionGemini")}</option>
 							<option value="claude">{t("profile.modelOptionClaude")}</option>
@@ -197,7 +204,7 @@ export default function ProfileForm({
 					<button
 						type="submit"
 						disabled={isPending}
-						className="self-start bg-amber text-background px-5 py-2.5 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+						className="self-start bg-amber text-background px-5 py-2.5 font-black text-xs uppercase tracking-wide disabled:opacity-50"
 					>
 						{isPending || uploading ? t("profile.buttonSaving") : t("profile.buttonSave")}
 					</button>

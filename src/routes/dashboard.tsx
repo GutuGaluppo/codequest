@@ -5,7 +5,7 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { userTutorialsQueryOptions } from "../queries/tutorialQueries";
-import { Code, Clock } from "lucide-react";
+import { Code, Clock, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
@@ -30,45 +30,57 @@ function DashboardPage() {
 	);
 
 	return (
-		<div className="px-6 py-8 max-w-6xl mx-auto w-full">
-			<div className="flex items-start justify-between mb-8">
-				<div>
-					<h1 className="text-3xl font-mono font-medium text-text">
-						{t("dashboard.title")}
-					</h1>
-					<p className="text-muted mt-1">
-						{t("dashboard.subtitle")}
-					</p>
-				</div>
-				<Link
-					to="/"
-					className="flex items-center gap-2 bg-amber text-background px-4 py-2 rounded font-medium text-sm hover:opacity-90 transition-opacity"
-				>
-					{t("dashboard.newTutorialButton")}
-				</Link>
-			</div>
-
-			{isPending ? (
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{Array.from({ length: 3 }).map((_, i) => (
-						<div key={i} className="bg-surface border rounded-lg p-5 h-48 animate-pulse" />
-					))}
-				</div>
-			) : !tutorials?.length ? (
-				<div className="flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center">
-					<Code size={32} className="text-muted" />
-					<p className="text-muted">{t("dashboard.empty.message")}</p>
-					<Link to="/" className="text-amber text-sm hover:opacity-80 transition-opacity">
-						{t("dashboard.empty.link")}
+		<div className="w-full">
+			{/* ─── HEADER ─────────────────────────────────────────────────────── */}
+			<section className="border-b border-border">
+				<div className="max-w-7xl mx-auto px-6 py-10 flex items-end justify-between gap-4">
+					<div>
+						<span className="text-xs font-mono text-muted uppercase tracking-widest">
+							{t("dashboard.subtitle")}
+						</span>
+						<h1 className="text-4xl font-black uppercase text-text mt-1 leading-none">
+							{t("dashboard.title")}
+						</h1>
+					</div>
+					<Link
+						to="/"
+						className="flex items-center gap-2 bg-amber text-background px-5 py-3 font-black text-xs uppercase tracking-wide shrink-0"
+					>
+						{t("dashboard.newTutorialButton")} <ChevronRight size={14} />
 					</Link>
 				</div>
-			) : (
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{tutorials.map((tutorial) => (
-						<TutorialCard key={tutorial.id} tutorial={tutorial} />
-					))}
-				</div>
-			)}
+			</section>
+
+			{/* ─── CONTENT ────────────────────────────────────────────────────── */}
+			<div className="max-w-7xl mx-auto px-6 py-10">
+				{isPending ? (
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+						{Array.from({ length: 3 }).map((_, i) => (
+							<div
+								key={i}
+								className="border border-border bg-surface h-48 animate-pulse"
+							/>
+						))}
+					</div>
+				) : !tutorials?.length ? (
+					<div className="border border-border p-16 flex flex-col items-center justify-center gap-4 text-center">
+						<Code size={28} className="text-muted" />
+						<p className="text-sm text-muted font-mono">{t("dashboard.empty.message")}</p>
+						<Link
+							to="/"
+							className="text-xs font-black uppercase tracking-wide text-amber border border-amber/30 px-4 py-2 hover:border-amber/60 transition-colors"
+						>
+							{t("dashboard.empty.link")}
+						</Link>
+					</div>
+				) : (
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+						{tutorials.map((tutorial) => (
+							<TutorialCard key={tutorial.id as string} tutorial={tutorial} />
+						))}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }
@@ -86,30 +98,35 @@ function TutorialCard({ tutorial }: { tutorial: Record<string, unknown> }) {
 		: t("dashboard.timeAgo.justNow");
 
 	return (
-		<div className="bg-surface border rounded-lg p-5 flex flex-col gap-4 hover:border-amber/50 transition-colors">
+		<div className="border border-border p-5 flex flex-col gap-4 hover:border-amber/40 transition-colors">
 			<div className="flex items-center justify-between">
-				<div className="w-8 h-8 rounded bg-background border flex items-center justify-center">
+				<div className="w-8 h-8 border border-border flex items-center justify-center">
 					<Code size={14} className="text-muted" />
 				</div>
-				<span className="flex items-center gap-1 text-xs text-muted">
-					<Clock size={12} />
+				<span className="flex items-center gap-1 text-xs font-mono text-muted">
+					<Clock size={11} />
 					{timeAgo}
 				</span>
 			</div>
 
 			<div>
-				<h3 className="font-mono font-medium text-text capitalize">{topic}</h3>
-				<p className="text-xs text-muted mt-1">
-					{t("dashboard.card.generatedWith")}{generatedWith} · {stepCount}{t("dashboard.card.steps")}
+				<h3 className="font-black uppercase text-xs tracking-widest text-text">
+					{topic}
+				</h3>
+				<p className="text-xs font-mono text-muted mt-1">
+					{t("dashboard.card.generatedWith")}
+					{generatedWith} · {stepCount}
+					{t("dashboard.card.steps")}
 				</p>
 			</div>
 
 			<Link
 				to="/tutorial/$id"
 				params={{ id }}
-				className="mt-auto flex items-center justify-center gap-2 border border-border text-text text-sm px-4 py-2 rounded hover:border-amber hover:text-amber transition-colors"
+				className="mt-auto flex items-center justify-between border border-border text-muted text-xs font-mono px-4 py-2.5 hover:border-amber hover:text-amber transition-colors"
 			>
 				{t("dashboard.card.button")}
+				<ChevronRight size={12} />
 			</Link>
 		</div>
 	);

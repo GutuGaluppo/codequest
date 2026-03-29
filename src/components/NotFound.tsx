@@ -48,7 +48,7 @@ export function NotFound() {
 				>
 					<button
 						onClick={() => navigate({ to: "/" })}
-						className="bg-amber text-background px-5 py-2.5 rounded font-medium text-sm hover:opacity-90 transition-opacity"
+						className="bg-amber text-background px-5 py-2.5 font-black text-xs uppercase tracking-wide"
 					>
 						{t("notFound.buttonBack")}
 					</button>

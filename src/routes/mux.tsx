@@ -1,31 +1,25 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { useAuthStore } from "../stores/authStore";
-import { ApiKeysCard } from "../components/landing/ApiKeysCard";
-import { Search, ChevronRight, Code, Zap, TrendingUp } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Code, Zap, TrendingUp, Search, ChevronRight, Terminal } from "lucide-react";
 
-export const Route = createFileRoute("/")({
-	component: IndexPage,
+export const Route = createFileRoute("/mux")({
+	component: MuxPage,
 });
-
-const SUGGESTED_TOPICS = ["JavaScript", "React", "Python", "Node.js", "TypeScript"];
 
 const features = [
 	{
-		icon: <BrainIcon />,
+		icon: <Brain />,
 		title: "AI Tutor",
 		description:
 			"An AI that understands your level and adapts in real time. No cookie-cutter explanations.",
 	},
 	{
-		icon: <Code size={18} />,
+		icon: <Terminal />,
 		title: "Live Editor",
 		description:
 			"Write, run, and validate code without leaving the browser. Instant feedback on every keystroke.",
 	},
 	{
-		icon: <TrendingUp size={18} />,
+		icon: <TrendingUp />,
 		title: "Progressive",
 		description:
 			"Each challenge builds on the last. Track your progress and master topics step by step.",
@@ -50,6 +44,21 @@ const steps = [
 	},
 ];
 
+const footerLinks = [
+	{
+		title: "Product",
+		links: ["Challenges", "Dashboard", "Progress", "API Keys"],
+	},
+	{
+		title: "Developers",
+		links: ["Docs", "Design System", "Dev Log", "GitHub"],
+	},
+	{
+		title: "Company",
+		links: ["About", "Blog", "Privacy", "Terms"],
+	},
+];
+
 const TECH_STRIP = [
 	"JavaScript",
 	"TypeScript",
@@ -61,18 +70,9 @@ const TECH_STRIP = [
 	"SQL",
 ];
 
-function BrainIcon() {
+function Brain() {
 	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
+		<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
 			<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
 			<path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
 			<path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
@@ -131,27 +131,13 @@ function CodeSnippetDemo() {
 	);
 }
 
-function IndexPage() {
-	const [topic, setTopic] = useState("");
-	const { user } = useAuth();
-	const { openDrawer } = useAuthStore();
-	const navigate = useNavigate();
-
-	function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-		e.preventDefault();
-		if (!topic.trim()) return;
-		if (!user) {
-			openDrawer();
-			return;
-		}
-		navigate({ to: "/tutorial/$id", params: { id: topic.trim() } });
-	}
-
+function MuxPage() {
 	return (
 		<div className="w-full">
-			{/* ─── HERO ───────────────────────────────────────────────────────── */}
+			{/* ─── HERO ─────────────────────────────────────────────────────────── */}
 			<section className="border-b border-border">
 				<div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+					{/* Left */}
 					<div>
 						<div className="inline-flex items-center gap-2 border border-amber/30 text-amber text-xs font-mono px-3 py-1 mb-8 uppercase tracking-widest">
 							<span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
@@ -168,52 +154,35 @@ function IndexPage() {
 							AI-powered coding challenges. From zero to fluent in any
 							programming topic — in minutes.
 						</p>
-
-						<form onSubmit={handleSubmit} className="flex gap-0">
-							<div className="relative flex-1">
-								<Search
-									size={15}
-									className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
-								/>
-								<input
-									value={topic}
-									onChange={(e) => setTopic(e.target.value)}
-									placeholder='Try "React hooks"'
-									className="w-full bg-surface border border-border pl-10 pr-4 py-3.5 text-text placeholder:text-muted focus:outline-none focus:border-amber transition-colors text-sm font-mono"
-								/>
+						<div className="flex gap-0">
+							<div className="flex-1 border border-border bg-surface flex items-center px-4 py-3.5 gap-3">
+								<Search size={15} className="text-muted shrink-0" />
+								<span className="text-muted text-sm font-mono">
+									Try "React hooks"
+								</span>
 							</div>
-							<button
-								type="submit"
-								className="bg-amber text-background px-6 py-3.5 font-black text-xs uppercase tracking-wide flex items-center gap-2 shrink-0"
-							>
+							<button className="bg-amber text-background px-6 py-3.5 font-black text-sm uppercase tracking-wide flex items-center gap-2 shrink-0">
 								Start <ChevronRight size={14} />
 							</button>
-						</form>
-
+						</div>
 						<div className="flex gap-2 mt-3 flex-wrap">
-							{SUGGESTED_TOPICS.map((t) => (
-								<button
+							{["JavaScript", "React", "Python", "Node.js"].map((t) => (
+								<span
 									key={t}
-									onClick={() => setTopic(t)}
-									className="text-xs text-muted border border-border px-2.5 py-1 font-mono hover:border-amber/40 hover:text-text transition-colors"
+									className="text-xs text-muted border border-border px-2.5 py-1 font-mono hover:border-amber/40 hover:text-text transition-colors cursor-default"
 								>
 									{t}
-								</button>
+								</span>
 							))}
 						</div>
-
-						{user && (
-							<div className="mt-6">
-								<ApiKeysCard uid={user.uid} />
-							</div>
-						)}
 					</div>
 
+					{/* Right */}
 					<CodeSnippetDemo />
 				</div>
 			</section>
 
-			{/* ─── TECH STRIP ─────────────────────────────────────────────────── */}
+			{/* ─── TECH STRIP ───────────────────────────────────────────────────── */}
 			<section className="border-b border-border overflow-hidden">
 				<div className="max-w-7xl mx-auto px-6 py-3.5 flex items-center gap-6">
 					<span className="text-xs font-mono text-muted uppercase tracking-widest whitespace-nowrap shrink-0">
@@ -232,7 +201,7 @@ function IndexPage() {
 				</div>
 			</section>
 
-			{/* ─── FEATURES ───────────────────────────────────────────────────── */}
+			{/* ─── FEATURES ─────────────────────────────────────────────────────── */}
 			<section className="border-b border-border">
 				<div className="max-w-7xl mx-auto">
 					<div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border">
@@ -255,7 +224,7 @@ function IndexPage() {
 				</div>
 			</section>
 
-			{/* ─── HOW IT WORKS ───────────────────────────────────────────────── */}
+			{/* ─── HOW IT WORKS ─────────────────────────────────────────────────── */}
 			<section className="border-b border-border">
 				<div className="max-w-7xl mx-auto px-6 py-16">
 					<div className="flex items-center gap-5 mb-12">
@@ -280,7 +249,7 @@ function IndexPage() {
 				</div>
 			</section>
 
-			{/* ─── STATS ──────────────────────────────────────────────────────── */}
+			{/* ─── STATS ────────────────────────────────────────────────────────── */}
 			<section className="border-b border-border">
 				<div className="max-w-7xl mx-auto">
 					<div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border">
@@ -289,7 +258,10 @@ function IndexPage() {
 							{ value: "< 3s", label: "Challenge generation" },
 							{ value: "100%", label: "In-browser, no setup" },
 						].map((stat) => (
-							<div key={stat.label} className="px-10 py-12 flex flex-col gap-2">
+							<div
+								key={stat.label}
+								className="px-10 py-12 flex flex-col gap-2"
+							>
 								<div className="text-4xl font-black text-amber leading-none">
 									{stat.value}
 								</div>
@@ -302,7 +274,7 @@ function IndexPage() {
 				</div>
 			</section>
 
-			{/* ─── EDITOR PREVIEW ─────────────────────────────────────────────── */}
+			{/* ─── EDITOR PREVIEW ───────────────────────────────────────────────── */}
 			<section className="border-b border-border">
 				<div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 					<div>
@@ -323,7 +295,7 @@ function IndexPage() {
 							{[
 								{ icon: <Code size={14} />, text: "Syntax highlighting for 50+ languages" },
 								{ icon: <Zap size={14} />, text: "Instant test runner with detailed output" },
-								{ icon: <BrainIcon />, text: "AI explains every failing test" },
+								{ icon: <Brain />, text: "AI explains every failing test" },
 							].map((item) => (
 								<div key={item.text} className="flex items-center gap-3">
 									<div className="text-amber shrink-0">{item.icon}</div>
@@ -363,7 +335,9 @@ function IndexPage() {
 								<span className="text-muted">resets to initial value</span>
 							</div>
 							<div className="mt-4 border-t border-border pt-4">
-								<div className="text-muted/60 mb-2">{"// AI suggestion:"}</div>
+								<div className="text-muted/60 mb-2">
+									{"// AI suggestion:"}
+								</div>
 								<div className="text-amber/80 text-xs">
 									Add a guard clause: if (count {">"} 0) before calling
 									setCount(c ={">"} c - 1)
@@ -374,7 +348,7 @@ function IndexPage() {
 				</div>
 			</section>
 
-			{/* ─── FINAL CTA ──────────────────────────────────────────────────── */}
+			{/* ─── FINAL CTA ────────────────────────────────────────────────────── */}
 			<section className="bg-amber">
 				<div className="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
 					<div>
@@ -385,17 +359,13 @@ function IndexPage() {
 							No credit card. No setup. Just pick a topic.
 						</p>
 					</div>
-					<button
-						onClick={() => (user ? null : openDrawer())}
-						className="bg-background text-amber px-8 py-4 font-black uppercase text-sm tracking-wide flex items-center gap-2 shrink-0"
-					>
-						{user ? "Go to Dashboard" : "Get started free"}
-						<ChevronRight size={16} />
+					<button className="bg-background text-amber px-8 py-4 font-black uppercase text-sm tracking-wide flex items-center gap-2 shrink-0">
+						Get started free <ChevronRight size={16} />
 					</button>
 				</div>
 			</section>
 
-			{/* ─── FOOTER ─────────────────────────────────────────────────────── */}
+			{/* ─── FOOTER ───────────────────────────────────────────────────────── */}
 			<footer className="border-t border-border">
 				<div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-10">
 					<div>
@@ -407,11 +377,7 @@ function IndexPage() {
 							learn.
 						</p>
 					</div>
-					{[
-						{ title: "Product", links: ["Challenges", "Dashboard", "Progress", "API Keys"] },
-						{ title: "Developers", links: ["Docs", "Design System", "Dev Log", "GitHub"] },
-						{ title: "Company", links: ["About", "Blog", "Privacy", "Terms"] },
-					].map((col) => (
+					{footerLinks.map((col) => (
 						<div key={col.title}>
 							<h4 className="text-xs font-mono uppercase tracking-widest text-muted mb-4">
 								{col.title}
@@ -430,8 +396,12 @@ function IndexPage() {
 				</div>
 				<div className="border-t border-border">
 					<div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-						<span className="text-xs font-mono text-muted/30">© 2026 CodeQuest</span>
-						<span className="text-xs font-mono text-muted/30">v0.1.0 — beta</span>
+						<span className="text-xs font-mono text-muted/30">
+							© 2026 CodeQuest
+						</span>
+						<span className="text-xs font-mono text-muted/30">
+							v0.1.0 — beta
+						</span>
 					</div>
 				</div>
 			</footer>

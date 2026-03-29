@@ -49,7 +49,7 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 				>
 					<p className="text-muted text-base">{t("error.message")}</p>
 					{message && (
-						<p className="text-xs font-mono text-muted/60 border border-border rounded px-3 py-2 bg-surface/30">
+						<p className="text-xs font-mono text-muted/60 border border-border px-3 py-2 bg-surface/30">
 							{message}
 						</p>
 					)}
@@ -64,14 +64,14 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 				>
 					<button
 						onClick={() => navigate({ to: "/" })}
-						className="border border-border text-text px-5 py-2.5 rounded font-medium text-sm hover:border-amber hover:text-amber transition-colors"
+						className="border border-border text-text px-5 py-2.5 font-black text-xs uppercase tracking-wide hover:border-amber hover:text-amber transition-colors"
 					>
 						{t("error.buttonBack")}
 					</button>
 					{reset && (
 						<button
 							onClick={reset}
-							className="bg-amber text-background px-5 py-2.5 rounded font-medium text-sm hover:opacity-90 transition-opacity"
+							className="bg-amber text-background px-5 py-2.5 font-black text-xs uppercase tracking-wide"
 						>
 							{t("error.buttonRetry")}
 						</button>

@@ -26,7 +26,8 @@ export function LanguageSwitcher() {
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
-	const current = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
+	const current =
+		LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
 
 	return (
 		<div ref={ref} className="relative">
@@ -35,8 +36,10 @@ export function LanguageSwitcher() {
 				className="flex items-center gap-1.5 text-muted hover:text-text transition-colors text-sm"
 				aria-label="Select language"
 			>
-				<Globe size={16} />
-				<span className="font-mono">{current.code.toUpperCase().slice(0, 2)}</span>
+				<Globe size={20} />
+				<span className="font-mono">
+					{current.code.toUpperCase().slice(0, 2)}
+				</span>
 			</button>
 
 			{open && (
