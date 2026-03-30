@@ -422,6 +422,22 @@
           "StepNav przeniesiony z body tutoriala do centralnego slotu Header, zwalniajac pionowe miejsce dla edytora"
         ]
       },
+      "level_system": {
+        "title": "Selektor poziomu, trwałość tutoriali i deterministyczne ID",
+        "description": "Typ Level (beginner/intermediate/advanced) dodany. buildSystemPrompt() dostosowuje instrukcje według trudności. Wszystkie usługi AI odbierają i przekazują poziom. ID są deterministyczne: ${slug}-${level}, więc ten sam temat na różnych poziomach tworzy osobne dokumenty Firestore. getTutorial sprawdza Firestore przed wywołaniem AI, eliminując zbędne generowanie przy ponownych odwiedzinach.",
+        "decisions": [
+          "Deterministyczne ID wybrane zamiast losowych UUID dla cache Firestore per kombinacja temat+poziom",
+          "Poziom przechowywany w search params (?level=beginner) aby URL był udostępnialny i można go dodać do zakładek"
+        ]
+      },
+      "landing_i18n": {
+        "title": "Strona główna zrefaktorowana w skupione komponenty z pełnym i18n",
+        "description": "index.tsx 495 linii podzielony na 15 skupionych komponentów: HeroHeadline, LevelSelector, TopicSearchForm, SuggestedTopics, CodeSnippetDemo, FeatureCards, HowItWorks, StatsBar, EditorPreview, TechStrip, FinalCTA i LandingFooter. Cały hardcoded tekst zastąpiony wywołaniami t(). Sześć nowych sekcji i18n dodanych we wszystkich 6 plikach locale: howItWorks, stats, editorPreview, finalCta, techStrip, footer."
+      },
+      "editor_format": {
+        "title": "Przycisk Format i language guard w edytorze Monaco",
+        "description": "EditorToolbar wyodrębniony jako dedykowany komponent z odznaką języka i przyciskami Format/Run/Verify. Format używa wbudowanej akcji Monaco editor.action.formatDocument. Run jest teraz chroniony — CSS, HTML, SQL, JSON i inne niewykonywalne języki wyświetlają zlokalizowany komunikat zamiast próbować transpilować i kończyć błędem składni."
+      },
       "tutorial_flow": {
         "title": "Fix: bramka krokow, remount Monaco i propagacja bledow",
         "description": "Przycisk Next jest wylaczony do momentu, gdy weryfikator zwroci status poprawny. Monaco odswiezy sie przy zmianie kroku przez key={step.id}. Stan edytora resetuje sie przy przejsciu. Bledy weryfikacji (w tym limit 429) pojawiaja sie teraz w panelu feedbacku.",

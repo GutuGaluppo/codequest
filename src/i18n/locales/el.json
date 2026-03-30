@@ -422,6 +422,22 @@
           "Το StepNav μεταφέρθηκε στο κεντρικό slot του Header, ελευθερώνοντας κατακόρυφο χώρο για τον editor"
         ]
       },
+      "level_system": {
+        "title": "Επιλογέας επιπέδου, εμμονή tutorial και ντετερμινιστικά IDs",
+        "description": "Τύπος Level (beginner/intermediate/advanced) προστέθηκε. Η buildSystemPrompt() προσαρμόζει τις οδηγίες ανά δυσκολία. Όλες οι ΤΝ υπηρεσίες λαμβάνουν και προωθούν το επίπεδο. Τα IDs είναι ντετερμινιστικά: ${slug}-${level}, οπότε το ίδιο θέμα σε διαφορετικά επίπεδα δημιουργεί ξεχωριστά Firestore έγγραφα. getTutorial ελέγχει το Firestore πριν καλέσει την ΤΝ, αποτρέποντας περιττή αναγέννηση.",
+        "decisions": [
+          "Ντετερμινιστικά IDs επιλέχθηκαν αντί τυχαίων UUIDs για προσωρινή αποθήκευση Firestore ανά συνδυασμό θέματος+επιπέδου",
+          "Επίπεδο αποθηκευμένο σε search params (?level=beginner) ώστε το URL να είναι κοινοποιήσιμο"
+        ]
+      },
+      "landing_i18n": {
+        "title": "Landing page αναδιαρθρώθηκε σε εστιασμένα στοιχεία με πλήρες i18n",
+        "description": "Το index.tsx 495 γραμμών χωρίστηκε σε 15 εστιασμένα στοιχεία: HeroHeadline, LevelSelector, TopicSearchForm, SuggestedTopics, CodeSnippetDemo, FeatureCards, HowItWorks, StatsBar, EditorPreview, TechStrip, FinalCTA και LandingFooter. Όλα τα hardcoded κείμενα αντικαταστάθηκαν με κλήσεις t(). Έξι νέες ενότητες i18n προστέθηκαν σε όλα τα 6 locale: howItWorks, stats, editorPreview, finalCta, techStrip, footer."
+      },
+      "editor_format": {
+        "title": "Κουμπί Format και language guard στον editor Monaco",
+        "description": "Το EditorToolbar εξήχθη ως αποκλειστικό στοιχείο με badge γλώσσας και κουμπιά Format/Run/Verify. Το Format χρησιμοποιεί την ενσωματωμένη ενέργεια editor.action.formatDocument του Monaco. Το Run προστατεύεται πλέον — CSS, HTML, SQL, JSON και άλλες μη εκτελέσιμες γλώσσες εμφανίζουν τοπικοποιημένο μήνυμα αντί να προσπαθούν να μεταγλωττίσουν."
+      },
       "tutorial_flow": {
         "title": "Fix: gate βημάτων, remount Monaco και διάδοση σφαλμάτων",
         "description": "Το κουμπί Next απενεργοποιείται μέχρι ο επαληθευτής να επιστρέψει κατάσταση σωστή. Το Monaco επαναφορτώνεται κατά την εναλλαγή βήματος μέσω key={step.id}. Η κατάσταση του editor επαναφέρεται στη μετάβαση. Τα σφάλματα (συμπ. 429) εμφανίζονται πλέον στο feedback.",

@@ -422,6 +422,22 @@
           "StepNav vom Tutorial-Body in den zentralen Header-Slot verschoben, um vertikalen Platz für den Editor freizugeben"
         ]
       },
+      "level_system": {
+        "title": "Level-Auswahl, Tutorial-Persistenz und deterministische IDs",
+        "description": "Level-Typ (beginner/intermediate/advanced) hinzugefügt. buildSystemPrompt() passt Anweisungen je nach Schwierigkeitsgrad an. Alle KI-Dienste empfangen und leiten den Level weiter. IDs sind deterministisch: ${slug}-${level}, sodass dasselbe Thema auf verschiedenen Levels separate Firestore-Dokumente erstellt. getTutorial prüft Firestore vor dem KI-Aufruf und eliminiert redundante Generierung bei Wiederbesuchen.",
+        "decisions": [
+          "Deterministische IDs gegenüber zufälligen UUIDs gewählt, um Firestore-Caching pro Thema+Level-Kombination zu ermöglichen",
+          "Level in Search-Params gespeichert (?level=beginner), damit die URL teilbar und als Lesezeichen speicherbar ist"
+        ]
+      },
+      "landing_i18n": {
+        "title": "Landing Page in fokussierte Komponenten mit vollständigem i18n refaktoriert",
+        "description": "495-Zeilen index.tsx in 15 fokussierte Komponenten aufgeteilt: HeroHeadline, LevelSelector, TopicSearchForm, SuggestedTopics, CodeSnippetDemo, FeatureCards, HowItWorks, StatsBar, EditorPreview, TechStrip, FinalCTA und LandingFooter. Alle hardcodierten Texte durch t()-Aufrufe ersetzt. Sechs neue i18n-Abschnitte in allen 6 Sprachdateien hinzugefügt: howItWorks, stats, editorPreview, finalCta, techStrip, footer."
+      },
+      "editor_format": {
+        "title": "Format-Schaltfläche und Language-Guard im Monaco-Editor",
+        "description": "EditorToolbar als dedizierte Komponente mit Sprach-Badge und Format/Run/Verify-Schaltflächen extrahiert. Format nutzt Monacos eingebaute Aktion editor.action.formatDocument. Run ist jetzt geschützt — CSS, HTML, SQL, JSON und andere nicht ausführbare Sprachen zeigen eine lokalisierte Meldung statt zu versuchen zu transpilieren und mit einem Syntaxfehler zu scheitern."
+      },
       "tutorial_flow": {
         "title": "Fix: Step-Gate, Monaco-Remount und Fehlerweiterleitung",
         "description": "Weiter-Schaltfläche deaktiviert bis der KI-Verifizierer den Status korrekt zurückgibt. Monaco wird bei Step-Wechsel via key={step.id} neu eingehängt. Editor-Zustand wird bei Transition zurückgesetzt. Fehler beim Verifizieren (inkl. 429) erscheinen jetzt im Feedback-Panel.",

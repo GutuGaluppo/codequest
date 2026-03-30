@@ -422,6 +422,22 @@
           "StepNav movido do body do tutorial para o slot central do Header, liberando espaço vertical para o editor"
         ]
       },
+      "level_system": {
+        "title": "Seletor de nível, persistência de tutoriais e IDs determinísticos",
+        "description": "Tipo Level (beginner/intermediate/advanced) adicionado. buildSystemPrompt() adapta as instruções por dificuldade. Todos os serviços de IA recebem e repassam o nível. IDs são determinísticos: ${slug}-${level}, então o mesmo tópico em níveis diferentes cria documentos Firestore separados. getTutorial consulta o Firestore antes de chamar a IA, eliminando geração redundante em revisitas.",
+        "decisions": [
+          "IDs determinísticos escolhidos sobre UUIDs aleatórios para habilitar cache Firestore por combinação tópico+nível",
+          "Nível armazenado em search params (?level=beginner) para que a URL seja compartilhável e favoritável"
+        ]
+      },
+      "landing_i18n": {
+        "title": "Landing page refatorada em componentes focados com i18n completo",
+        "description": "index.tsx de 495 linhas dividido em 15 componentes focados: HeroHeadline, LevelSelector, TopicSearchForm, SuggestedTopics, CodeSnippetDemo, FeatureCards, HowItWorks, StatsBar, EditorPreview, TechStrip, FinalCTA e LandingFooter. Todo texto hardcoded substituído por chamadas t(). Seis novas seções de i18n adicionadas nos 6 locales: howItWorks, stats, editorPreview, finalCta, techStrip, footer."
+      },
+      "editor_format": {
+        "title": "Botão Format e language guard no editor Monaco",
+        "description": "EditorToolbar extraído como componente dedicado com badge de linguagem e botões Format/Run/Verify. Format usa a ação nativa do Monaco editor.action.formatDocument. Run agora é protegido — CSS, HTML, SQL, JSON e outras linguagens não-executáveis exibem uma mensagem localizada em vez de tentar transpilar e falhar com erro de sintaxe."
+      },
       "tutorial_flow": {
         "title": "Fix: gate de steps, remount do Monaco e propagação de erros",
         "description": "Botão Next desabilitado até o verificador retornar status correto. Monaco remonta ao trocar de step via key={step.id} para que o defaultValue carregue corretamente. Estado do editor reseta na transição. Erros do verify (incluindo rate limit 429) agora aparecem no painel de feedback.",

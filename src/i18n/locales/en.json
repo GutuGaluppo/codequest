@@ -423,6 +423,22 @@
           "StepNav moved from the tutorial page body into the Header center slot, freeing vertical space for the editor"
         ]
       },
+      "level_system": {
+        "title": "Level selector, tutorial persistence and deterministic IDs",
+        "description": "Level type (beginner/intermediate/advanced) added. buildSystemPrompt() adapts instructions per difficulty. All AI services receive and forward the level param. Tutorial IDs are deterministic: ${slug}-${level}, so the same topic at different levels creates separate Firestore documents. getTutorial checks Firestore before calling AI, eliminating redundant generation on revisit.",
+        "decisions": [
+          "Deterministic IDs chosen over random UUIDs to enable Firestore-first caching per topic+level combination",
+          "Level stored in search params (?level=beginner) so the URL is shareable and bookmarkable"
+        ]
+      },
+      "landing_i18n": {
+        "title": "Landing page refactored into focused components with full i18n",
+        "description": "495-line index.tsx split into 15 focused components: HeroHeadline, LevelSelector, TopicSearchForm, SuggestedTopics, CodeSnippetDemo, FeatureCards, HowItWorks, StatsBar, EditorPreview, TechStrip, FinalCTA and LandingFooter. All hardcoded text replaced with t() calls. Six new i18n sections added to all 6 locales: howItWorks, stats, editorPreview, finalCta, techStrip, footer."
+      },
+      "editor_format": {
+        "title": "Format button and language guard in Monaco editor",
+        "description": "EditorToolbar extracted as a dedicated component with language badge and Format/Run/Verify buttons. Format uses Monaco's built-in editor.action.formatDocument action. Run is now guarded — CSS, HTML, SQL, JSON and other non-executable languages display a localised message instead of attempting to transpile and failing with a syntax error."
+      },
       "tutorial_flow": {
         "title": "Fix: tutorial step gate, Monaco remount, error propagation",
         "description": "Next button disabled until AI verifier returns correct status. Monaco remounts on step change via key={step.id} so defaultValue loads fresh for each step. Editor state resets on transition. Verify errors (including 429 rate limit) now propagate to the feedback panel.",
