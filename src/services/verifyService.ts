@@ -4,6 +4,7 @@ import OpenAI from "openai";
 import type { ModelProvider, UserApiKeys } from "../types/tutorial";
 import type { Feedback } from "../stores/editorStore";
 import { handleServiceError } from "./serviceErrors";
+import { parseAiJson } from "../utils/parseAiJson";
 
 interface VerifyParams {
 	prompt: string;
@@ -32,11 +33,7 @@ Avalie se a solução resolve o desafio. Responda APENAS com JSON válido, sem m
 }
 
 function parseResponse(text: string): Feedback {
-	const cleaned = text
-		.replace(/^```json\s*/m, "")
-		.replace(/```\s*$/m, "")
-		.trim();
-	return JSON.parse(cleaned) as Feedback;
+	return parseAiJson(text) as Feedback;
 }
 
 export const verifyService = {
@@ -71,7 +68,9 @@ export const verifyService = {
 			}
 
 			// fallback: Gemini
-			const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+			const ai = new GoogleGenAI({
+				apiKey: import.meta.env.VITE_GEMINI_API_KEY,
+			});
 			const res = await ai.models.generateContent({
 				model: "gemini-2.5-flash-lite",
 				contents: userPrompt,
