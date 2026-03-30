@@ -84,6 +84,12 @@ function TutorialPage() {
 		return () => clear();
 	}, [clear]);
 
+	useEffect(() => {
+		if (tutorial && user?.uid) {
+			queryClient.invalidateQueries({ queryKey: ["tutorials", user.uid] });
+		}
+	}, [tutorial?.id, user?.uid]);
+
 	const step = tutorial?.steps[currentStep];
 
 	const { mutate: completeStep } = useMutation({

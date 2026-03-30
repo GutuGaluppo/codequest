@@ -47,6 +47,7 @@ export const firestoreService = {
 		await setDoc(ref, {
 			id: tutorial.id,
 			topic: tutorial.topic,
+			level: tutorial.level,
 			generatedWith: tutorial.generatedWith,
 			createdAt: serverTimestamp(),
 			stepCount: tutorial.steps?.length ?? 0,
