@@ -4,27 +4,29 @@
       "text": "KI-gestütztes Interaktives Lernen"
     },
     "hero": {
-      "titlePart1": "Meistere jede Technologie durch ",
-      "titlePart2": "Tun.",
-      "subtitle": "CodeQuest generiert interaktive Tutorials mit Code-Herausforderungen zu jedem Thema. Höre auf zuzuschauen, fange an zu bauen."
+      "badge": "Beta",
+      "headline1": "LERNE",
+      "headline2": "JEDES",
+      "headline3": "THEMA.",
+      "subtitle": "KI-gestützte Code-Challenges. Von null zu fließend in jedem Programmier-Thema — in Minuten."
     },
     "features": {
-      "editor": {
-        "title": "Interaktiver Editor",
-        "description": "Schreibe und teste Code direkt im Browser mit Echtzeit-Feedback."
-      },
       "ai": {
-        "title": "KI-generiert",
-        "description": "Personalisierte Tutorials für dein Thema, vom Anfänger bis zum Fortgeschrittenen."
+        "title": "KI-Tutor",
+        "description": "Eine KI, die dein Level versteht und sich in Echtzeit anpasst. Keine Einheitsantworten."
+      },
+      "editor": {
+        "title": "Live-Editor",
+        "description": "Schreibe, führe aus und validiere Code ohne den Browser zu verlassen. Sofortiges Feedback bei jeder Zeile."
       },
       "progressive": {
-        "title": "Progressives Lernen",
-        "description": "Der Schwierigkeitsgrad steigt schrittweise, was eine sanfte Lernkurve gewährleistet."
+        "title": "Progressiv",
+        "description": "Jede Challenge baut auf der letzten auf. Verfolge deinen Fortschritt Schritt für Schritt."
       }
     },
     "search": {
-      "placeholder": "Was möchtest du lernen? (z.B. React, Python, Rust...)",
-      "button": "Generieren →"
+      "placeholder": "Probiere \"React hooks\"",
+      "button": "Starten"
     },
     "apiKeys": {
       "title": "Verwende dein eigenes KI-Modell",
@@ -32,6 +34,59 @@
       "description": "Verknüpfe deinen Anthropic- oder OpenAI-Schlüssel, um deine bevorzugten Modelle für die Tutorial-Generierung zu verwenden.",
       "buttonManage": "Verwalten",
       "buttonSetup": "Einrichten"
+    },
+    "level": {
+      "label": "Wähle dein Level",
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Experte"
+    },
+    "howItWorks": {
+      "label": "So funktioniert es",
+      "step1": {
+        "title": "Thema wählen",
+        "description": "Tippe alles ein — ein Framework, ein Konzept, einen Algorithmus. CodeQuest generiert in Sekunden eine maßgeschneiderte Challenge."
+      },
+      "step2": {
+        "title": "Echten Code schreiben",
+        "description": "Kein Multiple Choice. Du schreibst echten Code im Editor gegen echte Testfälle."
+      },
+      "step3": {
+        "title": "Smartes Feedback erhalten",
+        "description": "Die KI prüft deine Lösung, erklärt was fehlte und schlägt den nächsten Schritt vor."
+      }
+    },
+    "stats": {
+      "languages": "Sprachen & Frameworks",
+      "generation": "Challenge-Generierung",
+      "browser": "Im Browser, kein Setup"
+    },
+    "editorPreview": {
+      "label": "Der Editor",
+      "headline1": "ECHTER CODE.",
+      "headline2": "ECHTES FEEDBACK.",
+      "description": "Keine Drag-and-Drop-Blöcke. Kein Lückenfüllen. Du schreibst Code in einem echten Editor mit Syntax-Highlighting, Autovervollständigung und Live-Testausgabe.",
+      "feature1": "Syntax-Highlighting für 50+ Sprachen",
+      "feature2": "Sofortiger Test-Runner mit detaillierter Ausgabe",
+      "feature3": "KI erklärt jeden fehlgeschlagenen Test",
+      "output": "Ausgabe"
+    },
+    "finalCta": {
+      "headline": "BEREIT ZU CODEN?",
+      "subtitle": "Keine Kreditkarte. Kein Setup. Wähle einfach ein Thema.",
+      "dashboard": "Zum Dashboard",
+      "start": "Kostenlos starten"
+    },
+    "techStrip": {
+      "label": "Lerne mit"
+    },
+    "footer": {
+      "tagline": "KI-gestützte Code-Challenges für Entwickler, die wirklich lernen wollen.",
+      "copyright": "© 2026 CodeQuest",
+      "version": "v0.1.0 — beta",
+      "product": "Produkt",
+      "developers": "Entwickler",
+      "company": "Unternehmen"
     }
   },
   "dashboard": {
@@ -87,6 +142,9 @@
       "label": "Ausgabe",
       "placeholder": "Führe deinen Code aus, um das Ergebnis hier zu sehen...",
       "noOutput": "✓ Code wurde ohne Ausgabe ausgeführt."
+    },
+    "run": {
+      "notExecutable": "Ausführung nicht verfügbar für {{language}}"
     }
   },
   "header": {

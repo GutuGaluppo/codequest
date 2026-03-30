@@ -4,27 +4,29 @@
       "text": "Aprendizaje Interactivo con IA"
     },
     "hero": {
-      "titlePart1": "Domina cualquier tecnología ",
-      "titlePart2": "haciéndolo.",
-      "subtitle": "CodeQuest genera tutoriales interactivos con desafíos de código sobre cualquier tema. Deja de ver, empieza a construir."
+      "badge": "Beta",
+      "headline1": "APRENDE",
+      "headline2": "CUALQUIER",
+      "headline3": "TEMA.",
+      "subtitle": "Desafíos de código con IA. De cero a fluido en cualquier tema de programación — en minutos."
     },
     "features": {
-      "editor": {
-        "title": "Editor Interactivo",
-        "description": "Escribe y prueba código directamente en el navegador con retroalimentación en tiempo real."
-      },
       "ai": {
-        "title": "Generado por IA",
-        "description": "Tutoriales personalizados para tu tema, desde principiante hasta avanzado."
+        "title": "Tutor IA",
+        "description": "Una IA que entiende tu nivel y se adapta en tiempo real. Sin explicaciones genéricas."
+      },
+      "editor": {
+        "title": "Editor en Vivo",
+        "description": "Escribe, ejecuta y valida código sin salir del navegador. Feedback instantáneo en cada línea."
       },
       "progressive": {
-        "title": "Aprendizaje Progresivo",
-        "description": "La dificultad aumenta gradualmente, garantizando una curva de aprendizaje suave."
+        "title": "Progresivo",
+        "description": "Cada desafío se basa en el anterior. Sigue tu progreso y domina los temas paso a paso."
       }
     },
     "search": {
-      "placeholder": "¿Qué quieres aprender? (ej: React, Python, Rust...)",
-      "button": "Generar →"
+      "placeholder": "Prueba \"React hooks\"",
+      "button": "Comenzar"
     },
     "apiKeys": {
       "title": "Usa tu propio modelo de IA",
@@ -32,6 +34,59 @@
       "description": "Vincula tu clave de Anthropic u OpenAI para usar tus modelos favoritos en la generación de tutoriales.",
       "buttonManage": "Gestionar",
       "buttonSetup": "Configurar"
+    },
+    "level": {
+      "label": "Selecciona tu nivel",
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "howItWorks": {
+      "label": "Cómo funciona",
+      "step1": {
+        "title": "Elige un tema",
+        "description": "Escribe cualquier cosa — un framework, un concepto, un algoritmo. CodeQuest genera un desafío personalizado en segundos."
+      },
+      "step2": {
+        "title": "Escribe código real",
+        "description": "Sin opción múltiple. Escribes código real en el editor, contra casos de prueba reales."
+      },
+      "step3": {
+        "title": "Recibe feedback inteligente",
+        "description": "La IA revisa tu solución, explica lo que faltó y sugiere el siguiente paso."
+      }
+    },
+    "stats": {
+      "languages": "Lenguajes & Frameworks",
+      "generation": "Generación de desafío",
+      "browser": "En el navegador, sin setup"
+    },
+    "editorPreview": {
+      "label": "El editor",
+      "headline1": "CÓDIGO REAL.",
+      "headline2": "FEEDBACK REAL.",
+      "description": "Sin bloques de arrastrar. Sin completar espacios. Escribes código en un editor real con resaltado de sintaxis, autocompletado y salida de pruebas en vivo.",
+      "feature1": "Resaltado de sintaxis para 50+ lenguajes",
+      "feature2": "Runner de pruebas instantáneo con salida detallada",
+      "feature3": "La IA explica cada prueba fallida",
+      "output": "Salida"
+    },
+    "finalCta": {
+      "headline": "¿LISTO PARA CODEAR?",
+      "subtitle": "Sin tarjeta de crédito. Sin setup. Solo elige un tema.",
+      "dashboard": "Ir al Dashboard",
+      "start": "Comenzar gratis"
+    },
+    "techStrip": {
+      "label": "Aprende con"
+    },
+    "footer": {
+      "tagline": "Desafíos de código con IA para developers que quieren realmente aprender.",
+      "copyright": "© 2026 CodeQuest",
+      "version": "v0.1.0 — beta",
+      "product": "Producto",
+      "developers": "Desarrolladores",
+      "company": "Empresa"
     }
   },
   "dashboard": {
@@ -87,6 +142,9 @@
       "label": "Salida",
       "placeholder": "Ejecuta tu código para ver el resultado aquí...",
       "noOutput": "✓ Código ejecutado sin salida."
+    },
+    "run": {
+      "notExecutable": "Ejecución no disponible para {{language}}"
     }
   },
   "header": {

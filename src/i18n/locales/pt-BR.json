@@ -4,27 +4,29 @@
       "text": "AI-Powered Interactive Learning"
     },
     "hero": {
-      "titlePart1": "Domine qualquer tecnologia, ",
-      "titlePart2": "fazendo.",
-      "subtitle": "O CodeQuest gera tutoriais interativos com desafios de código sobre qualquer tópico. Pare de assistir, comece a construir."
+      "badge": "Beta",
+      "headline1": "APRENDA",
+      "headline2": "QUALQUER",
+      "headline3": "TÓPICO.",
+      "subtitle": "Desafios de código com IA. Do zero ao fluente em qualquer tópico de programação — em minutos."
     },
     "features": {
-      "editor": {
-        "title": "Editor Interativo",
-        "description": "Escreva e teste código diretamente no browser com feedback em tempo real."
-      },
       "ai": {
-        "title": "Gerado por AI",
-        "description": "Tutoriais personalizados para o seu tópico, do básico ao avançado."
+        "title": "Tutor IA",
+        "description": "Uma IA que entende seu nível e se adapta em tempo real. Sem explicações genéricas."
+      },
+      "editor": {
+        "title": "Editor ao Vivo",
+        "description": "Escreva, execute e valide código sem sair do browser. Feedback instantâneo a cada linha."
       },
       "progressive": {
-        "title": "Aprendizado Progressivo",
-        "description": "A dificuldade aumenta gradualmente, garantindo uma curva de aprendizado suave."
+        "title": "Progressivo",
+        "description": "Cada desafio constrói sobre o anterior. Acompanhe seu progresso passo a passo."
       }
     },
     "search": {
-      "placeholder": "O que você quer aprender? (ex: React, Python, Rust...)",
-      "button": "Gerar →"
+      "placeholder": "Tente \"React hooks\"",
+      "button": "Iniciar"
     },
     "apiKeys": {
       "title": "Use seu próprio modelo de AI",
@@ -32,6 +34,59 @@
       "description": "Vincule sua chave Anthropic ou OpenAI para usar seus modelos favoritos na geração de tutoriais.",
       "buttonManage": "Gerenciar",
       "buttonSetup": "Configurar"
+    },
+    "level": {
+      "label": "Selecione seu nível",
+      "beginner": "Iniciante",
+      "intermediate": "Intermediário",
+      "advanced": "Avançado"
+    },
+    "howItWorks": {
+      "label": "Como funciona",
+      "step1": {
+        "title": "Escolha um tópico",
+        "description": "Digite qualquer coisa — um framework, um conceito, um algoritmo. O CodeQuest gera um desafio personalizado em segundos."
+      },
+      "step2": {
+        "title": "Escreva código real",
+        "description": "Sem múltipla escolha. Você escreve código de verdade no editor, contra casos de teste reais."
+      },
+      "step3": {
+        "title": "Receba feedback inteligente",
+        "description": "A IA revisa sua solução, explica o que faltou e sugere o próximo passo."
+      }
+    },
+    "stats": {
+      "languages": "Linguagens & Frameworks",
+      "generation": "Geração de desafio",
+      "browser": "No browser, sem setup"
+    },
+    "editorPreview": {
+      "label": "O editor",
+      "headline1": "CÓDIGO REAL.",
+      "headline2": "FEEDBACK REAL.",
+      "description": "Sem blocos de arrastar. Sem preencher lacunas. Você escreve código em um editor real com syntax highlighting, autocomplete e output de testes ao vivo.",
+      "feature1": "Syntax highlighting para 50+ linguagens",
+      "feature2": "Test runner instantâneo com output detalhado",
+      "feature3": "IA explica cada teste que falha",
+      "output": "Output"
+    },
+    "finalCta": {
+      "headline": "PRONTO PARA CODAR?",
+      "subtitle": "Sem cartão de crédito. Sem setup. Escolha um tópico.",
+      "dashboard": "Ir para o Dashboard",
+      "start": "Começar de graça"
+    },
+    "techStrip": {
+      "label": "Aprenda com"
+    },
+    "footer": {
+      "tagline": "Desafios de código com IA para devs que querem realmente aprender.",
+      "copyright": "© 2026 CodeQuest",
+      "version": "v0.1.0 — beta",
+      "product": "Produto",
+      "developers": "Desenvolvedores",
+      "company": "Empresa"
     }
   },
   "dashboard": {
@@ -87,6 +142,9 @@
       "label": "Output",
       "placeholder": "Execute seu código para ver o resultado aqui...",
       "noOutput": "✓ Código executado sem output."
+    },
+    "run": {
+      "notExecutable": "Execução não disponível para {{language}}"
     }
   },
   "header": {

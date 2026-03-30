@@ -1,7 +1,13 @@
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const SUGGESTED_TOPICS = ["JavaScript", "React", "Node.js", "Python", "TypeScript"];
+const SUGGESTED_TOPICS = [
+	"JavaScript",
+	"React",
+	"Node.js",
+	"Python",
+	"TypeScript",
+];
 
 interface TopicSearchProps {
 	topic: string;
@@ -15,7 +21,10 @@ export function TopicSearch({ topic, onChange, onSubmit }: TopicSearchProps) {
 		<div className="w-full max-w-xl flex flex-col gap-4">
 			<form onSubmit={onSubmit} className="flex gap-2">
 				<div className="relative flex-1">
-					<Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+					<Search
+						size={18}
+						className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+					/>
 					<input
 						value={topic}
 						onChange={(e) => onChange(e.target.value)}

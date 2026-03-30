@@ -1,4 +1,4 @@
-import { Code, Zap, TrendingUp } from "lucide-react";
+import { Code, TrendingUp, BrainIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function FeatureCards() {
@@ -6,33 +6,41 @@ export function FeatureCards() {
 
 	const features = [
 		{
-			icon: <Code size={22} className="text-amber" />,
-			title: t("landing.features.editor.title"),
-			description: t("landing.features.editor.description"),
-		},
-		{
-			icon: <Zap size={22} className="text-amber" />,
+			icon: <BrainIcon size={18} />,
 			title: t("landing.features.ai.title"),
 			description: t("landing.features.ai.description"),
 		},
 		{
-			icon: <TrendingUp size={22} className="text-amber" />,
+			icon: <Code size={18} />,
+			title: t("landing.features.editor.title"),
+			description: t("landing.features.editor.description"),
+		},
+		{
+			icon: <TrendingUp size={18} />,
 			title: t("landing.features.progressive.title"),
 			description: t("landing.features.progressive.description"),
 		},
 	];
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl mt-4">
-			{features.map((f) => (
-				<div key={f.title} className="border border-border rounded-lg p-5 text-left flex flex-col gap-3 bg-surface/30">
-					{f.icon}
-					<div>
-						<h3 className="font-mono font-medium text-text">{f.title}</h3>
-						<p className="text-sm text-muted mt-1">{f.description}</p>
+		<div className="max-w-7xl mx-auto">
+			<div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border">
+				{features.map((f) => (
+					<div key={f.title} className="p-10 flex flex-col gap-5">
+						<div className="w-10 h-10 border border-border flex items-center justify-center text-amber">
+							{f.icon}
+						</div>
+						<div>
+							<h3 className="font-black uppercase text-xs tracking-widest text-text">
+								{f.title}
+							</h3>
+							<p className="text-sm text-muted mt-2 leading-relaxed">
+								{f.description}
+							</p>
+						</div>
 					</div>
-				</div>
-			))}
+				))}
+			</div>
 		</div>
 	);
 }

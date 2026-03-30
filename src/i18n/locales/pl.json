@@ -4,27 +4,29 @@
       "text": "Interaktywna Nauka z AI"
     },
     "hero": {
-      "titlePart1": "Opanuj każdą technologię przez ",
-      "titlePart2": "działanie.",
-      "subtitle": "CodeQuest generuje interaktywne samouczki z wyzwaniami kodowania na każdy temat. Przestań oglądać, zacznij budować."
+      "badge": "Beta",
+      "headline1": "UCZ SIĘ",
+      "headline2": "KAŻDEGO",
+      "headline3": "TEMATU.",
+      "subtitle": "Wyzwania kodowania z AI. Od zera do biegłości w każdym temacie programowania — w minuty."
     },
     "features": {
-      "editor": {
-        "title": "Interaktywny Edytor",
-        "description": "Pisz i testuj kod bezpośrednio w przeglądarce z informacjami zwrotnymi w czasie rzeczywistym."
-      },
       "ai": {
-        "title": "Generowane przez AI",
-        "description": "Spersonalizowane samouczki dla Twojego tematu, od podstawowego do zaawansowanego."
+        "title": "Tutor AI",
+        "description": "AI, która rozumie Twój poziom i dostosowuje się w czasie rzeczywistym. Bez szablonowych wyjaśnień."
+      },
+      "editor": {
+        "title": "Edytor na Żywo",
+        "description": "Pisz, uruchamiaj i waliduj kod bez wychodzenia z przeglądarki. Natychmiastowa informacja zwrotna."
       },
       "progressive": {
-        "title": "Progresywna Nauka",
-        "description": "Trudność wzrasta stopniowo, zapewniając płynną krzywą uczenia się."
+        "title": "Progresywne",
+        "description": "Każde wyzwanie buduje na poprzednim. Śledź postępy i opanuj tematy krok po kroku."
       }
     },
     "search": {
-      "placeholder": "Czego chcesz się nauczyć? (np. React, Python, Rust...)",
-      "button": "Generuj →"
+      "placeholder": "Spróbuj \"React hooks\"",
+      "button": "Start"
     },
     "apiKeys": {
       "title": "Użyj własnego modelu AI",
@@ -32,6 +34,59 @@
       "description": "Połącz swój klucz Anthropic lub OpenAI, aby używać ulubionych modeli do generowania samouczków.",
       "buttonManage": "Zarządzaj",
       "buttonSetup": "Skonfiguruj"
+    },
+    "level": {
+      "label": "Wybierz poziom",
+      "beginner": "Początkujący",
+      "intermediate": "Średniozaawansowany",
+      "advanced": "Zaawansowany"
+    },
+    "howItWorks": {
+      "label": "Jak to działa",
+      "step1": {
+        "title": "Wybierz temat",
+        "description": "Wpisz cokolwiek — framework, koncepcję, algorytm. CodeQuest generuje dopasowane wyzwanie w sekundy."
+      },
+      "step2": {
+        "title": "Pisz prawdziwy kod",
+        "description": "Bez wielokrotnego wyboru. Piszesz prawdziwy kod w edytorze, przeciwko prawdziwym przypadkom testowym."
+      },
+      "step3": {
+        "title": "Otrzymaj mądrzejszy feedback",
+        "description": "AI sprawdza Twoje rozwiązanie, wyjaśnia co pominąłeś i sugeruje następny krok."
+      }
+    },
+    "stats": {
+      "languages": "Języki & Frameworki",
+      "generation": "Generowanie wyzwania",
+      "browser": "W przeglądarce, bez konfiguracji"
+    },
+    "editorPreview": {
+      "label": "Edytor",
+      "headline1": "PRAWDZIWY KOD.",
+      "headline2": "PRAWDZIWY FEEDBACK.",
+      "description": "Bez bloków przeciągnij i upuść. Bez uzupełniania luk. Piszesz kod w prawdziwym edytorze z podświetlaniem składni, autouzupełnianiem i wyjściem testów na żywo.",
+      "feature1": "Podświetlanie składni dla 50+ języków",
+      "feature2": "Błyskawiczny test runner ze szczegółowym wyjściem",
+      "feature3": "AI wyjaśnia każdy nieudany test",
+      "output": "Wyjście"
+    },
+    "finalCta": {
+      "headline": "GOTOWY DO KODOWANIA?",
+      "subtitle": "Bez karty kredytowej. Bez konfiguracji. Po prostu wybierz temat.",
+      "dashboard": "Idź do Dashboard",
+      "start": "Zacznij za darmo"
+    },
+    "techStrip": {
+      "label": "Ucz się z"
+    },
+    "footer": {
+      "tagline": "Wyzwania kodowania z AI dla deweloperów, którzy naprawdę chcą się uczyć.",
+      "copyright": "© 2026 CodeQuest",
+      "version": "v0.1.0 — beta",
+      "product": "Produkt",
+      "developers": "Deweloperzy",
+      "company": "Firma"
     }
   },
   "dashboard": {
@@ -87,6 +142,9 @@
       "label": "Wyjście",
       "placeholder": "Uruchom kod, aby zobaczyć wynik tutaj...",
       "noOutput": "✓ Kod wykonany bez wyjścia."
+    },
+    "run": {
+      "notExecutable": "Uruchomienie niedostępne dla {{language}}"
     }
   },
   "header": {

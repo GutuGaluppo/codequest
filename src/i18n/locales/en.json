@@ -4,27 +4,29 @@
       "text": "AI-Powered Interactive Learning"
     },
     "hero": {
-      "titlePart1": "Master any technology by ",
-      "titlePart2": "doing.",
-      "subtitle": "CodeQuest generates interactive tutorials with code challenges on any topic. Stop watching, start building."
+      "badge": "Beta",
+      "headline1": "LEARN",
+      "headline2": "ANY",
+      "headline3": "TOPIC.",
+      "subtitle": "AI-powered coding challenges. From zero to fluent in any programming topic — in minutes."
     },
     "features": {
-      "editor": {
-        "title": "Interactive Editor",
-        "description": "Write and test code directly in the browser with real-time feedback."
-      },
       "ai": {
-        "title": "AI-Generated",
-        "description": "Personalized tutorials for your topic, from beginner to advanced."
+        "title": "AI Tutor",
+        "description": "An AI that understands your level and adapts in real time. No cookie-cutter explanations."
+      },
+      "editor": {
+        "title": "Live Editor",
+        "description": "Write, run, and validate code without leaving the browser. Instant feedback on every keystroke."
       },
       "progressive": {
-        "title": "Progressive Learning",
-        "description": "Difficulty increases gradually, ensuring a smooth learning curve."
+        "title": "Progressive",
+        "description": "Each challenge builds on the last. Track your progress and master topics step by step."
       }
     },
     "search": {
-      "placeholder": "What do you want to learn? (e.g. React, Python, Rust...)",
-      "button": "Generate →"
+      "placeholder": "Try \"React hooks\"",
+      "button": "Start"
     },
     "apiKeys": {
       "title": "Use your own AI model",
@@ -32,6 +34,59 @@
       "description": "Link your Anthropic or OpenAI key to use your favorite models for tutorial generation.",
       "buttonManage": "Manage",
       "buttonSetup": "Set up"
+    },
+    "level": {
+      "label": "Select your level",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "howItWorks": {
+      "label": "How it works",
+      "step1": {
+        "title": "Pick a topic",
+        "description": "Type anything — a framework, a concept, an algorithm. CodeQuest generates a tailored challenge in seconds."
+      },
+      "step2": {
+        "title": "Write real code",
+        "description": "No multiple choice. You write actual code in the editor, against real test cases."
+      },
+      "step3": {
+        "title": "Get smarter feedback",
+        "description": "The AI reviews your solution, explains what you missed, and suggests the next step."
+      }
+    },
+    "stats": {
+      "languages": "Languages & Frameworks",
+      "generation": "Challenge generation",
+      "browser": "In-browser, no setup"
+    },
+    "editorPreview": {
+      "label": "The editor",
+      "headline1": "REAL CODE.",
+      "headline2": "REAL FEEDBACK.",
+      "description": "No drag-and-drop blocks. No fill-in-the-blank. You write code in a real editor with syntax highlighting, autocomplete, and live test output.",
+      "feature1": "Syntax highlighting for 50+ languages",
+      "feature2": "Instant test runner with detailed output",
+      "feature3": "AI explains every failing test",
+      "output": "Output"
+    },
+    "finalCta": {
+      "headline": "READY TO CODE?",
+      "subtitle": "No credit card. No setup. Just pick a topic.",
+      "dashboard": "Go to Dashboard",
+      "start": "Get started free"
+    },
+    "techStrip": {
+      "label": "Learn with"
+    },
+    "footer": {
+      "tagline": "AI-powered coding challenges for developers who want to actually learn.",
+      "copyright": "© 2026 CodeQuest",
+      "version": "v0.1.0 — beta",
+      "product": "Product",
+      "developers": "Developers",
+      "company": "Company"
     }
   },
   "dashboard": {
@@ -76,6 +131,7 @@
   },
   "editor": {
     "buttons": {
+      "format": "Format",
       "run": "Run",
       "verify": "Verify Solution",
       "verifying": "Verifying..."
@@ -87,6 +143,9 @@
       "label": "Output",
       "placeholder": "Run your code to see the output here...",
       "noOutput": "✓ Code ran with no output."
+    },
+    "run": {
+      "notExecutable": "Run not available for {{language}}"
     }
   },
   "header": {
