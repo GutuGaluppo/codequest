@@ -422,6 +422,31 @@
           "Το StepNav μεταφέρθηκε στο κεντρικό slot του Header, ελευθερώνοντας κατακόρυφο χώρο για τον editor"
         ]
       },
+      "dead_code_cleanup": {
+        "title": "Αφαίρεση νεκρού κώδικα και κεντρικοποίηση σταθερών",
+        "description": "Διαγράφηκαν τα mux.tsx (διαδρομή πρωτοτύπου) και TopicSearch.tsx (αντικαταστάθηκε από TopicSearchForm). Δημιουργήθηκε src/constants/topics.ts με SUGGESTED_TOPICS και TECH_STRIP, εξαλείφοντας τη διπλοτύπωση στα στοιχεία landing. Αφαιρέθηκαν κλήσεις debug console.log από LoginDrawer και aiService."
+      },
+      "utils_extraction": {
+        "title": "Εξαγωγή detectLanguage, getTimeAgo και parseAiJson σε utils",
+        "description": "detectLanguage() από tutorial.$id.tsx, getTimeAgo() από dashboard.tsx και parseAiJson() από geminiService και verifyService μεταφέρθηκαν στον κοινόχρηστο κατάλογο src/utils/. parseAiJson εξαλείφει τη διπλή λογική καθαρισμού markdown + JSON.parse. Barrel export στο src/utils/index.ts.",
+        "decisions": [
+          "getTimeAgo() δέχεται TFunction ως παράμετρο για διατήρηση του i18n χωρίς σύνδεση του util με το hook"
+        ]
+      },
+      "ui_primitives": {
+        "title": "Πρωτόγονα UI, διαίρεση ProfileForm και εξαγωγή στοιχείων dashboard",
+        "description": "Δημιουργήθηκε src/components/ui/ με πρωτόγονα Input και Button. ProfileForm διαιρέθηκε σε ProfileInputs, ProfileSelectInput, ImageInput και ProfileHeader. Διορθώθηκε διπλή κλήση saveProfile() που αποθήκευε δύο φορές σε κάθε υποβολή. TutorialCard εξήχθη σε αυτόνομο αρχείο με σωστή τυποποίηση Tutorial, αφαιρώντας όλα τα cast Record<string, unknown>.",
+        "decisions": [
+          "Το padding του Button αφέθηκε ως className prop — το πλαίσιο ποικίλλει πολύ (px-4/px-6/px-8) για hardcode στην παραλλαγή"
+        ]
+      },
+      "tutorial_type_fix": {
+        "title": "Fix τύπου Tutorial και stepCount του TutorialCard για παλαιά έγγραφα Firestore",
+        "description": "Διεπαφή Tutorial ενημερώθηκε: level προστέθηκε, steps έγινε προαιρετικό, stepCount προστέθηκε για συμβατότητα με παλαιά έγγραφα, createdAt τυποποιήθηκε ως { seconds: number } | null. TutorialCard διαβάζει stepCount ?? steps?.length ?? 0 για σωστή εμφάνιση παλαιών και νέων εγγράφων.",
+        "bugs": [
+          "Τα tutorials πριν από την εμμονή steps δεν είχαν το πεδίο steps, προκαλώντας σφάλμα 'Cannot read properties of undefined (reading length)' κατά το άνοιγμα του Dashboard"
+        ]
+      },
       "level_system": {
         "title": "Επιλογέας επιπέδου, εμμονή tutorial και ντετερμινιστικά IDs",
         "description": "Τύπος Level (beginner/intermediate/advanced) προστέθηκε. Η buildSystemPrompt() προσαρμόζει τις οδηγίες ανά δυσκολία. Όλες οι ΤΝ υπηρεσίες λαμβάνουν και προωθούν το επίπεδο. Τα IDs είναι ντετερμινιστικά: ${slug}-${level}, οπότε το ίδιο θέμα σε διαφορετικά επίπεδα δημιουργεί ξεχωριστά Firestore έγγραφα. getTutorial ελέγχει το Firestore πριν καλέσει την ΤΝ, αποτρέποντας περιττή αναγέννηση.",

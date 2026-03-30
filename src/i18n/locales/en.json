@@ -423,6 +423,31 @@
           "StepNav moved from the tutorial page body into the Header center slot, freeing vertical space for the editor"
         ]
       },
+      "dead_code_cleanup": {
+        "title": "Dead code removal and centralized constants",
+        "description": "Deleted mux.tsx (prototype route) and TopicSearch.tsx (replaced by TopicSearchForm). Created src/constants/topics.ts with SUGGESTED_TOPICS and TECH_STRIP, eliminating duplication across landing components. Removed debug console.log calls from LoginDrawer and aiService."
+      },
+      "utils_extraction": {
+        "title": "Extract detectLanguage, getTimeAgo and parseAiJson to utils",
+        "description": "detectLanguage() moved from tutorial.$id.tsx, getTimeAgo() from dashboard.tsx, and parseAiJson() extracted from geminiService and verifyService into a shared src/utils/ directory. parseAiJson eliminates duplicated markdown-cleanup + JSON.parse logic. Barrel export at src/utils/index.ts.",
+        "decisions": [
+          "getTimeAgo() accepts TFunction as a parameter to keep i18n working without coupling the util to the hook"
+        ]
+      },
+      "ui_primitives": {
+        "title": "UI primitives, ProfileForm split and dashboard component extraction",
+        "description": "Created src/components/ui/ with Input and Button primitives. ProfileForm split into ProfileInputs, ProfileSelectInput, ImageInput and ProfileHeader subcomponents. Fixed a duplicate saveProfile() call that was saving twice on every submit. TutorialCard extracted from dashboard.tsx into its own file with proper Tutorial typing, removing all Record<string, unknown> casts.",
+        "decisions": [
+          "Button padding left as a className prop — context varies too much (px-4/px-6/px-8) to hardcode in the variant"
+        ]
+      },
+      "tutorial_type_fix": {
+        "title": "Fix Tutorial type and TutorialCard stepCount for legacy Firestore docs",
+        "description": "Tutorial interface updated: level added, steps made optional, stepCount added for backwards-compatibility with documents saved before step persistence was introduced, createdAt typed as { seconds: number } | null to match Firestore Timestamp shape. TutorialCard reads stepCount ?? steps?.length ?? 0 so both old and new documents display correctly.",
+        "bugs": [
+          "Tutoriais gerados antes da feature de persistência de steps não tinham o campo steps, causando erro 'Cannot read properties of undefined (reading length)' ao abrir o Dashboard"
+        ]
+      },
       "level_system": {
         "title": "Level selector, tutorial persistence and deterministic IDs",
         "description": "Level type (beginner/intermediate/advanced) added. buildSystemPrompt() adapts instructions per difficulty. All AI services receive and forward the level param. Tutorial IDs are deterministic: ${slug}-${level}, so the same topic at different levels creates separate Firestore documents. getTutorial checks Firestore before calling AI, eliminating redundant generation on revisit.",

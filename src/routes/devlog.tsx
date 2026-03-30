@@ -43,6 +43,10 @@ const entries: EntryMeta[] = [
 	{ date: "2026-03-30", commit: "2954684", phaseKey: "features", tags: ["feature", "firestore", "ai"], key: "level_system", hasDecisions: true },
 	{ date: "2026-03-30", commit: "94d4b72", phaseKey: "landing", tags: ["refactor", "i18n", "design"], key: "landing_i18n" },
 	{ date: "2026-03-30", commit: "21da915", phaseKey: "editor", tags: ["editor", "ux", "feature"], key: "editor_format" },
+	{ date: "2026-03-31", commit: "79c664c", phaseKey: "polish", tags: ["refactor", "fix"], key: "dead_code_cleanup" },
+	{ date: "2026-03-31", commit: "9bca3e6", phaseKey: "foundation", tags: ["refactor", "architecture"], key: "utils_extraction", hasDecisions: true },
+	{ date: "2026-03-31", commit: "3ba09f6", phaseKey: "interface", tags: ["refactor", "components", "design"], key: "ui_primitives", hasDecisions: true },
+	{ date: "2026-03-31", commit: "3c038ba", phaseKey: "foundation", tags: ["fix", "data"], key: "tutorial_type_fix", hasBugs: true },
 ];
 
 const tagColors: Record<string, string> = {
