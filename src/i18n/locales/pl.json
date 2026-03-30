@@ -479,6 +479,16 @@
           "Nowe tutoriale nie pojawially sie w Dashboard po generowaniu — cache nigdy nie zostal uniewnazniany",
           "Level tutorialu nie byl zapisywany w Firestore, wiec karty Dashboard zawsze linkowaly z level: undefined"
         ]
+      },
+      "tutorial_save_fix": {
+        "title": "Fix: Query tutorialu uruchamiala sie przed rozwiazaniem auth, bledny typ createdAt",
+        "description": "Query tutorialu uruchamiala sie przy pierwszym renderze z user?.uid = undefined (auth jeszcze sie ladowal), wiec tutoriale byly generowane ale nigdy nie zapisywane w Firestore. Naprawione przez enabled: !loading. Pole level nie bylo w schemacie AI — teraz jest wstrzykiwane explicite. Bledy query (np. limit 429) byly ignorowane, pokazujac nieskonczone skeleton — naprawione przez rethrow do errorComponent trasy. Wreszcie createdAt zwracalo Date.now() zamiast { seconds: number } | null — naprawione przez zwrot null.",
+        "bugs": [
+          "Tutorial wygenerowany ale nie zapisany w Firestore — query uruchomila sie przed rozwiazaniem auth",
+          "Pole level brakowalo w zapisanych tutorialach — schemat AI go nie zawiera",
+          "Bledy query pokazywaly nieskonczone skeleton zamiast ErrorScreen — stan isError nie byl obslugiwany",
+          "Bledny typ createdAt — services zwracaly Date.now() ale Tutorial oczekuje { seconds: number } | null"
+        ]
       }
     }
   }

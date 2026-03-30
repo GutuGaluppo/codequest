@@ -479,6 +479,16 @@
           "Nuevos tutoriales no aparecían en el Dashboard tras la generación — el cache nunca fue invalidado",
           "El level del tutorial no se persistía en Firestore, así los cards del Dashboard siempre enlazaban con level: undefined"
         ]
+      },
+      "tutorial_save_fix": {
+        "title": "Fix: Query del tutorial disparándose antes de resolver el auth, tipo incorrecto en createdAt",
+        "description": "La query del tutorial se ejecutaba en el render inicial con user?.uid = undefined (auth aún cargando), por lo que los tutoriales se generaban pero nunca se guardaban en Firestore. Corregido añadiendo enabled: !loading para esperar que Firebase Auth resuelva. El campo level tampoco estaba en el schema de la IA — ahora se inyecta explícitamente tras la generación. Los errores de query (ej: rate limit 429) eran ignorados mostrando skeleton infinito — corregido relanzando el error al errorComponent de la ruta. Finalmente, createdAt estaba tipado como { seconds: number } | null pero los services devolvían Date.now() — corregido retornando null en los tres services.",
+        "bugs": [
+          "Tutorial generado pero no guardado en Firestore — la query disparó antes de resolver el auth, uid era undefined",
+          "Campo level ausente en tutoriales guardados — el schema de la IA no lo incluye, debe inyectarse explícitamente",
+          "Errores de query mostraban skeleton infinito en lugar de ErrorScreen — el estado isError no se manejaba",
+          "Tipo incorrecto en createdAt — los services devolvían Date.now() pero Tutorial espera { seconds: number } | null"
+        ]
       }
     }
   }

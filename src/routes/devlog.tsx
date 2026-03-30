@@ -48,6 +48,7 @@ const entries: EntryMeta[] = [
 	{ date: "2026-03-31", commit: "3ba09f6", phaseKey: "interface", tags: ["refactor", "components", "design"], key: "ui_primitives", hasDecisions: true },
 	{ date: "2026-03-31", commit: "3c038ba", phaseKey: "foundation", tags: ["fix", "data"], key: "tutorial_type_fix", hasBugs: true },
 	{ date: "2026-03-31", commit: "2307789", phaseKey: "polish", tags: ["fix", "firestore", "data"], key: "dashboard_cache_fix", hasBugs: true },
+	{ date: "2026-03-31", commit: "6f21a4e", phaseKey: "foundation", tags: ["fix", "auth", "data"], key: "tutorial_save_fix", hasBugs: true },
 ];
 
 const tagColors: Record<string, string> = {

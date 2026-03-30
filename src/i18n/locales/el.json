@@ -479,6 +479,16 @@
           "Νέα tutorials δεν εμφανίζονταν στο Dashboard — η cache δεν ακυρώθηκε ποτέ",
           "Το level δεν αποθηκευόταν στο Firestore, οπότε τα cards του Dashboard συνδέονταν πάντα με level: undefined"
         ]
+      },
+      "tutorial_save_fix": {
+        "title": "Fix: Query tutorial εκτελούνταν πριν επιλυθεί το auth, λάθος τύπος στο createdAt",
+        "description": "Η query tutorial εκτελούνταν στο αρχικό render με user?.uid = undefined (auth ακόμα φορτώνει), οπότε τα tutorials δημιουργούνταν αλλά δεν αποθηκεύονταν. Διορθώθηκε με enabled: !loading. Το πεδίο level δεν υπήρχε στο schema της ΑΙ — τώρα εισάγεται ρητά. Σφάλματα query (π.χ. 429) αποκρύπτονταν, εμφανίζοντας ατελείωτο skeleton — διορθώθηκε με rethrow στο errorComponent. Τέλος, το createdAt επέστρεφε Date.now() αντί για { seconds: number } | null — διορθώθηκε με επιστροφή null.",
+        "bugs": [
+          "Tutorial δημιουργήθηκε αλλά δεν αποθηκεύτηκε — η query εκτελέστηκε πριν επιλυθεί το auth",
+          "Πεδίο level απούσιαζε από αποθηκευμένα tutorials — το schema ΑΙ δεν το περιλαμβάνει",
+          "Σφάλματα query εμφάνιζαν ατελείωτο skeleton αντί ErrorScreen — το isError δεν χειριζόταν",
+          "Λάθος τύπος στο createdAt — services επέστρεφαν Date.now() αλλά Tutorial περιμένει { seconds: number } | null"
+        ]
       }
     }
   }

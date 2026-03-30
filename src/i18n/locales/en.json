@@ -480,6 +480,16 @@
           "New tutorials not appearing in Dashboard after generation — stale cache was never invalidated",
           "Tutorial level not persisted to Firestore, so Dashboard cards always linked with level: undefined"
         ]
+      },
+      "tutorial_save_fix": {
+        "title": "Fix: Tutorial query firing before auth resolves, createdAt type mismatch",
+        "description": "The tutorial query ran on initial render with user?.uid = undefined (auth still loading), so tutorials were generated but never saved to Firestore. Fixed by adding enabled: !loading to the query so it waits for Firebase Auth to resolve. level was also not in the AI response schema — now explicitly injected after generation. Query errors (e.g. 429 rate limit) were silently swallowed, showing an infinite skeleton — fixed by rethrowing the error to bubble up to the route errorComponent. Finally, createdAt was typed as { seconds: number } | null to match Firestore Timestamp shape, but AI services were returning Date.now() (a number) — fixed by returning null from all three services since the real value is set by serverTimestamp() on save.",
+        "bugs": [
+          "Tutorial generated but not saved to Firestore — query fired before auth resolved, uid was undefined",
+          "level field missing from saved tutorials — AI schema does not include it, must be injected explicitly",
+          "Query errors showed infinite skeleton instead of ErrorScreen — isError state was not handled",
+          "createdAt type mismatch — AI services returned Date.now() but Tutorial type expects { seconds: number } | null"
+        ]
       }
     }
   }
