@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexPage() {
-	const [level, setLevel] = useState<Level | null>(null);
+	const [level, setLevel] = useState<Level>("beginner");
 	const [topic, setTopic] = useState("");
 	const { user } = useAuth();
 	const { openDrawer } = useAuthStore();
@@ -51,10 +51,8 @@ function IndexPage() {
 					<div>
 						<HeroHeadline />
 						<LevelSelector
-							level={level ?? "beginner"}
-							handleLevelSelection={(lvl) =>
-								setLevel((prev) => (prev === lvl ? null : lvl))
-							}
+							level={level}
+							handleLevelSelection={(lvl) => setLevel(lvl)}
 						/>
 						<TopicSearchForm
 							topic={topic}

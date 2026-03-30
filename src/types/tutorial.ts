@@ -25,7 +25,9 @@ export interface TutorialStep {
 export interface Tutorial {
 	id: string;
 	topic: string;
-	steps: TutorialStep[];
+	level: Level;
+	steps?: TutorialStep[];
+	stepCount?: number;
 	generatedWith: ModelProvider;
-	createdAt: number;
+	createdAt: { seconds: number } | null;
 }

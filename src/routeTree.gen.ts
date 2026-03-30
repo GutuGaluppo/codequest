@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as MuxRouteImport } from './routes/mux'
 import { Route as DevlogRouteImport } from './routes/devlog'
 import { Route as DesignRouteImport } from './routes/design'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -20,11 +19,6 @@ import { Route as TutorialIdRouteImport } from './routes/tutorial.$id'
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MuxRoute = MuxRouteImport.update({
-  id: '/mux',
-  path: '/mux',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevlogRoute = DevlogRouteImport.update({
@@ -58,7 +52,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
-  '/mux': typeof MuxRoute
   '/profile': typeof ProfileRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
@@ -67,7 +60,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
-  '/mux': typeof MuxRoute
   '/profile': typeof ProfileRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
@@ -77,7 +69,6 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
-  '/mux': typeof MuxRoute
   '/profile': typeof ProfileRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
@@ -88,25 +79,16 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/design'
     | '/devlog'
-    | '/mux'
     | '/profile'
     | '/tutorial/$id'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/dashboard'
-    | '/design'
-    | '/devlog'
-    | '/mux'
-    | '/profile'
-    | '/tutorial/$id'
+  to: '/' | '/dashboard' | '/design' | '/devlog' | '/profile' | '/tutorial/$id'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
     | '/design'
     | '/devlog'
-    | '/mux'
     | '/profile'
     | '/tutorial/$id'
   fileRoutesById: FileRoutesById
@@ -116,7 +98,6 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DesignRoute: typeof DesignRoute
   DevlogRoute: typeof DevlogRoute
-  MuxRoute: typeof MuxRoute
   ProfileRoute: typeof ProfileRoute
   TutorialIdRoute: typeof TutorialIdRoute
 }
@@ -128,13 +109,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mux': {
-      id: '/mux'
-      path: '/mux'
-      fullPath: '/mux'
-      preLoaderRoute: typeof MuxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/devlog': {
@@ -180,7 +154,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DesignRoute: DesignRoute,
   DevlogRoute: DevlogRoute,
-  MuxRoute: MuxRoute,
   ProfileRoute: ProfileRoute,
   TutorialIdRoute: TutorialIdRoute,
 }

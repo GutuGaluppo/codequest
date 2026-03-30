@@ -49,7 +49,7 @@ export const firestoreService = {
 			topic: tutorial.topic,
 			generatedWith: tutorial.generatedWith,
 			createdAt: serverTimestamp(),
-			stepCount: tutorial.steps.length,
+			stepCount: tutorial.steps?.length ?? 0,
 			steps: tutorial.steps,
 		});
 	},
