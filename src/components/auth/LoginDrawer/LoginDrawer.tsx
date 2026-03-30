@@ -51,8 +51,6 @@ export function LoginDrawer() {
 			}
 			closeDrawer();
 		} catch (err: unknown) {
-			console.log("🚀 ~ err:", err);
-
 			if (err instanceof Error) setError(friendlyError(err.message));
 		} finally {
 			setLoading(false);
@@ -65,7 +63,6 @@ export function LoginDrawer() {
 			await fn();
 			closeDrawer();
 		} catch (err: unknown) {
-			console.log("🚀 ~ err:", err);
 			if (err instanceof Error) setError(friendlyError(err.message));
 		}
 	}
@@ -103,7 +100,9 @@ export function LoginDrawer() {
 
 						<div className="flex items-center gap-3">
 							<hr className="flex-1 border-border" />
-							<span className="text-xs text-muted">{t("auth.modal.divider")}</span>
+							<span className="text-xs text-muted">
+								{t("auth.modal.divider")}
+							</span>
 							<hr className="flex-1 border-border" />
 						</div>
 

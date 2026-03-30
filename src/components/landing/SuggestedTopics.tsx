@@ -1,10 +1,4 @@
-const SUGGESTED_TOPICS = [
-	"JavaScript",
-	"React",
-	"Python",
-	"Node.js",
-	"TypeScript",
-];
+import { SUGGESTED_TOPICS } from "../../constants";
 
 export function SuggestedTopics({
 	setTopic,

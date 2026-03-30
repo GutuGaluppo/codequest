@@ -13,8 +13,8 @@ export async function generateTutorial(
 		try {
 			return await claudeService.generate(topic, userKeys.anthropic, level);
 		} catch (error) {
-			console.warn(
-				`Claude failed with the following error: ${error}. Falling back to Gemini`,
+			throw new Error(
+				`Claude generation failed with the following error: ${error}`,
 			);
 		}
 	}
@@ -22,8 +22,8 @@ export async function generateTutorial(
 		try {
 			return await openaiService.generate(topic, userKeys.openai, level);
 		} catch (error) {
-			console.warn(
-				`OpenAI failed with the following error: ${error}. Falling back to Gemini`,
+			throw new Error(
+				`OpenAI generation failed with the following error: ${error}`,
 			);
 		}
 	}

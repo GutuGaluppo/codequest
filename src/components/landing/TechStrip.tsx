@@ -1,15 +1,5 @@
 import { useTranslation } from "react-i18next";
-
-const TECH_STRIP = [
-	"JavaScript",
-	"TypeScript",
-	"React",
-	"Node.js",
-	"Python",
-	"Go",
-	"Rust",
-	"SQL",
-];
+import { TECH_STRIP } from "../../constants";
 
 export function TechStrip() {
 	const { t } = useTranslation();
