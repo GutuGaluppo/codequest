@@ -1,32 +1,34 @@
 import Editor from "@monaco-editor/react";
+import type * as MonacoEditor from "monaco-editor";
+import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { transform } from "sucrase";
+import { verifyService } from "../../services/verifyService";
 import { useEditorStore } from "../../stores/editorStore";
-import { OutputPanel } from "./OutputPanel";
 import type {
 	Challenge,
 	ModelProvider,
 	UserApiKeys,
 } from "../../types/tutorial";
-import { useState } from "react";
-import { verifyService } from "../../services/verifyService";
-import { transform } from "sucrase";
-import { useTranslation } from "react-i18next";
+import EditorToolbar from "./EditorToolbar";
+import { OutputPanel } from "./OutputPanel";
 
 interface MonacoWrapperProps {
 	defaultValue: string;
-	onChange: (value: string) => void;
 	language?: string;
 	challenge: Challenge;
 	model: ModelProvider;
 	userKeys: UserApiKeys;
+	onChange: (value: string) => void;
 }
 
 export function MonacoWrapper({
 	defaultValue,
-	onChange,
 	language,
 	challenge,
 	model,
 	userKeys,
+	onChange,
 }: MonacoWrapperProps) {
 	const { editorCode, output, setOutput, setFeedback } = useEditorStore();
 	const [verifying, setVerifying] = useState(false);
@@ -37,6 +39,14 @@ export function MonacoWrapper({
 	}
 
 	function handleRun() {
+		const nonExecutableLanguages = ["css", "html", "sql", "json"];
+		if (language && nonExecutableLanguages.includes(language)) {
+			setOutput(
+				t("editor.run.notExecutable", { language: language.toUpperCase() }),
+			);
+			return;
+		}
+
 		const logs: string[] = [];
 		const originalLog = console.log;
 		console.log = (...args) => logs.push(args.map(String).join(" "));
@@ -71,32 +81,39 @@ export function MonacoWrapper({
 		} catch (err) {
 			setFeedback({
 				status: "incorrect",
-				message: err instanceof Error ? err.message : "Não foi possível verificar a solução.",
+				message:
+					err instanceof Error
+						? err.message
+						: "Não foi possível verificar a solução.",
 			});
 		} finally {
 			setVerifying(false);
 		}
 	}
 
+	const editorRef = useRef<MonacoEditor.editor.IStandaloneCodeEditor | null>(
+		null,
+	);
+
+	function handleMount(editor: MonacoEditor.editor.IStandaloneCodeEditor) {
+		editorRef.current = editor;
+	}
+
+	function handleFormat() {
+		if (!editorRef.current) return;
+
+		editorRef.current.getAction("editor.action.formatDocument")?.run();
+	}
+
 	return (
 		<div className="flex flex-col h-full">
-			<div className="flex items-center justify-end gap-2 px-3 py-2 bg-surface border-b">
-				<button
-					onClick={handleRun}
-					className="text-xs px-3 py-1.5 bg-amber text-background rounded font-medium hover:opacity-90 transition-opacity"
-				>
-					{t("editor.buttons.run")}
-				</button>
-				<button
-					onClick={handleVerify}
-					disabled={verifying}
-					className="text-xs px-3 py-1.5 border text-muted rounded hover:text-text transition-colors disabled:opacity-50"
-				>
-					{verifying
-						? t("editor.buttons.verifying")
-						: t("editor.buttons.verify")}
-				</button>
-			</div>
+			<EditorToolbar
+				language={language ?? "code"}
+				handleFormat={handleFormat}
+				handleRun={handleRun}
+				handleVerify={handleVerify}
+				verifying={verifying}
+			/>
 
 			<div className="flex-1 min-h-0">
 				<Editor
@@ -105,11 +122,12 @@ export function MonacoWrapper({
 					defaultValue={defaultValue}
 					theme="vs-dark"
 					onChange={(value) => onChange(value ?? "")}
+					onMount={handleMount}
 					options={{
 						fontSize: 14,
 						fontFamily: "JetBrains Mono, Fira Code, monospace",
 						minimap: { enabled: false },
-						scrollBeyondLastLine: false,
+						scrollBeyondLastLine: true,
 						padding: { top: 16 },
 					}}
 				/>
