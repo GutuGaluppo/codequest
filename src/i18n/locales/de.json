@@ -471,6 +471,14 @@
           "Header wurde von Inhalten verdeckt, da mt-10 (40px) kleiner als die tatsächliche Header-Höhe (60px) war",
           "catch-Block in handleVerify verwarf die Fehlermeldung und zeigte generischen Fallback auch für spezifische API-Fehler wie 429"
         ]
+      },
+      "dashboard_cache_fix": {
+        "title": "Fix: Dashboard zeigte neu generierte Tutorials nicht an",
+        "description": "Nach der Tutorial-Generierung wurde der [\"tutorials\", uid]-Cache von TanStack Query nie invalidiert. Das Dashboard las veraltete Daten (staleTime: 30s) und das neue Tutorial erschien nicht. Behoben durch einen useEffect in TutorialPage, der invalidateQueries aufruft, wenn ein Tutorial geladen wird. Außerdem persistierte saveTutorial das level-Feld nicht — behoben durch Hinzufügen von level zum Firestore-setDoc-Payload.",
+        "bugs": [
+          "Neu generierte Tutorials erschienen nach der Erstellung nicht im Dashboard — Cache wurde nie invalidiert",
+          "Tutorial-Level wurde nicht in Firestore persistiert, daher verlinkten Dashboard-Cards immer mit level: undefined"
+        ]
       }
     }
   }

@@ -471,6 +471,14 @@
           "Το Header καλυπτόταν από περιεχόμενο λόγω mt-10 (40px) μικρότερο από την πραγματική ύψος (60px)",
           "Το catch στο handleVerify απέρριπτε το μήνυμα σφάλματος, εμφανίζοντας γενικό fallback για σφάλματα 429"
         ]
+      },
+      "dashboard_cache_fix": {
+        "title": "Fix: Το Dashboard δεν εμφάνιζε νεοδημιουργημένα tutorials",
+        "description": "Μετά τη δημιουργία tutorial, η cache [\"tutorials\", uid] του TanStack Query δεν ακυρωνόταν ποτέ. Το Dashboard διάβαζε παλιά δεδομένα (staleTime: 30s) και το νέο tutorial δεν εμφανιζόταν. Διορθώθηκε με useEffect στο TutorialPage που καλεί invalidateQueries όταν φορτώνει tutorial. Επίσης, το saveTutorial δεν αποθήκευε το πεδίο level — διορθώθηκε προσθέτοντας level στο payload του setDoc.",
+        "bugs": [
+          "Νέα tutorials δεν εμφανίζονταν στο Dashboard — η cache δεν ακυρώθηκε ποτέ",
+          "Το level δεν αποθηκευόταν στο Firestore, οπότε τα cards του Dashboard συνδέονταν πάντα με level: undefined"
+        ]
       }
     }
   }

@@ -471,6 +471,14 @@
           "Header byl zasloniety przez tresc z powodu mt-10 (40px) mniejszego niz rzeczywista wysokosc headera (60px)",
           "Blok catch w handleVerify odrzucal komunikat bledu, wyswietlajac ogolny fallback nawet dla bledow 429"
         ]
+      },
+      "dashboard_cache_fix": {
+        "title": "Fix: Dashboard nie wyswietlal nowo wygenerowanych tutoriali",
+        "description": "Po wygenerowaniu tutorialu cache [\"tutorials\", uid] TanStack Query nigdy nie byl uniewnazniany. Dashboard czestal stare dane (staleTime: 30s) i nowy tutorial sie nie pojawial. Naprawione przez useEffect w TutorialPage wywolujacy invalidateQueries po zaladowaniu tutorialu. Ponadto saveTutorial nie zapisywal pola level — naprawione przez dodanie level do payloadu setDoc Firestore.",
+        "bugs": [
+          "Nowe tutoriale nie pojawially sie w Dashboard po generowaniu — cache nigdy nie zostal uniewnazniany",
+          "Level tutorialu nie byl zapisywany w Firestore, wiec karty Dashboard zawsze linkowaly z level: undefined"
+        ]
       }
     }
   }

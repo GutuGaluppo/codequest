@@ -471,6 +471,14 @@
           "Header ficava coberto pelo conteúdo pois o offset mt-10 (40px) era menor que a altura real do header (60px)",
           "O catch em handleVerify descartava a mensagem de erro, exibindo fallback genérico mesmo para erros específicos como 429"
         ]
+      },
+      "dashboard_cache_fix": {
+        "title": "Fix: Dashboard não exibia tutoriais recém-gerados",
+        "description": "Após gerar um tutorial, o cache [\"tutorials\", uid] do TanStack Query nunca era invalidado. O Dashboard lia dados obsoletos (staleTime: 30s) e o novo tutorial não aparecia. Corrigido adicionando um useEffect no TutorialPage que chama invalidateQueries quando um tutorial carrega. Além disso, saveTutorial não persistia o campo level — corrigido adicionando level ao payload do setDoc no Firestore.",
+        "bugs": [
+          "Novos tutoriais não apareciam no Dashboard após geração — cache nunca foi invalidado",
+          "Level do tutorial não era persistido no Firestore, então os cards do Dashboard sempre linkavam com level: undefined"
+        ]
       }
     }
   }
