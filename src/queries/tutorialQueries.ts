@@ -1,17 +1,39 @@
 import { generateTutorial } from "../services/aiService";
 import { firestoreService } from "../services/firestoreService";
-import type { ModelProvider, UserApiKeys } from "../types/tutorial";
+import type { Level, ModelProvider, UserApiKeys } from "../types/tutorial";
 
 export const tutorialQueryOptions = (
 	topic: string,
 	model: ModelProvider,
 	userKeys: UserApiKeys,
-) => ({
-	queryKey: ["tutorial", topic, model],
-	queryFn: () => generateTutorial(topic, model, userKeys),
-	staleTime: Infinity,
-	retry: false,
-});
+	level: Level,
+	uid?: string,
+) => {
+	const slug = topic.toLowerCase().replace(/\s+/g, "-");
+	const tutorialId = `${slug}-${level}`;
+
+	return {
+		queryKey: ["tutorial", tutorialId],
+		queryFn: async () => {
+			if (uid) {
+				const saved = await firestoreService.getTutorial(uid, tutorialId);
+				if (saved) return saved;
+			}
+
+			const tutorial = await generateTutorial(topic, model, userKeys, level);
+			if (uid) {
+				await firestoreService.saveTutorial(uid, {
+					...tutorial,
+					id: tutorialId,
+				});
+			}
+			return { ...tutorial, id: tutorialId };
+		},
+
+		staleTime: Infinity,
+		retry: false,
+	};
+};
 
 export const userTutorialsQueryOptions = (uid: string) => ({
 	queryKey: ["tutorials", uid],

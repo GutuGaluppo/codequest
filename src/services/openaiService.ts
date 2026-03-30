@@ -1,12 +1,16 @@
 import OpenAI from "openai";
-import { SYSTEM_PROMPT } from "./systemPrompt";
-import type { Tutorial } from "../types/tutorial";
+import type { Level, Tutorial } from "../types/tutorial";
+import { buildSystemPrompt } from "./systemPrompt";
 
 export const openaiService = {
-	async generate(topic: string, apiKey: string): Promise<Tutorial> {
+	async generate(
+		topic: string,
+		apiKey: string,
+		level: Level,
+	): Promise<Tutorial> {
 		const client = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${SYSTEM_PROMPT} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
 
 		const response = await client.chat.completions.create({
 			model: "gpt-4o",

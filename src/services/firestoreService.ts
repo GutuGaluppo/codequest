@@ -50,7 +50,14 @@ export const firestoreService = {
 			generatedWith: tutorial.generatedWith,
 			createdAt: serverTimestamp(),
 			stepCount: tutorial.steps.length,
+			steps: tutorial.steps,
 		});
+	},
+
+	async getTutorial(uid: string, tutorialId: string): Promise<Tutorial | null> {
+		const ref = doc(db, "users", uid, "tutorials", tutorialId);
+		const snap = await getDoc(ref);
+		return snap.exists() ? (snap.data() as Tutorial) : null;
 	},
 
 	async getUserTutorials(uid: string) {

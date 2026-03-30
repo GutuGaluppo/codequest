@@ -3,10 +3,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ErrorScreen } from "../components/ErrorScreen";
+import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
 import { TutorialStepView } from "../components/tutorial/TutorialStep";
 import { useAuth } from "../hooks/useAuth";
 import { useProgressSync } from "../hooks/useProgressSync";
+import i18n from "../i18n";
 import {
 	progressQueryOptions,
 	tutorialQueryOptions,
@@ -15,12 +19,12 @@ import { userProfileQueryOptions } from "../queries/userQueries";
 import { firestoreService } from "../services/firestoreService";
 import { useEditorStore } from "../stores/editorStore";
 import { useTutorialNavStore } from "../stores/tutorialNavStore";
-import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
-import { useTranslation } from "react-i18next";
-import { ErrorScreen } from "../components/ErrorScreen";
-import i18n from "../i18n";
+import type { Level } from "../types/tutorial";
 
 export const Route = createFileRoute("/tutorial/$id")({
+	validateSearch: (search: Record<string, unknown>) => ({
+		level: (search.level as Level) || "beginner",
+	}),
 	pendingComponent: () => (
 		<p className="text-muted p-8">{i18n.t("tutorial.pending")}</p>
 	),
@@ -32,6 +36,7 @@ export const Route = createFileRoute("/tutorial/$id")({
 
 function TutorialPage() {
 	const { id } = Route.useParams();
+	const { level } = Route.useSearch();
 	const { user } = useAuth();
 	const { currentStep, setCurrentStep } = useEditorStore();
 	const queryClient = useQueryClient();
@@ -39,6 +44,9 @@ function TutorialPage() {
 	const setSteps = useTutorialNavStore((s) => s.setSteps);
 	const setCompletedSteps = useTutorialNavStore((s) => s.setCompletedSteps);
 	const clear = useTutorialNavStore((s) => s.clear);
+
+	const slug = id.toLowerCase().replace(/\s+/g, "-");
+	const tutorialId = `${slug}-${level}`;
 
 	const { data: profile } = useQuery({
 		...userProfileQueryOptions(user?.uid ?? ""),
@@ -49,20 +57,15 @@ function TutorialPage() {
 	const userKeys = profile?.apiKeys ?? {};
 
 	const { data: tutorial, isPending: tutorialPending } = useQuery(
-		tutorialQueryOptions(id, model, userKeys),
+		tutorialQueryOptions(id, model, userKeys, level, user?.uid),
 	);
 
 	const { data: progress } = useQuery({
-		...progressQueryOptions(id, user?.uid ?? ""),
+		...progressQueryOptions(tutorialId, user?.uid ?? ""),
 		enabled: !!user,
 	});
 
-	useProgressSync(id, user?.uid ?? "");
-
-	useEffect(() => {
-		if (!tutorial || !user) return;
-		firestoreService.saveTutorial(user.uid, tutorial);
-	}, [tutorial, user]);
+	useProgressSync(tutorialId, user?.uid ?? "");
 
 	const completedSteps = (progress?.completedSteps as string[]) ?? [];
 
@@ -84,9 +87,11 @@ function TutorialPage() {
 
 	const { mutate: completeStep } = useMutation({
 		mutationFn: (stepId: string) =>
-			firestoreService.markStepComplete(id, user!.uid, stepId),
+			firestoreService.markStepComplete(tutorialId, user!.uid, stepId),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["progress", id, user?.uid] });
+			queryClient.invalidateQueries({
+				queryKey: ["progress", tutorialId, user?.uid],
+			});
 			toast.success(t("tutorial.stepComplete.success"));
 			if (currentStep < (tutorial?.steps.length ?? 1) - 1) {
 				setCurrentStep(currentStep + 1);
@@ -101,10 +106,16 @@ function TutorialPage() {
 		if (t.includes("python")) return "python";
 		if (t.includes("rust")) return "rust";
 		if (t.includes("go") || t.includes("golang")) return "go";
+		if (t.includes("css")) return "css";
+		if (t.includes("html")) return "html";
+		if (t.includes("sql")) return "sql";
+		if (t.includes("json")) return "json";
+		if (t.includes("java") && !t.includes("javascript")) return "java";
+		if (t.includes("c#") || t.includes("csharp")) return "csharp";
 		return "javascript";
 	}
 
-	const language = detectLanguage(id);
+	const language = detectLanguage(tutorial?.topic ?? id);
 
 	if (tutorialPending || !tutorial || !step) return <TutorialSkeleton />;
 

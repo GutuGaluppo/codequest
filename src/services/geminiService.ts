@@ -1,13 +1,13 @@
 import { GoogleGenAI } from "@google/genai";
-import type { Tutorial } from "../types/tutorial";
-import { SYSTEM_PROMPT } from "./systemPrompt";
+import type { Level, Tutorial } from "../types/tutorial";
+import { buildSystemPrompt } from "./systemPrompt";
 import { handleServiceError } from "./serviceErrors";
 
 export const geminiService = {
-	async generate(topic: string, apiKey: string): Promise<Tutorial> {
+	async generate(topic: string, apiKey: string, level: Level): Promise<Tutorial> {
 		const ai = new GoogleGenAI({ apiKey });
 
-		const prompt = `${SYSTEM_PROMPT} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
 
 		let result;
 		try {

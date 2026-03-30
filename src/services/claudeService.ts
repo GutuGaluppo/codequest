@@ -1,12 +1,16 @@
 import Anthropic from "@anthropic-ai/sdk";
-import type { Tutorial } from "../types/tutorial";
-import { SYSTEM_PROMPT } from "./systemPrompt";
+import type { Level, Tutorial } from "../types/tutorial";
+import { buildSystemPrompt } from "./systemPrompt";
 
 export const claudeService = {
-	async generate(topic: string, apiKey: string): Promise<Tutorial> {
+	async generate(
+		topic: string,
+		apiKey: string,
+		level: Level,
+	): Promise<Tutorial> {
 		const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${SYSTEM_PROMPT} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
 
 		const message = await client.messages.create({
 			model: "claude-3-5-sonnet-20241022",
