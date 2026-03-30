@@ -38,7 +38,7 @@ export const Route = createFileRoute("/tutorial/$id")({
 function TutorialPage() {
 	const { id } = Route.useParams();
 	const { level } = Route.useSearch();
-	const { user } = useAuth();
+	const { user, loading } = useAuth();
 	const { currentStep, setCurrentStep } = useEditorStore();
 	const queryClient = useQueryClient();
 	const { t } = useTranslation();
@@ -57,14 +57,22 @@ function TutorialPage() {
 	const model = profile?.preferredModel ?? "gemini";
 	const userKeys = profile?.apiKeys ?? {};
 
-	const { data: tutorial, isPending: tutorialPending } = useQuery(
-		tutorialQueryOptions(id, model, userKeys, level, user?.uid),
-	);
+	const {
+		data: tutorial,
+		isPending: tutorialPending,
+		isError,
+		error: tutorialError,
+	} = useQuery({
+		...tutorialQueryOptions(id, model, userKeys, level, user?.uid),
+		enabled: !loading,
+	});
 
 	const { data: progress } = useQuery({
 		...progressQueryOptions(tutorialId, user?.uid ?? ""),
 		enabled: !!user,
 	});
+
+	if (isError) throw tutorialError;
 
 	useProgressSync(tutorialId, user?.uid ?? "");
 
@@ -90,7 +98,7 @@ function TutorialPage() {
 		}
 	}, [tutorial?.id, user?.uid]);
 
-	const step = tutorial?.steps[currentStep];
+	const step = tutorial?.steps?.[currentStep];
 
 	const { mutate: completeStep } = useMutation({
 		mutationFn: (stepId: string) =>
@@ -100,7 +108,7 @@ function TutorialPage() {
 				queryKey: ["progress", tutorialId, user?.uid],
 			});
 			toast.success(t("tutorial.stepComplete.success"));
-			if (currentStep < (tutorial?.steps.length ?? 1) - 1) {
+			if (currentStep < (tutorial?.steps?.length ?? 1) - 1) {
 				setCurrentStep(currentStep + 1);
 			}
 		},

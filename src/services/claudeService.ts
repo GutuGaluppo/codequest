@@ -22,6 +22,6 @@ export const claudeService = {
 			message.content[0].type === "text" ? message.content[0].text : "";
 		const raw = JSON.parse(text) as Tutorial;
 
-		return { ...raw, generatedWith: "claude", createdAt: Date.now() };
+		return { ...raw, generatedWith: "claude", createdAt: null };
 	},
 };

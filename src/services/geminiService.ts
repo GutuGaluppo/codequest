@@ -29,7 +29,7 @@ export const geminiService = {
 		return {
 			...raw,
 			generatedWith: "gemini",
-			createdAt: Date.now(),
+			createdAt: null, // Will be set when saved to Firestore
 		};
 	},
 };

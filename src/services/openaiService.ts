@@ -20,6 +20,6 @@ export const openaiService = {
 		const text = response.choices[0].message.content ?? "";
 		const raw = JSON.parse(text) as Tutorial;
 
-		return { ...raw, generatedWith: "openai", createdAt: Date.now() };
+		return { ...raw, generatedWith: "openai", createdAt: null };
 	},
 };

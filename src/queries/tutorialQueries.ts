@@ -25,9 +25,10 @@ export const tutorialQueryOptions = (
 				await firestoreService.saveTutorial(uid, {
 					...tutorial,
 					id: tutorialId,
+					level,
 				});
 			}
-			return { ...tutorial, id: tutorialId };
+			return { ...tutorial, id: tutorialId, level };
 		},
 
 		staleTime: Infinity,
