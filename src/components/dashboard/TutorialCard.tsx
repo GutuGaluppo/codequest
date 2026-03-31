@@ -4,13 +4,22 @@ import { ChevronRight, Clock, Code } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { Tutorial } from "../../types/tutorial";
 
-export function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
+export function TutorialCard({
+	tutorial,
+	progress,
+}: {
+	tutorial: Tutorial;
+	progress: string[];
+}) {
 	const { t } = useTranslation();
 
 	const topic = tutorial.topic;
 	const generatedWith = tutorial.generatedWith;
 	const stepCount = tutorial.stepCount ?? tutorial.steps?.length ?? 0;
 	const createdAt = tutorial.createdAt;
+
+	const percent =
+		stepCount > 0 ? Math.round((progress.length / stepCount) * 100) : 0;
 
 	const timeAgo = createdAt
 		? getTimeAgo(createdAt.seconds * 1000, t)
@@ -37,6 +46,21 @@ export function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
 					{generatedWith} · {stepCount}
 					{t("dashboard.card.steps")}
 				</p>
+			</div>
+
+			<div className="flex flex-col gap-1">
+				<div className="flex justify-between text-xs font-mono text-muted">
+					<span>{percent}%</span>
+					<span>
+						{progress.length}/{stepCount}
+					</span>
+				</div>
+				<div className="h-px bg-border w-full">
+					<div
+						className="h-px bg-amber transition-all"
+						style={{ width: `${percent}%` }}
+					/>
+				</div>
 			</div>
 
 			<Link

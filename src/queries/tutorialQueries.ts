@@ -48,3 +48,9 @@ export const progressQueryOptions = (tutorialId: string, uid: string) => ({
 	queryFn: () => firestoreService.getProgress(tutorialId, uid),
 	staleTime: 30_000,
 });
+
+export const allProgressQueryOptions = (uid: string) => ({
+	queryKey: ["progress", "all", uid],
+	queryFn: () => firestoreService.getAllProgress(uid),
+	staleTime: 30_000,
+});

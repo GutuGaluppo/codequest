@@ -42,6 +42,12 @@ export const firestoreService = {
 		return snap.exists() ? snap.data() : null;
 	},
 
+	async getAllProgress(uid: string) {
+		const ref = collection(db, "users", uid, "progress");
+		const snap = await getDocs(ref);
+		return snap.docs.map((d) => d.data());
+	},
+
 	async saveTutorial(uid: string, tutorial: Tutorial): Promise<void> {
 		const ref = doc(db, "users", uid, "tutorials", tutorial.id);
 		await setDoc(ref, {

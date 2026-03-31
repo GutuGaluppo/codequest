@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { userTutorialsQueryOptions } from "../../queries/tutorialQueries";
+import {
+	allProgressQueryOptions,
+	userTutorialsQueryOptions,
+} from "../../queries/tutorialQueries";
 import { getAuth } from "firebase/auth";
 import { TutorialCard } from "./TutorialCard";
 import { Link } from "@tanstack/react-router";
@@ -12,6 +15,14 @@ export function DashboardContent() {
 	const { t } = useTranslation();
 	const { data: tutorials, isPending } = useQuery(
 		userTutorialsQueryOptions(uid),
+	);
+	const { data: progress } = useQuery(allProgressQueryOptions(uid));
+	const progressMap = progress?.reduce(
+		(acc, progress) => {
+			acc[progress.tutorialId] = progress.completedSteps;
+			return acc;
+		},
+		{} as Record<string, string[]>,
 	);
 
 	return (
@@ -44,6 +55,7 @@ export function DashboardContent() {
 						<TutorialCard
 							key={tutorial.id as string}
 							tutorial={tutorial as Tutorial}
+							progress={progressMap?.[tutorial.id] ?? []}
 						/>
 					))}
 				</div>
