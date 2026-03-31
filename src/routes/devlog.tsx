@@ -265,6 +265,13 @@ const entries: EntryMeta[] = [
 		key: "tutorial_save_fix",
 		hasBugs: true,
 	},
+	{
+		date: "2026-03-31",
+		commit: "6ed730f",
+		phaseKey: "features",
+		tags: ["feature", "firestore", "ux"],
+		key: "progress_bar",
+	},
 ];
 
 const tagColors: Record<string, string> = {

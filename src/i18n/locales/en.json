@@ -490,6 +490,10 @@
           "Query errors showed infinite skeleton instead of ErrorScreen — isError state was not handled",
           "createdAt type mismatch — AI services returned Date.now() but Tutorial type expects { seconds: number } | null"
         ]
+      },
+      "progress_bar": {
+        "title": "Progress bar on TutorialCard",
+        "description": "Each Dashboard card now shows a progress bar with percentage and step count. getAllProgress fetches all progress documents for the user in a single Firestore query (instead of N per card). DashboardContent passes completedSteps[] to each TutorialCard, which calculates percent = completedSteps.length / stepCount."
       }
     }
   }
