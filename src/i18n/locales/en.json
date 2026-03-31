@@ -272,7 +272,8 @@
       "polish": "Polish",
       "tests": "Tests",
       "design_system": "Design System",
-      "redesign": "Redesign"
+      "redesign": "Redesign",
+      "ai": "AI"
     },
     "entry": {
       "setup": {
@@ -494,6 +495,15 @@
       "progress_bar": {
         "title": "Progress bar on TutorialCard",
         "description": "Each Dashboard card now shows a progress bar with percentage and step count. getAllProgress fetches all progress documents for the user in a single Firestore query (instead of N per card). DashboardContent passes completedSteps[] to each TutorialCard, which calculates percent = completedSteps.length / stepCount."
+      },
+      "tutorial_prompt_v2": {
+        "title": "Tutorial prompt v2 — introduction, progressive steps and final project",
+        "description": "buildSystemPrompt rewritten to enforce a three-part structure: (1) Introduction with overview, real-world usage, pros/cons and prerequisites; (2) hands-on steps with level-specific depth and count guidelines; (3) a capstone final project integrating all concepts. levelInstructions expanded with explicit audience, step count, code depth and project complexity per level. verifyService.buildPrompt translated to English so all AI prompts are consistent. Tutorial type updated with optional introduction and finalProject fields.",
+        "decisions": [
+          "introduction and finalProject marked as optional in the Tutorial interface for backwards compatibility with existing Firestore documents",
+          "verifyService feedback language made dynamic ('same language as the challenge prompt') instead of hardcoded Portuguese",
+          "levelInstructions changed from single sentences to structured bullet lists to give the model clearer, more enforceable constraints"
+        ]
       }
     }
   }

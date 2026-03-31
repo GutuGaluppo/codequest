@@ -272,6 +272,14 @@ const entries: EntryMeta[] = [
 		tags: ["feature", "firestore", "ux"],
 		key: "progress_bar",
 	},
+	{
+		date: "2026-03-31",
+		commit: "f28032e",
+		phaseKey: "ai",
+		tags: ["ai", "architecture", "feature"],
+		key: "tutorial_prompt_v2",
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
@@ -314,6 +322,7 @@ const phaseColors: Record<string, string> = {
 	tests: "text-blue-400",
 	design_system: "text-purple-400",
 	redesign: "text-amber",
+	ai: "text-amber",
 };
 
 function DevlogPage() {
