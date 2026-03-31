@@ -12,7 +12,7 @@ export function OutputPanel() {
 	const { t } = useTranslation();
 
 	return (
-		<div className="border-t bg-surface px-4 py-3 h-36 overflow-y-auto flex flex-col gap-3">
+		<div className="h-max min-h-30 border-t bg-surface p-4 overflow-y-auto flex flex-col gap-3">
 			<div>
 				<p className="text-xs text-muted uppercase tracking-widest mb-2 font-mono">
 					{t("editor.output.label")}

@@ -42,6 +42,7 @@ export function Header() {
 	const pathname = useRouterState({ select: (s) => s.location.pathname });
 	const isTutorial = pathname.startsWith("/tutorial/");
 	const isDashboard = pathname === "/dashboard";
+	const isDevlog = pathname === "/devlog";
 
 	async function handleSignOut() {
 		await signOut();
@@ -76,17 +77,16 @@ export function Header() {
 
 			{/* ─── RIGHT: user actions ─────────────────────────────────────────── */}
 			<div className="flex items-center gap-5 shrink-0">
-				<LanguageSwitcher />
+				{!isDevlog && <LanguageSwitcher />}
 				{user ? (
 					<>
-						{!isDashboard && (
-							<Link
-								to="/dashboard"
-								className="text-muted hover:text-text transition-colors"
-							>
-								<LayoutDashboard size={20} />
-							</Link>
-						)}
+						<Link
+							to="/dashboard"
+							className={`text-muted hover:text-text transition-colors ${isDashboard ? "text-text" : ""}`}
+						>
+							<LayoutDashboard size={20} />
+						</Link>
+
 						<Link
 							to="/profile"
 							className="w-8 h-8 overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"

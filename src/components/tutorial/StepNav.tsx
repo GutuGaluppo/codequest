@@ -9,7 +9,12 @@ interface StepNavProps {
 	onSelectStep: (stepIndex: number) => void;
 }
 
-export function StepNav({ steps, currentStep, completedSteps, onSelectStep }: StepNavProps) {
+export function StepNav({
+	steps,
+	currentStep,
+	completedSteps,
+	onSelectStep,
+}: StepNavProps) {
 	return (
 		<ul className="flex gap-1">
 			{steps.map((step) => {
@@ -22,8 +27,10 @@ export function StepNav({ steps, currentStep, completedSteps, onSelectStep }: St
 						initial={false}
 						animate={{ width: 32 }}
 						whileHover={{ width: "auto" }}
-						transition={{ duration: 0.2 }}
-						onClick={() => (isCompleted || isActive) && onSelectStep(step.order - 1)}
+						transition={{ type: "spring", stiffness: 100 }}
+						onClick={() =>
+							(isCompleted || isActive) && onSelectStep(step.order - 1)
+						}
 						className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm whitespace-nowrap overflow-hidden ${
 							isCompleted
 								? "text-green cursor-pointer"
@@ -33,7 +40,10 @@ export function StepNav({ steps, currentStep, completedSteps, onSelectStep }: St
 						}`}
 					>
 						{isCompleted ? (
-							<CheckCircle size={14} className="shrink-0" />
+							<CheckCircle
+								size={14}
+								className="shrink-0 transition duration-800 ease-in-out"
+							/>
 						) : (
 							<span className="w-4 h-4 rounded-full border flex items-center justify-center text-xs leading-none shrink-0">
 								{step.order}
