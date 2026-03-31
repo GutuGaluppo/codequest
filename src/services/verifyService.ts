@@ -16,20 +16,21 @@ interface VerifyParams {
 }
 
 function buildPrompt(p: VerifyParams): string {
-	return `Você é um revisor de código. O usuário recebeu o seguinte desafio:
+	return `You are a code reviewer. The user received the following challenge:
 "${p.prompt}"
 
-Solução esperada:
+Expected solution:
 ${p.solution}
 
-Código escrito pelo usuário:
+User's code:
 ${p.userCode}
 
-Output gerado ao executar:
+Output when executed:
 ${p.output}
 
-Avalie se a solução resolve o desafio. Responda APENAS com JSON válido, sem markdown:
-{"status":"correct"|"partial"|"incorrect","message":"feedback em português, máximo 2 frases"}`;
+Evaluate whether the solution correctly solves the challenge.
+Respond ONLY with valid JSON, no markdown:
+{"status":"correct"|"partial"|"incorrect","message":"Feedback in 1–2 sentences, in the same language as the challenge prompt."}`;
 }
 
 function parseResponse(text: string): Feedback {

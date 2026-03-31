@@ -30,4 +30,21 @@ export interface Tutorial {
 	stepCount?: number;
 	generatedWith: ModelProvider;
 	createdAt: { seconds: number } | null;
+	introduction?: TutorialIntroduction;
+	finalProject?: FinalProject;
+}
+
+export interface TutorialIntroduction {
+	overview: string;
+	realWorldUse: string;
+	pros: string[];
+	cons: string[];
+	prerequisites: string[];
+}
+
+export interface FinalProject {
+	title: string;
+	description: string;
+	starterCode: string;
+	solution: string;
 }

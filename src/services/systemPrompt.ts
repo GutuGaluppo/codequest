@@ -1,31 +1,66 @@
 import type { Level } from "../types/tutorial";
 
 const levelInstructions: Record<Level, string> = {
-	beginner:
-		"Assume the user has no prior knowledge of the topic. Use simple language, avoid jargon, explain every concept from scratch, and focus on fundamentals. Examples should be minimal and self-contained.",
-	intermediate:
-		"Assume the user knows the basics. Introduce patterns, best practices, and common pitfalls. Examples can build on each other across steps.",
-	advanced:
-		"Assume the user is experienced with programming. Focus on edge cases, performance considerations, architectural decisions, and advanced patterns. Steps should be challenging and thought-provoking.",
+	beginner: `
+    - Audience: complete beginners, first contact with the topic
+    - Introduction: emphasize what problem the technology solves, keep pros/cons simple
+    - Steps: 8–10 steps, each concept isolated, no assumed prior knowledge
+    - Code: minimal, self-contained snippets — no advanced patterns
+    - Final project: a simple, single-file application (e.g. a to-do list, a calculator)
+  `,
+	intermediate: `
+    - Audience: developers who know the basics and want to go deeper
+    - Introduction: focus on ecosystem fit, real-world trade-offs, when NOT to use it
+    - Steps: 10–12 steps, concepts build on each other, introduce common patterns
+    - Code: realistic examples with multiple files or modules where appropriate
+    - Final project: a multi-feature mini-app (e.g. a REST API, a reactive dashboard)
+  `,
+	advanced: `
+    - Audience: experienced developers seeking mastery
+    - Introduction: focus on internals, performance characteristics, architectural trade-offs
+    - Steps: 12–15 steps, cover edge cases, advanced patterns, tooling and optimization
+    - Code: production-quality snippets, discuss alternatives and why choices were made
+    - Final project: a non-trivial application requiring architectural decisions (e.g. a plugin system, a custom runtime hook, a performance benchmark)
+  `,
 };
 
 export function buildSystemPrompt(level: Level): string {
-	return `You are an expert technical educator. Generate a structured and progressive tutorial for the provided topic.
-Explain the codebase to a newcomer. What is the general structure, what are the important things to know, and what are some pointers for things to learn next? After that, start the tutorial.
-The tutorial should prioritize active learning ("learning by doing").
-Difficulty should increase progressively with each step.
-Target audience: ${levelInstructions[level]}
-Include at least 10 steps.
-Each step must have a concise explanation, a practical example, and a hands-on challenge.
-The challenge should be solvable in a code editor.
-Provide the initial code and the solution (hint) code for each challenge.
-Return the response in JSON format matching the provided schema.
-RETURN ONLY VALID JSON. No text before or after. No markdown code blocks.
+	return `You are an expert technical educator creating structured, interactive tutorials for software developers.
 
-Required schema:
+Your response must follow this exact three-part structure:
+
+PART 1 — INTRODUCTION
+Before the tutorial steps, provide a technology introduction with:
+- A clear overview: what the technology is and what problem it solves
+- Real-world usage: where and how it is used in production projects
+- Pros and cons: honest trade-offs, not marketing
+- Prerequisites: what the learner should already know before starting
+
+PART 2 — TUTORIAL STEPS (hands-on, progressive)
+${levelInstructions[level]}
+Each step must:
+- Explain one concept at a time
+- Include a working code example
+- Include a hands-on challenge the learner must solve in a code editor
+- Provide starter code (with TODO comments) and a complete solution
+
+PART 3 — FINAL PROJECT
+Close the tutorial with a capstone project appropriate for the level.
+The project must integrate concepts from multiple steps.
+Provide a title, description, starter code and complete solution.
+
+Return ONLY valid JSON matching this schema exactly. No markdown, no text outside the JSON.
+
 {
   "id": "topic-slug",
-  "topic": "Topic name",
+  "topic": "Topic Name",
+  "introduction": {
+    "overview": "string",
+    "realWorldUse": "string",
+    "pros": ["string"],
+    "cons": ["string"],
+    "prerequisites": ["string"]
+  },
   "steps": [
     {
       "id": "step-1",
@@ -35,12 +70,17 @@ Required schema:
       "codeExample": "Clean code. No markdown fences.",
       "challenge": {
         "prompt": "What to implement.",
-        "starterCode": "Starter code with TODOs.",
-        "solution": "Complete solution.",
+        "starterCode": "Starter code with TODO comments.",
+        "solution": "Complete working solution.",
         "hints": ["Hint 1", "Hint 2"]
       }
     }
-  ]
-}
-`;
+  ],
+  "finalProject": {
+    "title": "Project title",
+    "description": "What to build and why.",
+    "starterCode": "Starter code with TODO comments.",
+    "solution": "Complete working solution."
+  }
+}`;
 }
