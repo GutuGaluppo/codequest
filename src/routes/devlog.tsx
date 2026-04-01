@@ -296,6 +296,14 @@ const entries: EntryMeta[] = [
 		tags: ["feature", "editor", "ux"],
 		key: "final_project_view",
 	},
+	{
+		date: "2026-04-01",
+		commit: "fff6c98",
+		phaseKey: "polish",
+		tags: ["fix", "ai"],
+		key: "parse_ai_json_fix",
+		hasBugs: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
