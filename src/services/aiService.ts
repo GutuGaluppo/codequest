@@ -8,10 +8,16 @@ export async function generateTutorial(
 	preferredModel: ModelProvider,
 	userKeys: UserApiKeys,
 	level: Level,
+	language: string,
 ) {
 	if (preferredModel === "claude" && userKeys.anthropic) {
 		try {
-			return await claudeService.generate(topic, userKeys.anthropic, level);
+			return await claudeService.generate(
+				topic,
+				userKeys.anthropic,
+				level,
+				language,
+			);
 		} catch (error) {
 			throw new Error(
 				`Claude generation failed with the following error: ${error}`,
@@ -20,7 +26,12 @@ export async function generateTutorial(
 	}
 	if (preferredModel === "openai" && userKeys.openai) {
 		try {
-			return await openaiService.generate(topic, userKeys.openai, level);
+			return await openaiService.generate(
+				topic,
+				userKeys.openai,
+				level,
+				language,
+			);
 		} catch (error) {
 			throw new Error(
 				`OpenAI generation failed with the following error: ${error}`,
@@ -31,5 +42,6 @@ export async function generateTutorial(
 		topic,
 		import.meta.env.VITE_GEMINI_API_KEY,
 		level,
+		language,
 	);
 }

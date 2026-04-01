@@ -1,5 +1,14 @@
 import type { Level } from "../types/tutorial";
 
+const languageNames: Record<string, string> = {
+	en: "English",
+	"pt-BR": "Brazilian Portuguese",
+	es: "Spanish",
+	de: "German",
+	el: "Greek",
+	pl: "Polish",
+};
+
 const levelInstructions: Record<Level, string> = {
 	beginner: `
     - Audience: complete beginners, first contact with the topic
@@ -24,9 +33,12 @@ const levelInstructions: Record<Level, string> = {
   `,
 };
 
-export function buildSystemPrompt(level: Level): string {
+export function buildSystemPrompt(level: Level, language: string): string {
+	const langName = languageNames[language] ?? "English";
 	return `You are an expert technical educator creating structured, interactive tutorials for software developers.
 
+Your task is to generate a tutorial on the topic provided by the user.
+The tutorial should be designed for ${level} developers and should be written in ${langName}.
 Your response must follow this exact three-part structure:
 
 PART 1 — INTRODUCTION

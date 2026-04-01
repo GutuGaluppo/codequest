@@ -7,6 +7,7 @@ export const tutorialQueryOptions = (
 	model: ModelProvider,
 	userKeys: UserApiKeys,
 	level: Level,
+	language: string,
 	uid?: string,
 ) => {
 	const slug = topic.toLowerCase().replace(/\s+/g, "-");
@@ -20,7 +21,13 @@ export const tutorialQueryOptions = (
 				if (saved) return saved;
 			}
 
-			const tutorial = await generateTutorial(topic, model, userKeys, level);
+			const tutorial = await generateTutorial(
+				topic,
+				model,
+				userKeys,
+				level,
+				language,
+			);
 			if (uid) {
 				await firestoreService.saveTutorial(uid, {
 					...tutorial,

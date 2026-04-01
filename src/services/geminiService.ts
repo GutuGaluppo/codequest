@@ -9,10 +9,11 @@ export const geminiService = {
 		topic: string,
 		apiKey: string,
 		level: Level,
+		language: string,
 	): Promise<Tutorial> {
 		const ai = new GoogleGenAI({ apiKey });
 
-		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level, language)} Topic: ${topic}`;
 
 		let result;
 		try {

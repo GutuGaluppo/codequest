@@ -7,10 +7,11 @@ export const claudeService = {
 		topic: string,
 		apiKey: string,
 		level: Level,
+		language: string,
 	): Promise<Tutorial> {
 		const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level, language)} Topic: ${topic}`;
 
 		const message = await client.messages.create({
 			model: "claude-3-5-sonnet-20241022",

@@ -4,5 +4,16 @@ export function parseAiJson(text: string): unknown {
 		.replace(/^```json\s*/i, "")
 		.replace(/^```\s*/i, "")
 		.replace(/```\s*$/i, "");
-	return JSON.parse(cleaned);
+
+	try {
+		return JSON.parse(cleaned);
+	} catch {
+		// Fix literal newlines/tabs inside JSON string values
+		const sanitized = cleaned.replace(
+			/"((?:[^"\\]|\\.)*)"/gs,
+			(_, inner) =>
+				`"${inner.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t")}"`,
+		);
+		return JSON.parse(sanitized);
+	}
 }

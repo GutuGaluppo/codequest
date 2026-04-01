@@ -7,10 +7,11 @@ export const openaiService = {
 		topic: string,
 		apiKey: string,
 		level: Level,
+		language: string,
 	): Promise<Tutorial> {
 		const client = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${buildSystemPrompt(level)} Topic: ${topic}`;
+		const prompt = `${buildSystemPrompt(level, language)} Topic: ${topic}`;
 
 		const response = await client.chat.completions.create({
 			model: "gpt-4o",

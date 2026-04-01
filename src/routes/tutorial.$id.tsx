@@ -21,6 +21,7 @@ import { useEditorStore } from "../stores/editorStore";
 import { useTutorialNavStore } from "../stores/tutorialNavStore";
 import type { Level } from "../types/tutorial";
 import { detectLanguage } from "../utils/detectLanguage";
+import { TutorialIntro } from "../components/tutorial/TutorialIntro";
 
 export const Route = createFileRoute("/tutorial/$id")({
 	validateSearch: (search: Record<string, unknown>) => ({
@@ -45,6 +46,8 @@ function TutorialPage() {
 	const setSteps = useTutorialNavStore((s) => s.setSteps);
 	const setCompletedSteps = useTutorialNavStore((s) => s.setCompletedSteps);
 	const clear = useTutorialNavStore((s) => s.clear);
+	const showIntro = useEditorStore((s) => s.showIntro);
+	const setShowIntro = useEditorStore((s) => s.setShowIntro);
 
 	const slug = id.toLowerCase().replace(/\s+/g, "-");
 	const tutorialId = `${slug}-${level}`;
@@ -63,7 +66,14 @@ function TutorialPage() {
 		isError,
 		error: tutorialError,
 	} = useQuery({
-		...tutorialQueryOptions(id, model, userKeys, level, user?.uid),
+		...tutorialQueryOptions(
+			id,
+			model,
+			userKeys,
+			level,
+			i18n.language,
+			user?.uid,
+		),
 		enabled: !loading,
 	});
 
@@ -115,9 +125,14 @@ function TutorialPage() {
 		onError: () => toast.error(t("tutorial.stepComplete.error")),
 	});
 
-	const language = detectLanguage(tutorial?.topic ?? id);
+	const monacoLanguage = detectLanguage(tutorial?.topic ?? id);
 
-	if (tutorialPending || !tutorial || !step) return <TutorialSkeleton />;
+	if (tutorialPending || !tutorial) return <TutorialSkeleton />;
+	if (showIntro)
+		return (
+			<TutorialIntro tutorial={tutorial} onStart={() => setShowIntro(false)} />
+		);
+	if (!step) return <TutorialSkeleton />;
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">
@@ -125,7 +140,7 @@ function TutorialPage() {
 				step={step}
 				model={model}
 				userKeys={userKeys}
-				language={language}
+				monacoLanguage={monacoLanguage}
 				onComplete={() => completeStep(step.id)}
 			/>
 		</div>

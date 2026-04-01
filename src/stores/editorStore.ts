@@ -10,11 +10,13 @@ interface EditorStore {
 	editorCode: string;
 	output: string;
 	feedback: Feedback | null;
+	showIntro: boolean;
 	setFeedback: (feedback: Feedback | null) => void;
 	setCurrentStep: (step: number) => void;
 	setEditorCode: (code: string) => void;
 	setOutput: (output: string) => void;
 	reset: () => void;
+	setShowIntro: (show: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -22,10 +24,12 @@ export const useEditorStore = create<EditorStore>((set) => ({
 	editorCode: "",
 	output: "",
 	feedback: null,
+	showIntro: true,
 	setFeedback: (feedback) => set({ feedback }),
 	setCurrentStep: (step) => set({ currentStep: step }),
 	setEditorCode: (code) => set({ editorCode: code }),
 	setOutput: (output) => set({ output }),
 	reset: () =>
 		set({ currentStep: 0, editorCode: "", output: "", feedback: null }),
+	setShowIntro: (show) => set({ showIntro: show }),
 }));
