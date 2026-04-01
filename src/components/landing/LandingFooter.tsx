@@ -51,7 +51,9 @@ export function LandingFooter() {
 					<span className="text-xs font-mono text-muted/30">
 						{t("landing.footer.copyright")}
 					</span>
-					<span className="text-xs font-mono text-muted/30">{t("landing.footer.version")}</span>
+					<span className="text-xs font-mono text-muted/30">
+						{t("landing.footer.version")}
+					</span>
 				</div>
 			</div>
 		</footer>

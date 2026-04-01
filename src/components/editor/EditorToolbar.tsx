@@ -2,13 +2,13 @@ import { PlayIcon, TextIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function EditorToolbar({
-	language,
+	monacoLanguage,
 	verifying,
 	handleFormat,
 	handleRun,
 	handleVerify,
 }: {
-	language: string;
+	monacoLanguage: string;
 	verifying: boolean;
 	handleFormat: () => void;
 	handleRun: () => void;
@@ -19,7 +19,7 @@ export default function EditorToolbar({
 	return (
 		<div className="flex items-center justify-between px-3 py-2 bg-surface border-b">
 			<span className="text-xs font-mono uppercase tracking-widest text-amber border border-amber/30 px-2 py-0.5">
-				{language}
+				{monacoLanguage}
 			</span>
 
 			<div className="flex items-center gap-2">
@@ -35,7 +35,8 @@ export default function EditorToolbar({
 					className="flex items-center text-xs px-3 py-1.5 bg-amber text-background font-medium hover:opacity-90 transition-opacity"
 					title={t("editor.buttons.run")}
 				>
-					<PlayIcon size={16} />
+					Run
+					<PlayIcon size={16} className="ml-1" />
 				</button>
 				<button
 					onClick={handleVerify}

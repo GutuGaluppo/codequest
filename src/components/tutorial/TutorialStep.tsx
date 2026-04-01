@@ -15,7 +15,7 @@ interface TutorialStepProps {
 	step: TutorialStep;
 	model: ModelProvider;
 	userKeys: UserApiKeys;
-	language?: string;
+	monacoLanguage?: string;
 	onComplete: () => void;
 }
 
@@ -23,7 +23,7 @@ export function TutorialStepView({
 	step,
 	model,
 	userKeys,
-	language,
+	monacoLanguage,
 	onComplete,
 }: TutorialStepProps) {
 	const { setEditorCode, feedback, setFeedback, setOutput } = useEditorStore();
@@ -91,7 +91,7 @@ export function TutorialStepView({
 					challenge={step.challenge}
 					model={model}
 					userKeys={userKeys}
-					language={language}
+					monacoLanguage={monacoLanguage}
 				/>
 			</div>
 		</div>

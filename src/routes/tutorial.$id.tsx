@@ -22,6 +22,7 @@ import { useTutorialNavStore } from "../stores/tutorialNavStore";
 import type { Level } from "../types/tutorial";
 import { detectLanguage } from "../utils/detectLanguage";
 import { TutorialIntro } from "../components/tutorial/TutorialIntro";
+import { FinalProjectView } from "../components/tutorial/FinalProjectView";
 
 export const Route = createFileRoute("/tutorial/$id")({
 	validateSearch: (search: Record<string, unknown>) => ({
@@ -48,6 +49,8 @@ function TutorialPage() {
 	const clear = useTutorialNavStore((s) => s.clear);
 	const showIntro = useEditorStore((s) => s.showIntro);
 	const setShowIntro = useEditorStore((s) => s.setShowIntro);
+	const showFinalProject = useEditorStore((s) => s.showFinalProject);
+	const setShowFinalProject = useEditorStore((s) => s.setShowFinalProject);
 
 	const slug = id.toLowerCase().replace(/\s+/g, "-");
 	const tutorialId = `${slug}-${level}`;
@@ -118,7 +121,10 @@ function TutorialPage() {
 				queryKey: ["progress", tutorialId, user?.uid],
 			});
 			toast.success(t("tutorial.stepComplete.success"));
-			if (currentStep < (tutorial?.steps?.length ?? 1) - 1) {
+			const isLastStep = currentStep === (tutorial?.steps?.length ?? 1) - 1;
+			if (isLastStep) {
+				setShowFinalProject(true);
+			} else {
 				setCurrentStep(currentStep + 1);
 			}
 		},
@@ -133,6 +139,13 @@ function TutorialPage() {
 			<TutorialIntro tutorial={tutorial} onStart={() => setShowIntro(false)} />
 		);
 	if (!step) return <TutorialSkeleton />;
+	if (showFinalProject && tutorial.finalProject)
+		return (
+			<FinalProjectView
+				project={tutorial.finalProject}
+				monacoLanguage={monacoLanguage}
+			/>
+		);
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">

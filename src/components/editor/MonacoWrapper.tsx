@@ -15,8 +15,8 @@ import { OutputPanel } from "./OutputPanel";
 
 interface MonacoWrapperProps {
 	defaultValue: string;
-	language?: string;
-	challenge: Challenge;
+	monacoLanguage?: string;
+	challenge?: Challenge | null;
 	model: ModelProvider;
 	userKeys: UserApiKeys;
 	onChange: (value: string) => void;
@@ -24,7 +24,7 @@ interface MonacoWrapperProps {
 
 export function MonacoWrapper({
 	defaultValue,
-	language,
+	monacoLanguage,
 	challenge,
 	model,
 	userKeys,
@@ -40,9 +40,11 @@ export function MonacoWrapper({
 
 	function handleRun() {
 		const nonExecutableLanguages = ["css", "html", "sql", "json"];
-		if (language && nonExecutableLanguages.includes(language)) {
+		if (monacoLanguage && nonExecutableLanguages.includes(monacoLanguage)) {
 			setOutput(
-				t("editor.run.notExecutable", { language: language.toUpperCase() }),
+				t("editor.run.notExecutable", {
+					language: monacoLanguage.toUpperCase(),
+				}),
 			);
 			return;
 		}
@@ -63,6 +65,7 @@ export function MonacoWrapper({
 	}
 
 	async function handleVerify() {
+		if (!challenge) return;
 		if (!output) {
 			setOutput(t("editor.verify.requireRun"));
 			return;
@@ -108,7 +111,7 @@ export function MonacoWrapper({
 	return (
 		<div className="flex flex-col h-full">
 			<EditorToolbar
-				language={language ?? "code"}
+				monacoLanguage={monacoLanguage ?? "code"}
 				handleFormat={handleFormat}
 				handleRun={handleRun}
 				handleVerify={handleVerify}
@@ -118,7 +121,7 @@ export function MonacoWrapper({
 			<div className="flex-1 min-h-0">
 				<Editor
 					height="100%"
-					language={language}
+					language={monacoLanguage}
 					defaultValue={defaultValue}
 					theme="vs-dark"
 					onChange={(value) => onChange(value ?? "")}
