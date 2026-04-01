@@ -501,6 +501,10 @@
 				"title": "Progress bar on TutorialCard",
 				"description": "Each Dashboard card now shows a progress bar with percentage and step count. getAllProgress fetches all progress documents for the user in a single Firestore query (instead of N per card). DashboardContent passes completedSteps[] to each TutorialCard, which calculates percent = completedSteps.length / stepCount."
 			},
+			"final_project_view": {
+				"title": "Final project view with Monaco editor and solution toggle",
+				"description": "FinalProjectView component added as the capstone screen shown after completing all tutorial steps. Uses the same two-column layout as TutorialStepView — project brief on the left, Monaco editor on the right with the starter code pre-loaded. A Show/Hide Solution toggle reveals the complete solution in a code block. challenge prop on MonacoWrapper made optional (Challenge | null) with a null guard in handleVerify, so the Verify button is safely disabled in the final project context. language prop renamed to monacoLanguage across MonacoWrapper, EditorToolbar and TutorialStepView for clarity."
+			},
 			"tutorial_intro": {
 				"title": "Tutorial intro screen, i18n-aware content generation, robust JSON parsing",
 				"description": "TutorialIntro component added as a pre-step screen showing overview, real-world usage, pros/cons and prerequisites before the tutorial starts. showIntro state added to editorStore. Tutorial content language now derived from i18n.language and mapped to readable names (e.g. pt-BR → Brazilian Portuguese) before being passed to buildSystemPrompt — the AI generates content in the user's app language. parseAiJson updated with a fallback that sanitizes literal newlines/tabs inside JSON string values, fixing Bad escaped character errors caused by AI-generated code blocks.",
