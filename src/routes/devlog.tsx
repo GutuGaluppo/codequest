@@ -280,6 +280,15 @@ const entries: EntryMeta[] = [
 		key: "tutorial_prompt_v2",
 		hasDecisions: true,
 	},
+	{
+		date: "2026-04-01",
+		commit: "f7afb89",
+		phaseKey: "features",
+		tags: ["feature", "ux", "ai", "fix"],
+		key: "tutorial_intro",
+		hasBugs: true,
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {

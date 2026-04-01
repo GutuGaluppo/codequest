@@ -496,6 +496,18 @@
         "title": "Progress bar on TutorialCard",
         "description": "Each Dashboard card now shows a progress bar with percentage and step count. getAllProgress fetches all progress documents for the user in a single Firestore query (instead of N per card). DashboardContent passes completedSteps[] to each TutorialCard, which calculates percent = completedSteps.length / stepCount."
       },
+      "tutorial_intro": {
+        "title": "Tutorial intro screen, i18n-aware content generation, robust JSON parsing",
+        "description": "TutorialIntro component added as a pre-step screen showing overview, real-world usage, pros/cons and prerequisites before the tutorial starts. showIntro state added to editorStore. Tutorial content language now derived from i18n.language and mapped to readable names (e.g. pt-BR → Brazilian Portuguese) before being passed to buildSystemPrompt — the AI generates content in the user's app language. parseAiJson updated with a fallback that sanitizes literal newlines/tabs inside JSON string values, fixing Bad escaped character errors caused by AI-generated code blocks.",
+        "bugs": [
+          "Bad escaped character in JSON — AI-generated code fields contained literal newlines instead of \\n, crashing JSON.parse",
+          "detectLanguage (Monaco language) was removed when language param was added, leaving TutorialStepView without a language prop"
+        ],
+        "decisions": [
+          "Content language sourced from i18n.language instead of a URL search param — the app locale is the single source of truth",
+          "parseAiJson uses try/catch with regex sanitization fallback instead of a third-party dirty-json dependency (package had conflicting peer deps)"
+        ]
+      },
       "tutorial_prompt_v2": {
         "title": "Tutorial prompt v2 — introduction, progressive steps and final project",
         "description": "buildSystemPrompt rewritten to enforce a three-part structure: (1) Introduction with overview, real-world usage, pros/cons and prerequisites; (2) hands-on steps with level-specific depth and count guidelines; (3) a capstone final project integrating all concepts. levelInstructions expanded with explicit audience, step count, code depth and project complexity per level. verifyService.buildPrompt translated to English so all AI prompts are consistent. Tutorial type updated with optional introduction and finalProject fields.",
