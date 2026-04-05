@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ErrorScreen } from "../components/ErrorScreen";
-import { TutorialSkeleton } from "../components/tutorial/TutorialSkeleton";
+import { TutorialLoading } from "../components/tutorial/TutorialLoading";
 import { TutorialStepView } from "../components/tutorial/TutorialStep";
 import { useAuth } from "../hooks/useAuth";
 import { useProgressSync } from "../hooks/useProgressSync";
@@ -23,6 +23,7 @@ import type { Level } from "../types/tutorial";
 import { detectLanguage } from "../utils/detectLanguage";
 import { TutorialIntro } from "../components/tutorial/TutorialIntro";
 import { FinalProjectView } from "../components/tutorial/FinalProjectView";
+import { TutorialComplete } from "../components/tutorial/TutorialComplete";
 
 export const Route = createFileRoute("/tutorial/$id")({
 	validateSearch: (search: Record<string, unknown>) => ({
@@ -41,7 +42,7 @@ function TutorialPage() {
 	const { id } = Route.useParams();
 	const { level } = Route.useSearch();
 	const { user, loading } = useAuth();
-	const { currentStep, setCurrentStep } = useEditorStore();
+	const { currentStep, setCurrentStep, editorCode } = useEditorStore();
 	const queryClient = useQueryClient();
 	const { t } = useTranslation();
 	const setSteps = useTutorialNavStore((s) => s.setSteps);
@@ -90,6 +91,7 @@ function TutorialPage() {
 	useProgressSync(tutorialId, user?.uid ?? "");
 
 	const completedSteps = (progress?.completedSteps as string[]) ?? [];
+	const completedCode = (progress?.completedCode as Record<string, string>) ?? {};
 
 	// Sync steps and completedSteps to the Header store
 	useEffect(() => {
@@ -99,6 +101,12 @@ function TutorialPage() {
 	useEffect(() => {
 		setCompletedSteps(completedSteps);
 	}, [completedSteps, setCompletedSteps]);
+
+	// Reset intro and final project state on mount
+	useEffect(() => {
+		setShowIntro(true);
+		setShowFinalProject(false);
+	}, [tutorialId, setShowIntro, setShowFinalProject]);
 
 	// Clear Header store on unmount
 	useEffect(() => {
@@ -115,7 +123,7 @@ function TutorialPage() {
 
 	const { mutate: completeStep } = useMutation({
 		mutationFn: (stepId: string) =>
-			firestoreService.markStepComplete(tutorialId, user!.uid, stepId),
+			firestoreService.markStepComplete(tutorialId, user!.uid, stepId, editorCode),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ["progress", tutorialId, user?.uid],
@@ -133,19 +141,21 @@ function TutorialPage() {
 
 	const monacoLanguage = detectLanguage(tutorial?.topic ?? id);
 
-	if (tutorialPending || !tutorial) return <TutorialSkeleton />;
+	if (tutorialPending || !tutorial) return <TutorialLoading />;
 	if (showIntro)
 		return (
 			<TutorialIntro tutorial={tutorial} onStart={() => setShowIntro(false)} />
 		);
-	if (!step) return <TutorialSkeleton />;
+	if (!step) return <TutorialLoading />;
 	if (showFinalProject && tutorial.finalProject)
 		return (
 			<FinalProjectView
 				project={tutorial.finalProject}
 				monacoLanguage={monacoLanguage}
+				topic={tutorial.topic ?? id}
 			/>
 		);
+	if (showFinalProject && !tutorial.finalProject) return <TutorialComplete />;
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">
@@ -154,6 +164,7 @@ function TutorialPage() {
 				model={model}
 				userKeys={userKeys}
 				monacoLanguage={monacoLanguage}
+				completedCode={completedCode}
 				onComplete={() => completeStep(step.id)}
 			/>
 		</div>

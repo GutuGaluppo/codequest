@@ -111,6 +111,15 @@
   },
   "tutorial": {
     "pending": "Tutorial wird generiert",
+    "loading": {
+      "steps": [
+        "Thema analysieren",
+        "Lehrplan strukturieren",
+        "Codebeispiele schreiben",
+        "Aufgaben erstellen",
+        "Abschlussprojekt zusammenstellen"
+      ]
+    },
     "error": {
       "message": "Das Tutorial konnte nicht generiert werden."
     },
@@ -127,6 +136,16 @@
       "label": "Aufgabe",
       "showHints": "Hinweise anzeigen",
       "hideHints": "Hinweise ausblenden"
+    },
+    "finalProject": {
+      "label": "Abschlussprojekt",
+      "showSolution": "Lösung anzeigen",
+      "hideSolution": "Lösung ausblenden"
+    },
+    "complete": {
+      "heading": "Tutorial abgeschlossen",
+      "message": "Du hast alle Schritte abgeschlossen. Generiere dieses Tutorial neu, um die Abschlussprojekt-Aufgabe freizuschalten.",
+      "back": "Zurück zum Dashboard"
     }
   },
   "editor": {

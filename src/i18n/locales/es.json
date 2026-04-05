@@ -111,6 +111,15 @@
   },
   "tutorial": {
     "pending": "Generando Tutorial",
+    "loading": {
+      "steps": [
+        "Analizando tema",
+        "Estructurando currículo",
+        "Escribiendo ejemplos de código",
+        "Construyendo desafíos",
+        "Ensamblando proyecto final"
+      ]
+    },
     "error": {
       "message": "No se pudo generar el tutorial."
     },
@@ -127,6 +136,16 @@
       "label": "Desafío",
       "showHints": "Ver pistas",
       "hideHints": "Ocultar pistas"
+    },
+    "finalProject": {
+      "label": "Proyecto Final",
+      "showSolution": "Ver Solución",
+      "hideSolution": "Ocultar Solución"
+    },
+    "complete": {
+      "heading": "Tutorial Completado",
+      "message": "Has terminado todos los pasos. Regenera este tutorial para desbloquear el desafío del proyecto final.",
+      "back": "Volver al Dashboard"
     }
   },
   "editor": {

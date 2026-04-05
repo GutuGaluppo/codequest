@@ -111,6 +111,15 @@
 	},
 	"tutorial": {
 		"pending": "Generating Tutorial",
+		"loading": {
+			"steps": [
+				"Analyzing topic",
+				"Structuring curriculum",
+				"Writing code examples",
+				"Building challenges",
+				"Assembling final project"
+			]
+		},
 		"error": {
 			"message": "Could not generate the tutorial."
 		},
@@ -132,6 +141,11 @@
 			"label": "Final Project",
 			"showSolution": "Show Solution",
 			"hideSolution": "Hide Solution"
+		},
+		"complete": {
+			"heading": "Tutorial Complete",
+			"message": "You've finished all the steps. Regenerate this tutorial to unlock the final project challenge.",
+			"back": "Back to Dashboard"
 		}
 	},
 	"editor": {

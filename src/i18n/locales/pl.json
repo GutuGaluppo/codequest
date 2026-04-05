@@ -111,6 +111,15 @@
   },
   "tutorial": {
     "pending": "Generowanie Samouczka",
+    "loading": {
+      "steps": [
+        "Analizowanie tematu",
+        "Strukturyzowanie programu nauczania",
+        "Pisanie przykładów kodu",
+        "Tworzenie wyzwań",
+        "Składanie projektu końcowego"
+      ]
+    },
     "error": {
       "message": "Nie udało się wygenerować samouczka."
     },
@@ -127,6 +136,16 @@
       "label": "Wyzwanie",
       "showHints": "Pokaż wskazówki",
       "hideHints": "Ukryj wskazówki"
+    },
+    "finalProject": {
+      "label": "Projekt Końcowy",
+      "showSolution": "Pokaż Rozwiązanie",
+      "hideSolution": "Ukryj Rozwiązanie"
+    },
+    "complete": {
+      "heading": "Tutorial Ukończony",
+      "message": "Ukończyłeś wszystkie kroki. Wygeneruj ponownie ten tutorial, aby odblokować wyzwanie projektu końcowego.",
+      "back": "Wróć do Dashboard"
     }
   },
   "editor": {

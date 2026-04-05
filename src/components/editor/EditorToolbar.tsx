@@ -28,7 +28,8 @@ export default function EditorToolbar({
 					className="flex items-center text-xs px-3 py-1.5 bg-amber text-background font-medium hover:opacity-90 transition-opacity"
 					title={t("editor.buttons.format")}
 				>
-					<TextIcon size={16} />
+					Indent
+					<TextIcon size={16} className="ml-1" />
 				</button>
 				<button
 					onClick={handleRun}
