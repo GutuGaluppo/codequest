@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.80.0",
+		"@codesandbox/sandpack-react": "^2.20.0",
 		"@google/genai": "^1.46.0",
 		"@monaco-editor/react": "^4.7.0",
 		"@tailwindcss/typography": "^0.5.19",
@@ -45,7 +46,7 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^6.0.1",
-		"eslint": "^4.0.0",
+		"eslint": "^9.39.4",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"eslint-plugin-react-refresh": "^0.5.2",
 		"globals": "^17.4.0",
