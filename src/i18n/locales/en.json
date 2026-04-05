@@ -522,6 +522,49 @@
 					"Expected ':' after property name — model prefixed the JSON with a sentence, fence regex didn't match, JSON.parse received raw text"
 				]
 			},
+			"sandpack": {
+				"title": "Sandpack live preview for web-based final projects",
+				"description": "FinalProjectView now conditionally renders a Sandpack editor with live preview for web topics (React, HTML, CSS, vanilla JS, Node). getSandpackTemplate maps the tutorial topic to a SandpackPredefinedTemplate; topics without a match (Python, Rust, etc.) continue using Monaco. SandpackProvider wraps a split-pane layout: SandpackCodeEditor on top and SandpackPreview below, both filling available height.",
+				"decisions": [
+					"Template selection is keyword-based (topic.toLowerCase().includes(key)) rather than exact match — handles variations like 'React Hooks' or 'HTML & CSS'",
+					"Monaco kept as fallback for non-web topics to avoid blank previews for server-side or systems languages"
+				]
+			},
+			"tutorial_complete": {
+				"title": "Fallback screen when final project is unavailable",
+				"description": "TutorialComplete component added as a fallback when showFinalProject is true but the tutorial document has no finalProject field. This happens with tutorials generated before the v2 prompt schema was introduced. The screen prompts the user to regenerate and provides a back-to-dashboard button."
+			},
+			"tutorial_loading": {
+				"title": "Animated loading screen with progressive step indicators",
+				"description": "TutorialLoading replaces TutorialSkeleton during tutorial generation. Displays a vertical checklist of generation phases (Analyzing topic → Structuring curriculum → Writing code examples → Building challenges → Assembling final project) that appear sequentially with randomised delays. The active phase shows a rotating amber spinner; completed phases show a green checkmark. Translated across all 6 locales."
+			},
+			"step_nav_fix": {
+				"title": "Fix: step navigation off-by-one and amber active state",
+				"description": "StepNav compared step.order (1-based) directly against currentStep (0-based), causing the active highlight to always point to the wrong step, the title to show for the previous step, and click handlers to never fire for non-completed steps. Fixed to step.order - 1 === currentStep. Active step now always shows its title in amber; inactive steps show only the number badge; completed steps show a checkmark with hover:opacity-70. Removed the motion spring expand animation.",
+				"bugs": [
+					"Step navigation clicked the wrong step — off-by-one between 1-based order and 0-based currentStep index",
+					"Two steps appeared checked on load because isActive was never true, preventing the correct visual distinction between active and completed"
+				]
+			},
+			"intro_button": {
+				"title": "Info button to reopen tutorial intro at any time",
+				"description": "An Info icon button added to the header, visible only on tutorial pages. Clicking it calls setShowIntro(true), restoring the TutorialIntro screen from any step. Tutorial route now resets showIntro to true and showFinalProject to false on mount, so revisiting a tutorial always starts from the intro screen."
+			},
+			"persist_step_code": {
+				"title": "Persist completed step code to Firestore",
+				"description": "markStepComplete now saves the user's editor code under completedCode[stepId] in the progress document. TutorialStep loads the saved code as defaultValue when navigating back to a completed step, falling back to starterCode if no code was saved. updateDoc with dot notation used for nested field writes — setDoc merge did not support dot-notation paths.",
+				"bugs": [
+					"Completed step code was not persisted — setDoc merge treated 'completedCode.step-1' as a literal field name with a dot, not as a nested path"
+				]
+			},
+			"openai_prompt_fix": {
+				"title": "Fix OpenAI prompt structure and enforce exact step count",
+				"description": "OpenAI service refactored to send system and user messages separately instead of concatenating them into a single user message. response_format: json_object added to prevent non-JSON output. parseAiJson now used instead of JSON.parse for consistency. systemPrompt updated with a CRITICAL CONSTRAINTS block specifying exact step counts per level (beginner: 8, intermediate: 10, advanced: 12) with 'no more, no less' instruction.",
+				"bugs": [
+					"OpenAI returned significantly poorer tutorial quality — system prompt was sent as part of the user message, losing the system role context",
+					"Step count was non-deterministic — AI interpreted the previous 8–10 / 10–12 / 12–15 ranges as suggestions and returned arbitrary counts"
+				]
+			},
 			"final_project_view": {
 				"title": "Final project view with Monaco editor and solution toggle",
 				"description": "FinalProjectView component added as the capstone screen shown after completing all tutorial steps. Uses the same two-column layout as TutorialStepView — project brief on the left, Monaco editor on the right with the starter code pre-loaded. A Show/Hide Solution toggle reveals the complete solution in a code block. challenge prop on MonacoWrapper made optional (Challenge | null) with a null guard in handleVerify, so the Verify button is safely disabled in the final project context. language prop renamed to monacoLanguage across MonacoWrapper, EditorToolbar and TutorialStepView for clarity."
