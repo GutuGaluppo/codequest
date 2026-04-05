@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { LayoutDashboard, LogOutIcon } from "lucide-react";
+import { Info, LayoutDashboard, LogOutIcon } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useEditorStore } from "../../stores/editorStore";
 import { useTutorialNavStore } from "../../stores/tutorialNavStore";
@@ -35,7 +35,7 @@ export function Header() {
 	const { user, signOut } = useAuth();
 	const { openDrawer } = useAuthStore();
 	const navigate = useNavigate();
-	const { reset, currentStep, setCurrentStep } = useEditorStore();
+	const { reset, currentStep, setCurrentStep, setShowIntro } = useEditorStore();
 	const { steps, completedSteps } = useTutorialNavStore();
 	const { t } = useTranslation();
 
@@ -77,6 +77,15 @@ export function Header() {
 
 			{/* ─── RIGHT: user actions ─────────────────────────────────────────── */}
 			<div className="flex items-center gap-5 shrink-0">
+				{isTutorial && (
+					<button
+						onClick={() => setShowIntro(true)}
+						className="text-muted hover:text-text transition-colors"
+						title="Tutorial info"
+					>
+						<Info size={18} />
+					</button>
+				)}
 				{!isDevlog && <LanguageSwitcher />}
 				{user ? (
 					<>
