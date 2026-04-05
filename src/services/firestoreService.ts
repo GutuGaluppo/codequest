@@ -8,6 +8,7 @@ import {
 	query,
 	serverTimestamp,
 	setDoc,
+	updateDoc,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import type { Tutorial } from "../types/tutorial";
@@ -78,6 +79,7 @@ export const firestoreService = {
 		tutorialId: string,
 		uid: string,
 		stepId: string,
+		code: string,
 	): Promise<void> {
 		const ref = doc(db, "users", uid, "progress", tutorialId);
 		await setDoc(
@@ -90,5 +92,6 @@ export const firestoreService = {
 			},
 			{ merge: true },
 		);
+		await updateDoc(ref, { [`completedCode.${stepId}`]: code });
 	},
 };

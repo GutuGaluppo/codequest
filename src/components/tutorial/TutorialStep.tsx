@@ -16,6 +16,7 @@ interface TutorialStepProps {
 	model: ModelProvider;
 	userKeys: UserApiKeys;
 	monacoLanguage?: string;
+	completedCode?: Record<string, string>;
 	onComplete: () => void;
 }
 
@@ -24,6 +25,7 @@ export function TutorialStepView({
 	model,
 	userKeys,
 	monacoLanguage,
+	completedCode,
 	onComplete,
 }: TutorialStepProps) {
 	const { setEditorCode, feedback, setFeedback, setOutput } = useEditorStore();
@@ -86,7 +88,7 @@ export function TutorialStepView({
 			{/* Right column — Monaco (key forces remount on step change) */}
 			<div key={step.id} className="flex flex-col min-h-0">
 				<MonacoWrapper
-					defaultValue={step.challenge.starterCode}
+					defaultValue={completedCode?.[step.id] ?? step.challenge.starterCode}
 					onChange={setEditorCode}
 					challenge={step.challenge}
 					model={model}
