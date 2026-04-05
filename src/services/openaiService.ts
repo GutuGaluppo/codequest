@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import type { Level, Tutorial } from "../types/tutorial";
 import { buildSystemPrompt } from "./systemPrompt";
+import { parseAiJson } from "../utils/parseAiJson";
 
 export const openaiService = {
 	async generate(
@@ -11,15 +12,17 @@ export const openaiService = {
 	): Promise<Tutorial> {
 		const client = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
-		const prompt = `${buildSystemPrompt(level, language)} Topic: ${topic}`;
-
 		const response = await client.chat.completions.create({
 			model: "gpt-4o",
-			messages: [{ role: "user", content: prompt }],
+			response_format: { type: "json_object" },
+			messages: [
+				{ role: "system", content: buildSystemPrompt(level, language) },
+				{ role: "user", content: `Topic: ${topic}` },
+			],
 		});
 
 		const text = response.choices[0].message.content ?? "";
-		const raw = JSON.parse(text) as Tutorial;
+		const raw = parseAiJson(text) as Tutorial;
 
 		return { ...raw, generatedWith: "openai", createdAt: null };
 	},

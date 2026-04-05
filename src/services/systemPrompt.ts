@@ -9,25 +9,31 @@ const languageNames: Record<string, string> = {
 	pl: "Polish",
 };
 
+export const stepCountByLevel: Record<Level, number> = {
+	beginner: 8,
+	intermediate: 10,
+	advanced: 12,
+};
+
 const levelInstructions: Record<Level, string> = {
 	beginner: `
     - Audience: complete beginners, first contact with the topic
     - Introduction: emphasize what problem the technology solves, keep pros/cons simple
-    - Steps: 8–10 steps, each concept isolated, no assumed prior knowledge
+    - Steps: exactly ${stepCountByLevel.beginner} steps, each concept isolated, no assumed prior knowledge
     - Code: minimal, self-contained snippets — no advanced patterns
     - Final project: a simple, single-file application (e.g. a to-do list, a calculator)
   `,
 	intermediate: `
     - Audience: developers who know the basics and want to go deeper
     - Introduction: focus on ecosystem fit, real-world trade-offs, when NOT to use it
-    - Steps: 10–12 steps, concepts build on each other, introduce common patterns
+    - Steps: exactly ${stepCountByLevel.intermediate} steps, concepts build on each other, introduce common patterns
     - Code: realistic examples with multiple files or modules where appropriate
     - Final project: a multi-feature mini-app (e.g. a REST API, a reactive dashboard)
   `,
 	advanced: `
     - Audience: experienced developers seeking mastery
     - Introduction: focus on internals, performance characteristics, architectural trade-offs
-    - Steps: 12–15 steps, cover edge cases, advanced patterns, tooling and optimization
+    - Steps: exactly ${stepCountByLevel.advanced} steps, cover edge cases, advanced patterns, tooling and optimization
     - Code: production-quality snippets, discuss alternatives and why choices were made
     - Final project: a non-trivial application requiring architectural decisions (e.g. a plugin system, a custom runtime hook, a performance benchmark)
   `,
@@ -61,7 +67,9 @@ Close the tutorial with a capstone project appropriate for the level.
 The project must integrate concepts from multiple steps.
 Provide a title, description, starter code and complete solution.
 
-Return ONLY valid JSON matching this schema exactly. No markdown, no text outside the JSON.
+CRITICAL CONSTRAINTS:
+- The "steps" array MUST contain exactly ${stepCountByLevel[level]} items — no more, no less.
+- Return ONLY valid JSON matching this schema exactly. No markdown, no text outside the JSON.
 
 {
   "id": "topic-slug",
