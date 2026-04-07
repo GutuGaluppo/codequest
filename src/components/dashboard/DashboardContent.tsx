@@ -4,8 +4,10 @@ import {
 	allProgressQueryOptions,
 	userTutorialsQueryOptions,
 } from "../../queries/tutorialQueries";
+import { userProfileQueryOptions } from "../../queries/userQueries";
 import { getAuth } from "firebase/auth";
 import { TutorialCard } from "./TutorialCard";
+import { ApiKeyBanner } from "./ApiKeyBanner";
 import { Link } from "@tanstack/react-router";
 import { Code } from "lucide-react";
 import type { Tutorial } from "../../types/tutorial";
@@ -13,10 +15,15 @@ import type { Tutorial } from "../../types/tutorial";
 export function DashboardContent() {
 	const uid = getAuth().currentUser!.uid;
 	const { t } = useTranslation();
+
 	const { data: tutorials, isPending } = useQuery(
 		userTutorialsQueryOptions(uid),
 	);
 	const { data: progress } = useQuery(allProgressQueryOptions(uid));
+	const { data: profile, isPending: profilePending } = useQuery(
+		userProfileQueryOptions(uid),
+	);
+
 	const progressMap = progress?.reduce(
 		(acc, progress) => {
 			acc[progress.tutorialId] = progress.completedSteps;
@@ -25,8 +32,19 @@ export function DashboardContent() {
 		{} as Record<string, string[]>,
 	);
 
+	const model = profile?.preferredModel;
+	const keys = profile?.apiKeys ?? {};
+	const hasKeyForModel =
+		model === "gemini" ||
+		(model === "openai" && !!keys.openai) ||
+		(model === "claude" && !!keys.anthropic);
+
+	const showBanner = !profilePending && (!profile || !hasKeyForModel);
+
 	return (
 		<div className="max-w-7xl mx-auto px-6 py-10">
+			{showBanner && <ApiKeyBanner />}
+
 			{isPending ? (
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 					{Array.from({ length: 3 }).map((_, i) => (

@@ -107,6 +107,25 @@
       "minutes": "hace {{count}}min",
       "hours": "hace {{count}}h",
       "days": "hace {{count}}d"
+    },
+    "apiKeyBanner": {
+      "title": "Configura tu proveedor de IA para empezar a generar tutoriales",
+      "subtitle": "CodeQuest usa tu clave personal — tu clave, tu uso, tu control.",
+      "steps": [
+        {
+          "title": "Elige un proveedor",
+          "description": "Gemini (gratuito), OpenAI (GPT-4o) o Claude (Sonnet). Define tu preferencia en el perfil."
+        },
+        {
+          "title": "Obtén tu clave",
+          "description": "Crea una cuenta en el proveedor elegido y genera una clave de API."
+        },
+        {
+          "title": "Añade al perfil",
+          "description": "Pega la clave en la configuración de tu perfil. Se almacena de forma segura y nunca se comparte.",
+          "cta": "Ir al Perfil →"
+        }
+      ]
     }
   },
   "tutorial": {

@@ -107,6 +107,25 @@
       "minutes": "{{count}}min temu",
       "hours": "{{count}}h temu",
       "days": "{{count}}d temu"
+    },
+    "apiKeyBanner": {
+      "title": "Skonfiguruj dostawcę AI, aby zacząć generować samouczki",
+      "subtitle": "CodeQuest używa Twojego osobistego klucza API — Twój klucz, Twoje użycie, Twoja kontrola.",
+      "steps": [
+        {
+          "title": "Wybierz dostawcę",
+          "description": "Gemini (bezpłatny), OpenAI (GPT-4o) lub Claude (Sonnet). Ustaw preferencje w profilu."
+        },
+        {
+          "title": "Uzyskaj klucz",
+          "description": "Utwórz konto u wybranego dostawcy i wygeneruj klucz API."
+        },
+        {
+          "title": "Dodaj do profilu",
+          "description": "Wklej klucz w ustawieniach profilu. Jest bezpiecznie przechowywany i nigdy nieudostępniany.",
+          "cta": "Przejdź do Profilu →"
+        }
+      ]
     }
   },
   "tutorial": {
