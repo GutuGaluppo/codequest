@@ -584,6 +584,18 @@
 					"Step count was non-deterministic — AI interpreted the previous 8–10 / 10–12 / 12–15 ranges as suggestions and returned arbitrary counts"
 				]
 			},
+			"api_key_banner": {
+				"title": "Onboarding banner for users without API keys",
+				"description": "ApiKeyBanner component added to the Dashboard. Shown when the user has no Firestore profile yet (brand new account) or when the preferred AI model requires a personal API key that has not been configured. Displays a 3-step guide: choose a provider, get an API key (with direct links to Gemini AI Studio, OpenAI Platform, and Anthropic Console), and add it to the profile. Banner disappears automatically once a valid key is saved. Translated across all 6 locales.",
+				"bugs": [
+					"Banner was not showing for new users — profile is null before first profile save, so the original condition (profile && !hasKeyForModel) evaluated to false",
+					"Gemini users never saw the banner — preferredModel defaults to gemini which has no personal key requirement, making hasKeyForModel always true"
+				]
+			},
+			"login_redirect": {
+				"title": "Redirect to dashboard after login and signup",
+				"description": "LoginDrawer now navigates to /dashboard after successful authentication via email/password, Google, or GitHub. Ensures new users land directly on the dashboard where the onboarding banner is visible instead of remaining on the landing page."
+			},
 			"final_project_view": {
 				"title": "Final project view with Monaco editor and solution toggle",
 				"description": "FinalProjectView component added as the capstone screen shown after completing all tutorial steps. Uses the same two-column layout as TutorialStepView — project brief on the left, Monaco editor on the right with the starter code pre-loaded. A Show/Hide Solution toggle reveals the complete solution in a code block. challenge prop on MonacoWrapper made optional (Challenge | null) with a null guard in handleVerify, so the Verify button is safely disabled in the final project context. language prop renamed to monacoLanguage across MonacoWrapper, EditorToolbar and TutorialStepView for clarity."

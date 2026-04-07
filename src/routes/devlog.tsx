@@ -357,6 +357,21 @@ const entries: EntryMeta[] = [
 		key: "openai_prompt_fix",
 		hasBugs: true,
 	},
+	{
+		date: "2026-04-07",
+		commit: "585f5ab",
+		phaseKey: "ux",
+		tags: ["ux", "feature"],
+		key: "api_key_banner",
+		hasBugs: true,
+	},
+	{
+		date: "2026-04-07",
+		commit: "8508227",
+		phaseKey: "ux",
+		tags: ["ux", "auth"],
+		key: "login_redirect",
+	},
 ];
 
 const tagColors: Record<string, string> = {
