@@ -9,10 +9,12 @@ import { Toggle } from "./Toggle";
 import { friendlyError } from "./errorMessage";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "@tanstack/react-router";
 
 export function LoginDrawer() {
 	const { drawerOpen, closeDrawer } = useAuthStore();
 	const { signInWithEmail, signUpWithEmail } = useAuth();
+	const navigate = useNavigate();
 
 	const [mode, setMode] = useState<"login" | "signup">("login");
 	const [error, setError] = useState("");
@@ -50,6 +52,7 @@ export function LoginDrawer() {
 				await signUpWithEmail(formData.name, formData.email, formData.password);
 			}
 			closeDrawer();
+			navigate({ to: "/dashboard" });
 		} catch (err: unknown) {
 			if (err instanceof Error) setError(friendlyError(err.message));
 		} finally {
