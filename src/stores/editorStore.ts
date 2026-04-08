@@ -30,7 +30,16 @@ export const useEditorStore = create<EditorStore>((set) => ({
 	showIntro: true,
 	showFinalProject: false,
 
-	setFeedback: (feedback) => set({ feedback }),
+	setFeedback: (feedback) => {
+		if (
+			feedback !== null &&
+			(!["correct", "partial", "incorrect"].includes(feedback.status) ||
+				typeof feedback.message !== "string")
+		) {
+			return;
+		}
+		set({ feedback });
+	},
 	setCurrentStep: (step) => set({ currentStep: step }),
 	setEditorCode: (code) => set({ editorCode: code }),
 	setOutput: (output) => set({ output }),

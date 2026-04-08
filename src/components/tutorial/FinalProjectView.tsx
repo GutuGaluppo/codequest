@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	SandpackProvider,
@@ -20,7 +20,7 @@ export function FinalProjectView({
 }) {
 	const { t } = useTranslation();
 	const [showSolution, setShowSolution] = useState(false);
-	const sandpackTemplate = getSandpackTemplate(topic);
+	const sandpackTemplate = useMemo(() => getSandpackTemplate(topic), [topic]);
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">

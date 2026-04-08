@@ -256,7 +256,9 @@
 		"buttonSaving": "Saving...",
 		"buttonSave": "Save",
 		"success": "Profile saved!",
-		"error": "Error saving profile."
+		"error": "Error saving profile.",
+		"photoInvalidType": "Only JPEG, PNG, WebP or GIF images are allowed.",
+		"photoTooLarge": "Photo must be smaller than {{max}}MB."
 	},
 	"design": {
 		"title": "Design System",

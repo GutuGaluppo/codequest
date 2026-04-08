@@ -50,9 +50,27 @@ export default function ProfileForm({
 	);
 	const [uploading, setUploading] = useState(false);
 
+	async function compressImage(file: File, maxPx = 800): Promise<Blob> {
+		return new Promise((resolve) => {
+			const img = new Image();
+			const url = URL.createObjectURL(file);
+			img.onload = () => {
+				URL.revokeObjectURL(url);
+				const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+				const canvas = document.createElement("canvas");
+				canvas.width = Math.round(img.width * scale);
+				canvas.height = Math.round(img.height * scale);
+				canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
+				canvas.toBlob((blob) => resolve(blob ?? file), "image/jpeg", 0.85);
+			};
+			img.src = url;
+		});
+	}
+
 	async function uploadToCloudinary(file: File): Promise<string> {
+		const compressed = await compressImage(file);
 		const formData = new FormData();
-		formData.append("file", file);
+		formData.append("file", compressed);
 		formData.append(
 			"upload_preset",
 			import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
@@ -69,6 +87,21 @@ export default function ProfileForm({
 	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const file = e.target.files?.[0];
 		if (!file) return;
+
+		const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+		const MAX_SIZE_MB = 5;
+
+		if (!ALLOWED_TYPES.includes(file.type)) {
+			toast.error(t("profile.photoInvalidType"));
+			e.target.value = "";
+			return;
+		}
+		if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+			toast.error(t("profile.photoTooLarge", { max: MAX_SIZE_MB }));
+			e.target.value = "";
+			return;
+		}
+
 		setPhotoFile(file);
 		setPhotoPreview(URL.createObjectURL(file));
 	}

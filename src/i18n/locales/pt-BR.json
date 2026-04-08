@@ -255,7 +255,9 @@
     "buttonSaving": "Salvando...",
     "buttonSave": "Salvar",
     "success": "Perfil salvo!",
-    "error": "Erro ao salvar perfil."
+    "error": "Erro ao salvar perfil.",
+    "photoInvalidType": "Apenas imagens JPEG, PNG, WebP ou GIF são permitidas.",
+    "photoTooLarge": "A foto deve ter menos de {{max}}MB."
   },
   "design": {
     "title": "Design System",

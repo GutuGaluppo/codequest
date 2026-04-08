@@ -3,8 +3,12 @@ import { GoogleGenAI } from "@google/genai";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { parseAiJson } from "../src/utils/parseAiJson";
+import { wrapUserInput } from "../src/services/systemPrompt";
 import type { ModelProvider } from "../src/types/tutorial";
 import type { Feedback } from "../src/stores/editorStore";
+import { validateVerifyBody } from "./_validate";
+import { checkRateLimit, MAX_VERIFY } from "./_rateLimit";
+import { setCorsHeaders } from "./_cors";
 
 interface VerifyBody {
 	prompt: string;
@@ -16,16 +20,16 @@ interface VerifyBody {
 
 function buildPrompt(body: VerifyBody): string {
 	return `You are a code reviewer. The user received the following challenge:
-"${body.prompt}"
+${wrapUserInput(body.prompt)}
 
 Expected solution:
-${body.solution}
+${wrapUserInput(body.solution)}
 
 User's code:
-${body.userCode}
+${wrapUserInput(body.userCode)}
 
 Output when executed:
-${body.output}
+${wrapUserInput(body.output)}
 
 Evaluate whether the solution correctly solves the challenge.
 Respond ONLY with valid JSON, no markdown:
@@ -33,8 +37,21 @@ Respond ONLY with valid JSON, no markdown:
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+	if (setCorsHeaders(req, res)) return;
+
 	if (req.method !== "POST") {
 		return res.status(405).json({ error: "Method not allowed" });
+	}
+
+	const { allowed, retryAfter } = checkRateLimit(req, MAX_VERIFY);
+	if (!allowed) {
+		res.setHeader("Retry-After", retryAfter);
+		return res.status(429).json({ error: "Too many requests. Please wait before verifying again." });
+	}
+
+	const validation = validateVerifyBody(req.body);
+	if (!validation.ok) {
+		return res.status(400).json({ error: validation.message });
 	}
 
 	const body = req.body as VerifyBody;

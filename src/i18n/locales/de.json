@@ -255,7 +255,9 @@
     "buttonSaving": "Wird gespeichert...",
     "buttonSave": "Speichern",
     "success": "Profil gespeichert!",
-    "error": "Fehler beim Speichern des Profils."
+    "error": "Fehler beim Speichern des Profils.",
+    "photoInvalidType": "Nur JPEG-, PNG-, WebP- oder GIF-Bilder sind erlaubt.",
+    "photoTooLarge": "Das Foto muss kleiner als {{max}}MB sein."
   },
   "design": {
     "title": "Design System",

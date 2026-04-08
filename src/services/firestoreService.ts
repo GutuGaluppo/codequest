@@ -15,11 +15,25 @@ import type { Tutorial } from "../types/tutorial";
 import type { UserProfile } from "../types/user";
 import { getAuth } from "firebase/auth";
 
+function isUserProfile(data: unknown): data is UserProfile {
+	if (!data || typeof data !== "object") return false;
+	const d = data as Record<string, unknown>;
+	return typeof d.uid === "string" && typeof d.email !== "undefined";
+}
+
+function isTutorial(data: unknown): data is Tutorial {
+	if (!data || typeof data !== "object") return false;
+	const d = data as Record<string, unknown>;
+	return typeof d.id === "string" && typeof d.topic === "string";
+}
+
 export const firestoreService = {
 	async getProfile(uid: string): Promise<UserProfile | null> {
 		const ref = doc(db, "users", uid);
 		const snap = await getDoc(ref);
-		return snap.exists() ? (snap.data() as UserProfile) : null;
+		if (!snap.exists()) return null;
+		const data = snap.data();
+		return isUserProfile(data) ? data : null;
 	},
 
 	async saveProfile(uid: string, data: Partial<UserProfile>): Promise<void> {
@@ -65,7 +79,9 @@ export const firestoreService = {
 	async getTutorial(uid: string, tutorialId: string): Promise<Tutorial | null> {
 		const ref = doc(db, "users", uid, "tutorials", tutorialId);
 		const snap = await getDoc(ref);
-		return snap.exists() ? (snap.data() as Tutorial) : null;
+		if (!snap.exists()) return null;
+		const data = snap.data();
+		return isTutorial(data) ? data : null;
 	},
 
 	async getUserTutorials(uid: string) {

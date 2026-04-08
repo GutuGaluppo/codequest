@@ -38,7 +38,7 @@ export const tutorialQueryOptions = (
 			return { ...tutorial, id: tutorialId, level };
 		},
 
-		staleTime: Infinity,
+		staleTime: 24 * 60 * 60 * 1000, // 24h — tutoriais são cacheados localmente, mas expiram diariamente
 		retry: false,
 	};
 };

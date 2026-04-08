@@ -255,7 +255,9 @@
     "buttonSaving": "Αποθήκευση...",
     "buttonSave": "Αποθήκευση",
     "success": "Το προφίλ αποθηκεύτηκε!",
-    "error": "Σφάλμα αποθήκευσης προφίλ."
+    "error": "Σφάλμα αποθήκευσης προφίλ.",
+    "photoInvalidType": "Επιτρέπονται μόνο εικόνες JPEG, PNG, WebP ή GIF.",
+    "photoTooLarge": "Η φωτογραφία πρέπει να είναι μικρότερη από {{max}}MB."
   },
   "design": {
     "title": "Design System",

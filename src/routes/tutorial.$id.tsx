@@ -93,37 +93,37 @@ function TutorialPage() {
 	const completedSteps = (progress?.completedSteps as string[]) ?? [];
 	const completedCode = (progress?.completedCode as Record<string, string>) ?? {};
 
-	// Sync steps and completedSteps to the Header store
+	// Sync steps to the Header store when tutorial loads
 	useEffect(() => {
 		if (tutorial?.steps) setSteps(tutorial.steps);
 	}, [tutorial?.steps, setSteps]);
 
+	// Sync completed steps to the Header store
 	useEffect(() => {
 		setCompletedSteps(completedSteps);
 	}, [completedSteps, setCompletedSteps]);
 
-	// Reset intro and final project state on mount
+	// Reset intro/final-project state when tutorialId changes; clear Header on unmount
 	useEffect(() => {
 		setShowIntro(true);
 		setShowFinalProject(false);
-	}, [tutorialId, setShowIntro, setShowFinalProject]);
-
-	// Clear Header store on unmount
-	useEffect(() => {
 		return () => clear();
-	}, [clear]);
+	}, [tutorialId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+	// Invalidate dashboard cache once the tutorial is loaded
 	useEffect(() => {
-		if (tutorial && user?.uid) {
+		if (tutorial?.id && user?.uid) {
 			queryClient.invalidateQueries({ queryKey: ["tutorials", user.uid] });
 		}
-	}, [tutorial?.id, user?.uid]);
+	}, [tutorial?.id, user?.uid, queryClient]);
 
 	const step = tutorial?.steps?.[currentStep];
 
 	const { mutate: completeStep } = useMutation({
-		mutationFn: (stepId: string) =>
-			firestoreService.markStepComplete(tutorialId, user!.uid, stepId, editorCode),
+		mutationFn: (stepId: string) => {
+			if (!user?.uid) return Promise.reject(new Error("User not authenticated"));
+			return firestoreService.markStepComplete(tutorialId, user.uid, stepId, editorCode);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ["progress", tutorialId, user?.uid],

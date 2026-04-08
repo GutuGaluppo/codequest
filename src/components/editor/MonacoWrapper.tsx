@@ -1,4 +1,6 @@
 import Editor from "@monaco-editor/react";
+
+const transpileCache = new Map<string, string>();
 import type * as MonacoEditor from "monaco-editor";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,7 +37,11 @@ export function MonacoWrapper({
 	const { t } = useTranslation();
 
 	function transpile(code: string): string {
-		return transform(code, { transforms: ["typescript"] }).code;
+		const cached = transpileCache.get(code);
+		if (cached !== undefined) return cached;
+		const result = transform(code, { transforms: ["typescript"] }).code;
+		transpileCache.set(code, result);
+		return result;
 	}
 
 	function handleRun() {

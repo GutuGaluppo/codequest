@@ -39,6 +39,10 @@ const levelInstructions: Record<Level, string> = {
   `,
 };
 
+export function wrapUserInput(input: string): string {
+	return `<user_input>${input.replace(/<\/?user_input>/gi, "")}</user_input>`;
+}
+
 export function buildSystemPrompt(level: Level, language: string): string {
 	const langName = languageNames[language] ?? "English";
 	return `You are an expert technical educator creating structured, interactive tutorials for software developers.

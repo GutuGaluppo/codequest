@@ -255,7 +255,9 @@
     "buttonSaving": "Zapisywanie...",
     "buttonSave": "Zapisz",
     "success": "Profil zapisany!",
-    "error": "Błąd podczas zapisywania profilu."
+    "error": "Błąd podczas zapisywania profilu.",
+    "photoInvalidType": "Dozwolone są tylko obrazy JPEG, PNG, WebP lub GIF.",
+    "photoTooLarge": "Zdjęcie musi być mniejsze niż {{max}}MB."
   },
   "design": {
     "title": "Design System",
