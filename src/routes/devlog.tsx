@@ -372,6 +372,14 @@ const entries: EntryMeta[] = [
 		tags: ["ux", "auth"],
 		key: "login_redirect",
 	},
+	{
+		date: "2026-04-08",
+		commit: "82ef2ae",
+		phaseKey: "deploy",
+		tags: ["deploy", "security", "architecture"],
+		key: "ai_proxy",
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
@@ -398,6 +406,8 @@ const tagColors: Record<string, string> = {
 	tests: "border-blue-500/40 text-blue-400",
 	i18n: "border-amber/40 text-amber",
 	docs: "border-border text-muted",
+	deploy: "border-green/40 text-green",
+	security: "border-red-500/40 text-red-400",
 };
 
 const phaseColors: Record<string, string> = {
@@ -415,6 +425,7 @@ const phaseColors: Record<string, string> = {
 	design_system: "text-purple-400",
 	redesign: "text-amber",
 	ai: "text-amber",
+	deploy: "text-green",
 };
 
 function DevlogPage() {

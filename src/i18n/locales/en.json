@@ -311,7 +311,8 @@
 			"tests": "Tests",
 			"design_system": "Design System",
 			"redesign": "Redesign",
-			"ai": "AI"
+			"ai": "AI",
+			"deploy": "Deploy"
 		},
 		"entry": {
 			"setup": {
@@ -595,6 +596,15 @@
 			"login_redirect": {
 				"title": "Redirect to dashboard after login and signup",
 				"description": "LoginDrawer now navigates to /dashboard after successful authentication via email/password, Google, or GitHub. Ensures new users land directly on the dashboard where the onboarding banner is visible instead of remaining on the landing page."
+			},
+			"ai_proxy": {
+				"title": "Server-side AI proxy via Vercel Functions + vercel.json",
+				"description": "All AI provider calls moved from the browser to server-side Vercel Functions (api/generate.ts and api/verify.ts). The GEMINI_API_KEY is now a server-only environment variable (no VITE_ prefix). User-provided Claude and OpenAI keys travel as an x-api-key HTTPS header and are never bundled into the client JS. dangerouslyAllowBrowser removed from all SDKs. vercel.json added with SPA rewrite (excluding /api/*), build command, output directory and devCommand so vercel dev emulates the full stack locally.",
+				"decisions": [
+					"Proxy pattern chosen over Vercel AI SDK — scope was security, not streaming; a thin fetch wrapper avoids a major refactor",
+					"User API keys sent as x-api-key request header instead of request body — conventional placement for credentials, separated from payload data",
+					"vercel.json uses negative lookahead /((?!api/).*) so /api/* routes are handled by Functions and everything else falls through to index.html"
+				]
 			},
 			"final_project_view": {
 				"title": "Final project view with Monaco editor and solution toggle",

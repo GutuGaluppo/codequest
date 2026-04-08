@@ -310,7 +310,8 @@
       "tests": "Pruebas",
       "design_system": "Design System",
       "redesign": "Redesign",
-      "ai": "IA"
+      "ai": "IA",
+      "deploy": "Deploy"
     }
   }
 }

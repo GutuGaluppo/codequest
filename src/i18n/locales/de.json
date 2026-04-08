@@ -310,7 +310,8 @@
       "tests": "Tests",
       "design_system": "Design System",
       "redesign": "Redesign",
-      "ai": "KI"
+      "ai": "KI",
+      "deploy": "Deploy"
     }
   }
 }
