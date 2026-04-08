@@ -1,7 +1,4 @@
-import type { Level, ModelProvider, UserApiKeys } from "../types/tutorial";
-import { claudeService } from "./claudeService";
-import { geminiService } from "./geminiService";
-import { openaiService } from "./openaiService";
+import type { Level, ModelProvider, UserApiKeys, Tutorial } from "../types/tutorial";
 
 export async function generateTutorial(
 	topic: string,
@@ -9,39 +6,30 @@ export async function generateTutorial(
 	userKeys: UserApiKeys,
 	level: Level,
 	language: string,
-) {
+): Promise<Tutorial> {
+	const headers: Record<string, string> = { "Content-Type": "application/json" };
+
 	if (preferredModel === "claude" && userKeys.anthropic) {
-		try {
-			return await claudeService.generate(
-				topic,
-				userKeys.anthropic,
-				level,
-				language,
-			);
-		} catch (error) {
-			throw new Error(
-				`Claude generation failed with the following error: ${error}`,
-			);
-		}
+		headers["x-api-key"] = userKeys.anthropic;
+	} else if (preferredModel === "openai" && userKeys.openai) {
+		headers["x-api-key"] = userKeys.openai;
 	}
-	if (preferredModel === "openai" && userKeys.openai) {
+
+	const response = await fetch("/api/generate", {
+		method: "POST",
+		headers,
+		body: JSON.stringify({ topic, model: preferredModel, level, language }),
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		let message = "Tutorial generation failed";
 		try {
-			return await openaiService.generate(
-				topic,
-				userKeys.openai,
-				level,
-				language,
-			);
-		} catch (error) {
-			throw new Error(
-				`OpenAI generation failed with the following error: ${error}`,
-			);
-		}
+			const body = JSON.parse(text);
+			message = body.error ?? message;
+		} catch {}
+		throw new Error(message);
 	}
-	return geminiService.generate(
-		topic,
-		import.meta.env.VITE_GEMINI_API_KEY,
-		level,
-		language,
-	);
+
+	return response.json();
 }
