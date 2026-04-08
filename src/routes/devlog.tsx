@@ -380,6 +380,15 @@ const entries: EntryMeta[] = [
 		key: "ai_proxy",
 		hasDecisions: true,
 	},
+	{
+		date: "2026-04-09",
+		commit: "ae9a9f8",
+		phaseKey: "polish",
+		tags: ["fix", "security", "architecture", "ux"],
+		key: "audit_fixes",
+		hasBugs: true,
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {

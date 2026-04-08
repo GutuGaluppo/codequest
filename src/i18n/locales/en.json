@@ -599,6 +599,22 @@
 				"title": "Redirect to dashboard after login and signup",
 				"description": "LoginDrawer now navigates to /dashboard after successful authentication via email/password, Google, or GitHub. Ensures new users land directly on the dashboard where the onboarding banner is visible instead of remaining on the landing page."
 			},
+			"audit_fixes": {
+				"title": "Full codebase audit — bugs, security and performance",
+				"description": "Comprehensive audit resolved 16 issues across three categories. Bugs: type guards for Firestore casts, null check for user.uid before markStepComplete, onSnapshot error callback, Feedback shape validation in editorStore, deleted dead client-side AI services (claudeService, openaiService, geminiService). Security: input validation and rate limiting (5 req/min generate, 20 req/min verify) on Vercel Functions, prompt injection prevention via wrapUserInput() delimiters, MIME type and 5MB size validation on photo upload, CORS headers restricting to known app domains. Performance: consolidated 5 useEffects in tutorial route, memoized getSandpackTemplate, module-level Map cache for Sucrase transpile(), Canvas-based image compression before Cloudinary upload, replaced staleTime: Infinity with 24h.",
+				"bugs": [
+					"user!.uid non-null assertion in markStepComplete — could crash if auth resolves late",
+					"arrayUnion in markStepComplete had no duplicate guard — same stepId could be added twice on double-click",
+					"snap.data() cast without type guard — corrupted Firestore docs would silently break the app",
+					"onSnapshot error callback missing — sync failures were invisible",
+					"dangerouslyAllowBrowser services still present as dead code after proxy migration"
+				],
+				"decisions": [
+					"Rate limiting implemented in-memory (Map) rather than Redis/KV — sufficient for portfolio scale without adding a dependency",
+					"wrapUserInput() strips existing tags before wrapping to prevent tag-escape attacks",
+					"Image compression targets 800px max dimension at JPEG 85% — good balance between quality and upload size"
+				]
+			},
 			"ai_proxy": {
 				"title": "Server-side AI proxy via Vercel Functions + vercel.json",
 				"description": "All AI provider calls moved from the browser to server-side Vercel Functions (api/generate.ts and api/verify.ts). The GEMINI_API_KEY is now a server-only environment variable (no VITE_ prefix). User-provided Claude and OpenAI keys travel as an x-api-key HTTPS header and are never bundled into the client JS. dangerouslyAllowBrowser removed from all SDKs. vercel.json added with SPA rewrite (excluding /api/*), build command, output directory and devCommand so vercel dev emulates the full stack locally.",
