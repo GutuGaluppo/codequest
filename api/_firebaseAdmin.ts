@@ -13,4 +13,7 @@ if (!getApps().length) {
 }
 
 export const adminAuth = getAuth();
-export const adminDb = getFirestore();
+export const adminDb = getFirestore(
+	undefined as any,
+	process.env.FIRESTORE_DATABASE_ID ?? "(default)",
+);
