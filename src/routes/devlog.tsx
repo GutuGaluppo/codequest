@@ -397,6 +397,14 @@ const entries: EntryMeta[] = [
 		key: "lazy_loading",
 		hasDecisions: true,
 	},
+	{
+		date: "2026-04-10",
+		commit: "d999b96",
+		phaseKey: "deploy",
+		tags: ["security", "architecture", "firestore"],
+		key: "server_side_encryption",
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
