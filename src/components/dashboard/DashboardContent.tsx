@@ -33,7 +33,7 @@ export function DashboardContent() {
 	);
 
 	const model = profile?.preferredModel;
-	const keys = profile?.apiKeys ?? {};
+	const keys = profile?.configuredKeys ?? {};
 	const hasKeyForModel =
 		model === "gemini" ||
 		(model === "openai" && !!keys.openai) ||

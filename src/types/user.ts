@@ -1,5 +1,5 @@
 import type { FieldValue, Timestamp } from "firebase/firestore";
-import type { ModelProvider, UserApiKeys } from "./tutorial";
+import type { ModelProvider } from "./tutorial";
 
 export interface UserProfile {
 	uid: string;
@@ -7,8 +7,8 @@ export interface UserProfile {
 	displayName: string | null;
 	photoURL: string | null;
 	preferredModel: ModelProvider;
-	apiKeys: UserApiKeys;
+	configuredKeys?: { anthropic?: boolean; openai?: boolean };
 	createdAt: FieldValue | Timestamp;
 }
 
-export type { ModelProvider, UserApiKeys };
+export type { ModelProvider };

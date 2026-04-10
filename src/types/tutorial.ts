@@ -1,11 +1,6 @@
 export type ModelProvider = "gemini" | "claude" | "openai";
 export type Level = "beginner" | "intermediate" | "advanced";
 
-export interface UserApiKeys {
-	anthropic?: string;
-	openai?: string;
-}
-
 export interface Challenge {
 	prompt: string;
 	starterCode: string;

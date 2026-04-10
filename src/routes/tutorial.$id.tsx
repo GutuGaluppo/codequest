@@ -62,7 +62,6 @@ function TutorialPage() {
 	});
 
 	const model = profile?.preferredModel ?? "gemini";
-	const userKeys = profile?.apiKeys ?? {};
 
 	const {
 		data: tutorial,
@@ -73,7 +72,6 @@ function TutorialPage() {
 		...tutorialQueryOptions(
 			id,
 			model,
-			userKeys,
 			level,
 			i18n.language,
 			user?.uid,
@@ -162,7 +160,6 @@ function TutorialPage() {
 			<TutorialStepView
 				step={step}
 				model={model}
-				userKeys={userKeys}
 				monacoLanguage={monacoLanguage}
 				completedCode={completedCode}
 				onComplete={() => completeStep(step.id)}

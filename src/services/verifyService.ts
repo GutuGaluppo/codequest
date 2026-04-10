@@ -1,4 +1,5 @@
-import type { ModelProvider, UserApiKeys } from "../types/tutorial";
+import { getAuth } from "firebase/auth";
+import type { ModelProvider } from "../types/tutorial";
 import type { Feedback } from "../stores/editorStore";
 
 interface VerifyParams {
@@ -7,18 +8,18 @@ interface VerifyParams {
 	userCode: string;
 	output: string;
 	model: ModelProvider;
-	userKeys: UserApiKeys;
+}
+
+async function getIdToken(): Promise<string | null> {
+	return getAuth().currentUser?.getIdToken() ?? null;
 }
 
 export const verifyService = {
 	async verify(params: VerifyParams): Promise<Feedback> {
 		const headers: Record<string, string> = { "Content-Type": "application/json" };
 
-		if (params.model === "claude" && params.userKeys.anthropic) {
-			headers["x-api-key"] = params.userKeys.anthropic;
-		} else if (params.model === "openai" && params.userKeys.openai) {
-			headers["x-api-key"] = params.userKeys.openai;
-		}
+		const token = await getIdToken();
+		if (token) headers["Authorization"] = `Bearer ${token}`;
 
 		const response = await fetch("/api/verify", {
 			method: "POST",

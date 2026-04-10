@@ -8,6 +8,20 @@ import type { Level, ModelProvider, Tutorial } from "../src/types/tutorial";
 import { validateGenerateBody } from "./_validate";
 import { checkRateLimit, MAX_GENERATE } from "./_rateLimit";
 import { setCorsHeaders } from "./_cors";
+import { adminAuth, adminDb } from "./_firebaseAdmin";
+import { decrypt } from "./_encrypt";
+
+async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
+	const snap = await adminDb
+		.collection("users")
+		.doc(uid)
+		.collection("encryptedKeys")
+		.doc(provider)
+		.get();
+	if (!snap.exists) return null;
+	const { ciphertext, iv } = snap.data() as { ciphertext: string; iv: string };
+	return decrypt(ciphertext, iv);
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
 	if (setCorsHeaders(req, res)) return;
@@ -33,13 +47,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		level: Level;
 		language: string;
 	};
-	const apiKey = req.headers["x-api-key"] as string | undefined;
+
+	// Verify Firebase ID token to identify the user
+	const authHeader = req.headers.authorization ?? "";
+	const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+	let uid: string | null = null;
+	if (idToken) {
+		try {
+			const decoded = await adminAuth.verifyIdToken(idToken);
+			uid = decoded.uid;
+		} catch {
+			return res.status(401).json({ error: "Invalid or expired token" });
+		}
+	}
 
 	try {
 		let raw: Tutorial;
 		const wrappedTopic = wrapUserInput(topic);
 
-		if (model === "claude" && apiKey) {
+		if (model === "claude") {
+			const apiKey = uid ? await getUserApiKey(uid, "anthropic") : null;
+			if (!apiKey) return res.status(400).json({ error: "Anthropic API key not configured." });
+
 			const client = new Anthropic({ apiKey });
 			const message = await client.messages.create({
 				model: "claude-3-5-sonnet-20241022",
@@ -51,10 +81,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 					},
 				],
 			});
-			const text =
-				message.content[0].type === "text" ? message.content[0].text : "";
+			const text = message.content[0].type === "text" ? message.content[0].text : "";
 			raw = { ...(parseAiJson(text) as Tutorial), generatedWith: "claude", createdAt: null };
-		} else if (model === "openai" && apiKey) {
+		} else if (model === "openai") {
+			const apiKey = uid ? await getUserApiKey(uid, "openai") : null;
+			if (!apiKey) return res.status(400).json({ error: "OpenAI API key not configured." });
+
 			const client = new OpenAI({ apiKey });
 			const response = await client.chat.completions.create({
 				model: "gpt-4o",

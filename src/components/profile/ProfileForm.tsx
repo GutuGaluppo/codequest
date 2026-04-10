@@ -35,10 +35,8 @@ export default function ProfileForm({
 		},
 	});
 
-	const [anthropicKey, setAnthropicKey] = useState(
-		profile?.apiKeys?.anthropic ?? "",
-	);
-	const [openaiKey, setOpenaiKey] = useState(profile?.apiKeys?.openai ?? "");
+	const [anthropicKey, setAnthropicKey] = useState("");
+	const [openaiKey, setOpenaiKey] = useState("");
 	const [preferredModel, setPreferredModel] = useState<ModelProvider>(
 		profile?.preferredModel ?? "gemini",
 	);
@@ -110,6 +108,23 @@ export default function ProfileForm({
 		setPreferredModel(model);
 	}
 
+	async function saveKey(provider: "anthropic" | "openai", key: string) {
+		const token = await getAuth().currentUser?.getIdToken();
+		if (!token) return;
+		const res = await fetch("/api/save-key", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ provider, key }),
+		});
+		if (!res.ok) {
+			const body = await res.json().catch(() => ({}));
+			throw new Error(body.error ?? `Failed to save ${provider} key`);
+		}
+	}
+
 	async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setUploading(true);
@@ -125,12 +140,10 @@ export default function ProfileForm({
 				await updateProfile(auth.currentUser, { displayName, photoURL });
 			}
 
-			saveProfile({
-				displayName,
-				photoURL,
-				apiKeys: { anthropic: anthropicKey, openai: openaiKey },
-				preferredModel,
-			});
+			if (anthropicKey.trim()) await saveKey("anthropic", anthropicKey.trim());
+			if (openaiKey.trim()) await saveKey("openai", openaiKey.trim());
+
+			saveProfile({ displayName, photoURL, preferredModel });
 		} finally {
 			setUploading(false);
 		}

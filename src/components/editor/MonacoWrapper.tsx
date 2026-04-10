@@ -10,7 +10,6 @@ import { useEditorStore } from "../../stores/editorStore";
 import type {
 	Challenge,
 	ModelProvider,
-	UserApiKeys,
 } from "../../types/tutorial";
 import EditorToolbar from "./EditorToolbar";
 import { OutputPanel } from "./OutputPanel";
@@ -20,7 +19,6 @@ interface MonacoWrapperProps {
 	monacoLanguage?: string;
 	challenge?: Challenge | null;
 	model: ModelProvider;
-	userKeys: UserApiKeys;
 	onChange: (value: string) => void;
 }
 
@@ -29,7 +27,6 @@ export function MonacoWrapper({
 	monacoLanguage,
 	challenge,
 	model,
-	userKeys,
 	onChange,
 }: MonacoWrapperProps) {
 	const { editorCode, output, setOutput, setFeedback } = useEditorStore();
@@ -84,7 +81,6 @@ export function MonacoWrapper({
 				userCode: editorCode,
 				output,
 				model,
-				userKeys,
 			});
 			setFeedback(feedback);
 		} catch (err) {

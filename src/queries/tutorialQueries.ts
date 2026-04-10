@@ -1,11 +1,10 @@
 import { generateTutorial } from "../services/aiService";
 import { firestoreService } from "../services/firestoreService";
-import type { Level, ModelProvider, UserApiKeys } from "../types/tutorial";
+import type { Level, ModelProvider } from "../types/tutorial";
 
 export const tutorialQueryOptions = (
 	topic: string,
 	model: ModelProvider,
-	userKeys: UserApiKeys,
 	level: Level,
 	language: string,
 	uid?: string,
@@ -24,7 +23,6 @@ export const tutorialQueryOptions = (
 			const tutorial = await generateTutorial(
 				topic,
 				model,
-				userKeys,
 				level,
 				language,
 			);

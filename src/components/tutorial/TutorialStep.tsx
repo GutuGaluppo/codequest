@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import type {
 	ModelProvider,
 	TutorialStep,
-	UserApiKeys,
 } from "../../types/tutorial";
 import { MonacoWrapper } from "../editor/MonacoWrapper";
 import { ChallengeBlock } from "./ChallengeBlock";
@@ -14,7 +13,6 @@ import { useEditorStore } from "../../stores/editorStore";
 interface TutorialStepProps {
 	step: TutorialStep;
 	model: ModelProvider;
-	userKeys: UserApiKeys;
 	monacoLanguage?: string;
 	completedCode?: Record<string, string>;
 	onComplete: () => void;
@@ -23,7 +21,6 @@ interface TutorialStepProps {
 export function TutorialStepView({
 	step,
 	model,
-	userKeys,
 	monacoLanguage,
 	completedCode,
 	onComplete,
@@ -92,7 +89,6 @@ export function TutorialStepView({
 					onChange={setEditorCode}
 					challenge={step.challenge}
 					model={model}
-					userKeys={userKeys}
 					monacoLanguage={monacoLanguage}
 				/>
 			</div>

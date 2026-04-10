@@ -9,6 +9,8 @@ import type { Feedback } from "../src/stores/editorStore";
 import { validateVerifyBody } from "./_validate";
 import { checkRateLimit, MAX_VERIFY } from "./_rateLimit";
 import { setCorsHeaders } from "./_cors";
+import { adminAuth, adminDb } from "./_firebaseAdmin";
+import { decrypt } from "./_encrypt";
 
 interface VerifyBody {
 	prompt: string;
@@ -36,6 +38,18 @@ Respond ONLY with valid JSON, no markdown:
 {"status":"correct"|"partial"|"incorrect","message":"Feedback in 1–2 sentences, in the same language as the challenge prompt."}`;
 }
 
+async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
+	const snap = await adminDb
+		.collection("users")
+		.doc(uid)
+		.collection("encryptedKeys")
+		.doc(provider)
+		.get();
+	if (!snap.exists) return null;
+	const { ciphertext, iv } = snap.data() as { ciphertext: string; iv: string };
+	return decrypt(ciphertext, iv);
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
 	if (setCorsHeaders(req, res)) return;
 
@@ -55,24 +69,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	}
 
 	const body = req.body as VerifyBody;
-	const apiKey = req.headers["x-api-key"] as string | undefined;
-
 	const userPrompt = buildPrompt(body);
+
+	// Verify Firebase ID token to identify the user
+	const authHeader = req.headers.authorization ?? "";
+	const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+	let uid: string | null = null;
+	if (idToken) {
+		try {
+			const decoded = await adminAuth.verifyIdToken(idToken);
+			uid = decoded.uid;
+		} catch {
+			return res.status(401).json({ error: "Invalid or expired token" });
+		}
+	}
 
 	try {
 		let feedback: Feedback;
 
-		if (body.model === "claude" && apiKey) {
+		if (body.model === "claude") {
+			const apiKey = uid ? await getUserApiKey(uid, "anthropic") : null;
+			if (!apiKey) return res.status(400).json({ error: "Anthropic API key not configured." });
+
 			const client = new Anthropic({ apiKey });
 			const result = await client.messages.create({
 				model: "claude-3-5-sonnet-20241022",
 				max_tokens: 256,
 				messages: [{ role: "user", content: userPrompt }],
 			});
-			const text =
-				result.content[0].type === "text" ? result.content[0].text : "";
+			const text = result.content[0].type === "text" ? result.content[0].text : "";
 			feedback = parseAiJson(text) as Feedback;
-		} else if (body.model === "openai" && apiKey) {
+		} else if (body.model === "openai") {
+			const apiKey = uid ? await getUserApiKey(uid, "openai") : null;
+			if (!apiKey) return res.status(400).json({ error: "OpenAI API key not configured." });
+
 			const client = new OpenAI({ apiKey });
 			const result = await client.chat.completions.create({
 				model: "gpt-4o",
