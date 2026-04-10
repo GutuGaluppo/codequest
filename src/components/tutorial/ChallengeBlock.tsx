@@ -25,7 +25,7 @@ export function ChallengeBlock({ challenge }: ChallengeProps) {
 			{showHints && (
 				<ul className="flex flex-col gap-1">
 					{challenge.hints.map((hint, i) => (
-						<li key={i} className="text-sm text-muted">
+						<li key={`hint-${i}-${hint.slice(0, 20)}`} className="text-sm text-muted">
 							{i + 1}. {hint}
 						</li>
 					))}

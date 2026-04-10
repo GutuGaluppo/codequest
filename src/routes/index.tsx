@@ -1,23 +1,24 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import {
 	CodeSnippetDemo,
 	HeroHeadline,
 	SuggestedTopics,
-	TechStrip,
 	TopicSearchForm,
 	ApiKeysCard,
-	FeatureCards,
-	FinalCTA,
-	HowItWorks,
-	LandingFooter,
 	LevelSelector,
-	EditorPreview,
-	StatsBar,
 } from "../components/landing";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthStore } from "../stores/authStore";
 import type { Level } from "../types/tutorial";
+
+const TechStrip = lazy(() => import("../components/landing/TechStrip").then((m) => ({ default: m.TechStrip })));
+const FeatureCards = lazy(() => import("../components/landing/FeatureCards").then((m) => ({ default: m.FeatureCards })));
+const HowItWorks = lazy(() => import("../components/landing/HowItWorks").then((m) => ({ default: m.HowItWorks })));
+const StatsBar = lazy(() => import("../components/landing/StatsBar").then((m) => ({ default: m.StatsBar })));
+const EditorPreview = lazy(() => import("../components/landing/EditorPreview").then((m) => ({ default: m.EditorPreview })));
+const FinalCTA = lazy(() => import("../components/landing/FinalCTA").then((m) => ({ default: m.FinalCTA })));
+const LandingFooter = lazy(() => import("../components/landing/LandingFooter").then((m) => ({ default: m.LandingFooter })));
 
 export const Route = createFileRoute("/")({
 	component: IndexPage,
@@ -71,30 +72,32 @@ function IndexPage() {
 				</div>
 			</section>
 
-			<section className="border-b border-border overflow-hidden">
-				<TechStrip />
-			</section>
+			<Suspense>
+				<section className="border-b border-border overflow-hidden">
+					<TechStrip />
+				</section>
 
-			<section className="border-b border-border">
-				<FeatureCards />
-			</section>
+				<section className="border-b border-border">
+					<FeatureCards />
+				</section>
 
-			<section className="border-b border-border">
-				<HowItWorks />
-			</section>
+				<section className="border-b border-border">
+					<HowItWorks />
+				</section>
 
-			<section className="border-b border-border">
-				<StatsBar />
-			</section>
+				<section className="border-b border-border">
+					<StatsBar />
+				</section>
 
-			<section className="border-b border-border">
-				<EditorPreview />
-			</section>
+				<section className="border-b border-border">
+					<EditorPreview />
+				</section>
 
-			<section className="bg-amber">
-				<FinalCTA user={user} openDrawer={openDrawer} />
-			</section>
-			<LandingFooter />
+				<section className="bg-amber">
+					<FinalCTA user={user} openDrawer={openDrawer} />
+				</section>
+				<LandingFooter />
+			</Suspense>
 		</div>
 	);
 }
