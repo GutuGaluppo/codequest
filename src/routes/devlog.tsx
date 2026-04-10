@@ -405,6 +405,23 @@ const entries: EntryMeta[] = [
 		key: "server_side_encryption",
 		hasDecisions: true,
 	},
+	{
+		date: "2026-04-10",
+		commit: "b363024",
+		phaseKey: "deploy",
+		tags: ["fix", "firestore"],
+		key: "firestore_db_id_fix",
+		hasBugs: true,
+	},
+	{
+		date: "2026-04-10",
+		commit: "04e6bd7",
+		phaseKey: "ux",
+		tags: ["ux", "fix"],
+		key: "new_user_dashboard",
+		hasBugs: true,
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
