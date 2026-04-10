@@ -599,6 +599,14 @@
 				"title": "Redirect to dashboard after login and signup",
 				"description": "LoginDrawer now navigates to /dashboard after successful authentication via email/password, Google, or GitHub. Ensures new users land directly on the dashboard where the onboarding banner is visible instead of remaining on the landing page."
 			},
+			"lazy_loading": {
+				"title": "Lazy loading for below-the-fold landing sections and ChallengeBlock key fix",
+				"description": "Seven landing page sections converted to React.lazy + Suspense: TechStrip, FeatureCards, HowItWorks, StatsBar, EditorPreview, FinalCTA and LandingFooter. Above-the-fold components (hero, search form, code demo) remain static imports to avoid any visible delay on first paint. ChallengeBlock hint key changed from bare array index to hint-{i}-{prefix} to prevent React reconciliation issues when hint order changes.",
+				"decisions": [
+					"Single Suspense boundary wraps all lazy sections — no intermediate fallbacks to avoid layout shift",
+					"Lazy imports use .then(m => ({ default: m.ExportName })) pattern to unwrap named exports since React.lazy requires a default export"
+				]
+			},
 			"audit_fixes": {
 				"title": "Full codebase audit — bugs, security and performance",
 				"description": "Comprehensive audit resolved 16 issues across three categories. Bugs: type guards for Firestore casts, null check for user.uid before markStepComplete, onSnapshot error callback, Feedback shape validation in editorStore, deleted dead client-side AI services (claudeService, openaiService, geminiService). Security: input validation and rate limiting (5 req/min generate, 20 req/min verify) on Vercel Functions, prompt injection prevention via wrapUserInput() delimiters, MIME type and 5MB size validation on photo upload, CORS headers restricting to known app domains. Performance: consolidated 5 useEffects in tutorial route, memoized getSandpackTemplate, module-level Map cache for Sucrase transpile(), Canvas-based image compression before Cloudinary upload, replaced staleTime: Infinity with 24h.",
