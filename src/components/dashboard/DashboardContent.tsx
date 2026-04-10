@@ -16,7 +16,7 @@ export function DashboardContent() {
 	const uid = getAuth().currentUser!.uid;
 	const { t } = useTranslation();
 
-	const { data: tutorials, isPending } = useQuery(
+	const { data: tutorials, isPending: tutorialsPending } = useQuery(
 		userTutorialsQueryOptions(uid),
 	);
 	const { data: progress } = useQuery(allProgressQueryOptions(uid));
@@ -39,13 +39,17 @@ export function DashboardContent() {
 		(model === "openai" && !!keys.openai) ||
 		(model === "claude" && !!keys.anthropic);
 
-	const showBanner = !profilePending && (!profile || !hasKeyForModel);
+	// Once the profile query settles with no document, we know it's a new user.
+	// Skip the tutorials skeleton and show the empty state + banner immediately.
+	const isNewUser = !profilePending && !profile;
+	const showBanner = isNewUser || (!profilePending && !hasKeyForModel);
+	const showSkeleton = tutorialsPending && !isNewUser;
 
 	return (
 		<div className="max-w-7xl mx-auto px-6 py-10">
 			{showBanner && <ApiKeyBanner />}
 
-			{isPending ? (
+			{showSkeleton ? (
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 					{Array.from({ length: 3 }).map((_, i) => (
 						<div
