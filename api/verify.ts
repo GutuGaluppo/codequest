@@ -9,7 +9,11 @@ import type { Feedback } from "../src/stores/editorStore";
 import { validateVerifyBody } from "./_validate";
 import { checkRateLimit, MAX_VERIFY } from "./_rateLimit";
 import { setCorsHeaders } from "./_cors";
-import { adminAuth, adminDb } from "./_firebaseAdmin";
+import {
+	FirebaseAdminConfigError,
+	getAdminAuth,
+	getAdminDb,
+} from "./_firebaseAdmin";
 import { decrypt } from "./_encrypt";
 
 interface VerifyBody {
@@ -39,7 +43,7 @@ Respond ONLY with valid JSON, no markdown:
 }
 
 async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
-	const snap = await adminDb
+	const snap = await getAdminDb()
 		.collection("users")
 		.doc(uid)
 		.collection("encryptedKeys")
@@ -78,9 +82,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	let uid: string | null = null;
 	if (idToken) {
 		try {
-			const decoded = await adminAuth.verifyIdToken(idToken);
+			const decoded = await getAdminAuth().verifyIdToken(idToken);
 			uid = decoded.uid;
-		} catch {
+		} catch (error) {
+			if (error instanceof FirebaseAdminConfigError) {
+				return res.status(500).json({ error: error.message });
+			}
 			return res.status(401).json({ error: "Invalid or expired token" });
 		}
 	}

@@ -1,5 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { adminAuth, adminDb } from "./_firebaseAdmin";
+import {
+	FirebaseAdminConfigError,
+	getAdminAuth,
+	getAdminDb,
+} from "./_firebaseAdmin";
 import { encrypt } from "./_encrypt";
 import { setCorsHeaders } from "./_cors";
 
@@ -22,9 +26,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 	let uid: string;
 	try {
-		const decoded = await adminAuth.verifyIdToken(idToken);
+		const decoded = await getAdminAuth().verifyIdToken(idToken);
 		uid = decoded.uid;
-	} catch {
+	} catch (error) {
+		if (error instanceof FirebaseAdminConfigError) {
+			return res.status(500).json({ error: error.message });
+		}
 		return res.status(401).json({ error: "Invalid or expired token" });
 	}
 
@@ -42,22 +49,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	}
 
 	// Encrypt and persist — only ciphertext + IV stored, never the plaintext
-	const { ciphertext, iv } = encrypt(key.trim());
+	try {
+		const { ciphertext, iv } = encrypt(key.trim());
+		const adminDb = getAdminDb();
+		const batch = adminDb.batch();
 
-	const batch = adminDb.batch();
+		batch.set(
+			adminDb.collection("users").doc(uid).collection("encryptedKeys").doc(provider as Provider),
+			{ ciphertext, iv, updatedAt: new Date().toISOString() },
+		);
 
-	batch.set(
-		adminDb.collection("users").doc(uid).collection("encryptedKeys").doc(provider as Provider),
-		{ ciphertext, iv, updatedAt: new Date().toISOString() },
-	);
+		batch.set(
+			adminDb.collection("users").doc(uid),
+			{ configuredKeys: { [provider as string]: true } },
+			{ merge: true },
+		);
 
-	batch.set(
-		adminDb.collection("users").doc(uid),
-		{ configuredKeys: { [provider as string]: true } },
-		{ merge: true },
-	);
+		await batch.commit();
 
-	await batch.commit();
-
-	return res.status(200).json({ ok: true });
+		return res.status(200).json({ ok: true });
+	} catch (error) {
+		const message = error instanceof Error ? error.message : "Unknown error";
+		return res.status(500).json({ error: message });
+	}
 }
