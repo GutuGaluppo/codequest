@@ -686,6 +686,51 @@
 					"verifyService feedback language made dynamic ('same language as the challenge prompt') instead of hardcoded Portuguese",
 					"levelInstructions changed from single sentences to structured bullet lists to give the model clearer, more enforceable constraints"
 				]
+			},
+			"tutorial_gen_bugfix": {
+				"title": "Fix tutorial continuation from dashboard and API generation failures",
+				"description": "Two related bugs prevented users from continuing saved tutorials and generating new ones. (1) TutorialCard was navigating with tutorial.topic as the route param — if the AI returned a topic string different from the user original input, the computed tutorialId would not match the Firestore document ID, so getTutorial returned null and triggered a failed regeneration. Fixed by passing the stored tutorial.id as an explicit tutorialId search param. (2) /api/generate was returning non-JSON responses (502 from proxy, 504 timeout) that fell back to the generic error message. Fixed by adding Authorization to CORS allowed headers, switching Gemini model to gemini-2.0-flash, setting maxDuration 300 s on the function, and including the HTTP status in error messages.",
+				"bugs": [
+					"TutorialCard navigated with tutorial.topic; AI-returned topic could differ from user input, causing a tutorialId mismatch and a failed Firestore lookup",
+					"/api/generate returned non-JSON 502 from Vite proxy when vercel dev was not running, masking the real error as generic Tutorial generation failed",
+					"CORS preflight rejected Authorization header because it was missing from Access-Control-Allow-Headers, blocking authenticated requests in local dev",
+					"Gemini function timed out after 30 s in vercel dev — tutorial JSON generation exceeded the default limit"
+				],
+				"decisions": [
+					"tutorialId passed as a search param from the dashboard so the page never recomputes it from the topic string — the stored document key is the source of truth",
+					"gemini-2.0-flash chosen over gemini-2.5-flash-lite — stable GA model with faster time-to-first-token on large JSON outputs",
+					"maxDuration 300 s set on api/generate.ts; api/verify.ts kept at 60 s since verification prompts are shorter"
+				]
+			},
+			"firebase_admin_lazy": {
+				"title": "Lazy Firebase Admin initialization with explicit config validation",
+				"description": "Firebase Admin SDK was initialized at module load time with a hard crash if env vars were missing. Replaced with lazy getAdminAuth() and getAdminDb() functions that call ensureAdminApp() on first use. If FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL or FIREBASE_PRIVATE_KEY are absent or malformed, a FirebaseAdminConfigError is thrown and returned as a 500 JSON response instead of crashing the function silently. All three API routes (generate, save-key, verify) updated to catch this error class separately from auth errors.",
+				"decisions": [
+					"Lazy init over module-level singleton — functions share the same runtime between cold starts, but the init guard getApps().length prevents double-init",
+					"FirebaseAdminConfigError extends Error with a named class so API routes can distinguish config failures from auth failures and return the correct HTTP status"
+				]
+			},
+			"lazy_i18n_bootstrap": {
+				"title": "Lazy locale loading and async app bootstrap",
+				"description": "All six locale JSON files were previously imported statically at module load, adding all translations to the initial JS bundle regardless of the active language. Replaced with dynamic import() loaders keyed by language code so only the active locale is fetched on startup. The app now awaits initI18n() before mounting the router, eliminating the flash of untranslated strings visible on slow connections. Browser language detection is handled inline without i18next-browser-languagedetector, reducing one dependency. ReactQueryDevtools is also lazy-loaded and completely tree-shaken in production builds.",
+				"decisions": [
+					"Single locale fetched at startup instead of all six — reduces initial bundle by ~40 kB per unused locale",
+					"initI18n cached in a module-level promise so multiple callers do not trigger parallel fetches",
+					"Language resolution normalizes pt, pt-* variants to pt-BR before matching against the supported list"
+				]
+			},
+			"lazy_editors_v2": {
+				"title": "Lazy Monaco and Sandpack with skeleton fallback",
+				"description": "Monaco Editor and Sandpack were loaded eagerly even on the landing page and dashboard, adding ~800 kB to the initial bundle. Both are now wrapped with React.lazy + Suspense in FinalProjectView and TutorialStepView. SandpackWorkspace extracted into its own component to enable a clean lazy boundary. EditorPanelFallback renders a skeleton header while the chunk loads, matching the editor toolbar shape to avoid layout shift. Sucrase is also lazy-imported inside MonacoWrapper so the TypeScript transpiler is only fetched the first time the user runs code.",
+				"decisions": [
+					"SandpackWorkspace extracted rather than lazy-wrapping SandpackProvider in-place — cleaner Suspense boundary and reusable outside FinalProjectView",
+					"EditorPanelFallback mirrors the real toolbar layout so there is no visible jump when the editor chunk resolves",
+					"Sucrase import cached in a module-level promise (sucraseModulePromise) to avoid re-fetching on every run"
+				]
+			},
+			"accessibility_polish": {
+				"title": "Accessibility improvements, image optimisation and UI polish",
+				"description": "Form inputs across LoginDrawer and TopicSearchForm now have sr-only labels for screen reader compatibility. LoginDrawer is conditionally mounted only when open, removing a hidden render from every page. Avatar images in the header use getOptimizedImageUrl to request a 64x64 resized version and set decoding=async to unblock the main thread. Provider links in ApiKeyBanner extracted to a modelKeyLinks utility. SEO meta description and theme-color added to index.html. Minor visual fixes across landing, profile and tutorial components."
 			}
 		}
 	}
