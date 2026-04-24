@@ -11,7 +11,7 @@ const colors = [
 	{ name: "surface", value: "#13161e", label: "Surface", usage: "bg-surface" },
 	{ name: "border", value: "#1e2130", label: "Border", usage: "border-border" },
 	{ name: "text", value: "#e8eaf0", label: "Text", usage: "text-text" },
-	{ name: "muted", value: "#6b7280", label: "Muted", usage: "text-muted" },
+	{ name: "muted", value: "#8b93a6", label: "Muted", usage: "text-muted" },
 	{ name: "amber", value: "#f5a623", label: "Amber", usage: "text-amber / bg-amber" },
 	{ name: "green", value: "#4ade80", label: "Green", usage: "text-green" },
 ];

@@ -152,39 +152,44 @@ export default function ProfileForm({
 	return (
 		<div className="w-full">
 			<ProfileHeader />
-			<div className="max-w-7xl mx-auto px-6 py-10">
-				<form onSubmit={handleSubmit} className="max-w-lg flex flex-col gap-6">
-					<ImageInput
-						displayName={displayName}
-						photoPreview={photoPreview}
-						handleFileChange={handleFileChange}
-					/>
-
-					<ProfileInputs
-						displayName={displayName}
-						setDisplayName={setDisplayName}
-						anthropicKey={anthropicKey}
-						// TODO: Create handlers to avoid passing setters directly to the component
-						setAnthropicKey={setAnthropicKey}
-						openaiKey={openaiKey}
-						setOpenaiKey={setOpenaiKey}
-					/>
-
-					<ProfileSelectInput
-						preferredModel={preferredModel}
-						setPreferredModel={handlePreferredModelChange}
-					/>
-
-					<button
-						type="submit"
-						disabled={isPending}
-						className="self-start bg-amber text-background px-5 py-2.5 font-black text-xs uppercase tracking-wide disabled:opacity-50"
+			<div className="px-6 py-10">
+				<div className="mx-auto flex min-h-[calc(100vh-17rem)] max-w-5xl items-center justify-center">
+					<form
+						onSubmit={handleSubmit}
+						className="flex w-full max-w-xl flex-col gap-6 border border-border bg-surface/40 p-6 sm:p-8"
 					>
-						{isPending || uploading
-							? t("profile.buttonSaving")
-							: t("profile.buttonSave")}
-					</button>
-				</form>
+						<ImageInput
+							displayName={displayName}
+							photoPreview={photoPreview}
+							handleFileChange={handleFileChange}
+						/>
+
+						<ProfileInputs
+							displayName={displayName}
+							setDisplayName={setDisplayName}
+							anthropicKey={anthropicKey}
+							// TODO: Create handlers to avoid passing setters directly to the component
+							setAnthropicKey={setAnthropicKey}
+							openaiKey={openaiKey}
+							setOpenaiKey={setOpenaiKey}
+						/>
+
+						<ProfileSelectInput
+							preferredModel={preferredModel}
+							setPreferredModel={handlePreferredModelChange}
+						/>
+
+						<button
+							type="submit"
+							disabled={isPending}
+							className="self-start bg-amber text-background px-5 py-2.5 font-black text-xs uppercase tracking-wide disabled:opacity-50"
+						>
+							{isPending || uploading
+								? t("profile.buttonSaving")
+								: t("profile.buttonSave")}
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

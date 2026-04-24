@@ -13,7 +13,7 @@ export function TechStrip() {
 				{TECH_STRIP.map((tech) => (
 					<span
 						key={tech}
-						className="text-sm font-mono text-muted/50 whitespace-nowrap"
+						className="text-sm font-mono text-muted whitespace-nowrap"
 					>
 						{tech}
 					</span>

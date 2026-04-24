@@ -1,12 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { KeyRound } from "lucide-react";
-
-const providerLinks = {
-	gemini: "https://aistudio.google.com/apikey",
-	openai: "https://platform.openai.com/api-keys",
-	claude: "https://console.anthropic.com/settings/keys",
-};
+import { modelKeyLinks } from "../../utils/modelKeyLinks";
 
 export function ApiKeyBanner() {
 	const { t } = useTranslation();
@@ -35,12 +30,12 @@ export function ApiKeyBanner() {
 						<p className="text-xs text-muted leading-relaxed whitespace-break-spaces">
 							{t(`dashboard.apiKeyBanner.steps.${i}.description`)}
 						</p>
-						{i === 1 && (
-							<div className="flex flex-wrap gap-2 mt-1">
-								{Object.entries(providerLinks).map(([name, url]) => (
-									<a
-										key={name}
-										href={url}
+							{i === 1 && (
+								<div className="flex flex-wrap gap-2 mt-1">
+									{Object.entries(modelKeyLinks).map(([name, url]) => (
+										<a
+											key={name}
+											href={url}
 										target="_blank"
 										rel="noopener noreferrer"
 										className="text-xs font-mono text-muted border border-border px-2 py-1 hover:border-amber/50 hover:text-text transition-colors"

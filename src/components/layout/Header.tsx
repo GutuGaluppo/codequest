@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { HeroBadge } from "../landing/HeroBadge";
 import { StepNav } from "../tutorial/StepNav";
+import { getOptimizedImageUrl } from "../../utils";
 
 function Avatar({
 	photoURL,
@@ -19,11 +20,17 @@ function Avatar({
 }) {
 	const [imgError, setImgError] = useState(false);
 	const initial = displayName?.charAt(0).toUpperCase() ?? "?";
-	return photoURL && !imgError ? (
+	const optimizedPhotoUrl = getOptimizedImageUrl(photoURL, {
+		width: 64,
+		height: 64,
+	});
+
+	return optimizedPhotoUrl && !imgError ? (
 		<img
-			src={photoURL}
+			src={optimizedPhotoUrl}
 			alt={displayName ?? ""}
 			className="w-full h-full object-cover"
+			decoding="async"
 			onError={() => setImgError(true)}
 		/>
 	) : (
@@ -81,6 +88,7 @@ export function Header() {
 					<button
 						onClick={() => setShowIntro(true)}
 						className="text-muted hover:text-text transition-colors"
+						aria-label="Tutorial info"
 						title="Tutorial info"
 					>
 						<Info size={18} />
@@ -92,6 +100,8 @@ export function Header() {
 						<Link
 							to="/dashboard"
 							className={`text-muted hover:text-text transition-colors ${isDashboard ? "text-text" : ""}`}
+							aria-label={t("dashboard.title")}
+							title={t("dashboard.title")}
 						>
 							<LayoutDashboard size={20} />
 						</Link>
@@ -99,12 +109,16 @@ export function Header() {
 						<Link
 							to="/profile"
 							className="w-8 h-8 overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
+							aria-label={t("profile.title")}
+							title={t("profile.title")}
 						>
 							<Avatar photoURL={user.photoURL} displayName={user.displayName} />
 						</Link>
 						<button
 							onClick={handleSignOut}
 							className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
+							aria-label={t("header.signOut")}
+							title={t("header.signOut")}
 						>
 							<LogOutIcon size={20} />
 						</button>

@@ -1,4 +1,6 @@
-import ReactMarkdown from "react-markdown";
+import { Suspense, lazy } from "react";
+
+const ReactMarkdown = lazy(() => import("react-markdown"));
 
 interface ConceptBlockProps {
 	concept: string;
@@ -7,7 +9,9 @@ interface ConceptBlockProps {
 export function ConceptBlock({ concept }: ConceptBlockProps) {
 	return (
 		<div className="prose max-w-none text-background">
-			<ReactMarkdown>{concept}</ReactMarkdown>
+			<Suspense fallback={<div className="whitespace-pre-wrap">{concept}</div>}>
+				<ReactMarkdown>{concept}</ReactMarkdown>
+			</Suspense>
 		</div>
 	);
 }

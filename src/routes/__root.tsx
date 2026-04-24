@@ -3,9 +3,10 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
 import { Header } from "../components/layout/Header";
-import { LoginDrawer } from "../components/auth/LoginDrawer/LoginDrawer";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { NotFound } from "../components/NotFound";
+import { LoginDrawer } from "../components/auth/LoginDrawer/LoginDrawer";
+import { useAuthStore } from "../stores/authStore";
 
 interface RouterContext {
 	queryClient: QueryClient;
@@ -30,10 +31,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootLayout() {
+	const drawerOpen = useAuthStore((state) => state.drawerOpen);
+
 	return (
 		<div className="min-h-screen flex flex-col">
 			<Header />
-			<LoginDrawer />
+			{drawerOpen ? <LoginDrawer /> : null}
 			<main className="flex-1 w-full overflow-hidden mt-15">
 				<Outlet />
 			</main>

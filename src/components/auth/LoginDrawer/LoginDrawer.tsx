@@ -93,6 +93,8 @@ export function LoginDrawer() {
 						<button
 							onClick={closeDrawer}
 							className="absolute top-6 text-muted hover:text-text transition-colors"
+							aria-label="Close"
+							title="Close"
 						>
 							<X size={18} />
 						</button>

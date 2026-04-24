@@ -15,11 +15,16 @@ export function TopicSearchForm({
 	return (
 		<form onSubmit={handleSubmit} className="flex gap-0">
 			<div className="relative flex-1">
+				<label htmlFor="topic-search" className="sr-only">
+					{t("landing.search.placeholder")}
+				</label>
 				<Search
 					size={15}
 					className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
 				/>
 				<input
+					id="topic-search"
+					type="search"
 					value={topic}
 					onChange={(e) => setTopic(e.target.value)}
 					placeholder={t("landing.search.placeholder")}

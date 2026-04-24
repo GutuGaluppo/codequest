@@ -1,6 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { motion } from "motion/react";
 
 interface ErrorScreenProps {
 	error?: Error | unknown;
@@ -16,12 +15,7 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 	return (
 		<div className="w-full min-h-[80vh] flex items-center justify-center px-6">
 			<div className="max-w-132 w-full text-center flex flex-col items-center gap-6">
-				{/* Título estilo colorlib — letras gigantes com text-shadow */}
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.4 }}
-				>
+				<div>
 					<p className="text-xs font-mono font-medium text-muted uppercase tracking-widest mb-3">
 						{t("error.subtitle")}
 					</p>
@@ -38,30 +32,18 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 							<span key={i}>{char}</span>
 						))}
 					</h1>
-				</motion.div>
+				</div>
 
-				{/* Mensagem */}
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.2, duration: 0.4 }}
-					className="flex flex-col gap-2"
-				>
+				<div className="flex flex-col gap-2">
 					<p className="text-muted text-base">{t("error.message")}</p>
 					{message && (
-						<p className="text-xs font-mono text-muted/60 border border-border px-3 py-2 bg-surface/30">
+						<p className="text-xs font-mono text-muted border border-border px-3 py-2 bg-surface/30">
 							{message}
 						</p>
 					)}
-				</motion.div>
+				</div>
 
-				{/* Botões */}
-				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.35, duration: 0.4 }}
-					className="flex items-center gap-3"
-				>
+				<div className="flex items-center gap-3">
 					<button
 						onClick={() => navigate({ to: "/" })}
 						className="border border-border text-text px-5 py-2.5 font-black text-xs uppercase tracking-wide hover:border-amber hover:text-amber transition-colors"
@@ -76,7 +58,7 @@ export function ErrorScreen({ error, reset }: ErrorScreenProps) {
 							{t("error.buttonRetry")}
 						</button>
 					)}
-				</motion.div>
+				</div>
 			</div>
 		</div>
 	);

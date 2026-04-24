@@ -31,13 +31,13 @@ export function LandingFooter() {
 				</div>
 				{columns.map((col) => (
 					<div key={col.title}>
-						<h4 className="text-xs font-mono uppercase tracking-widest text-muted mb-4">
+						<p className="text-xs font-mono uppercase tracking-widest text-muted mb-4">
 							{col.title}
-						</h4>
+						</p>
 						<ul className="flex flex-col gap-2.5">
 							{col.links.map((link) => (
 								<li key={link}>
-									<span className="text-sm text-muted/60 font-mono cursor-default">
+									<span className="text-sm text-muted font-mono cursor-default">
 										{link}
 									</span>
 								</li>
@@ -48,10 +48,10 @@ export function LandingFooter() {
 			</div>
 			<div className="border-t border-border">
 				<div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-					<span className="text-xs font-mono text-muted/30">
+					<span className="text-xs font-mono text-muted">
 						{t("landing.footer.copyright")}
 					</span>
-					<span className="text-xs font-mono text-muted/30">
+					<span className="text-xs font-mono text-muted">
 						{t("landing.footer.version")}
 					</span>
 				</div>

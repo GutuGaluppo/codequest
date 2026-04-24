@@ -26,36 +26,58 @@ export function Form({
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 			{mode === "signup" && (
+				<div className="flex flex-col gap-1.5">
+					<label htmlFor="auth-name" className="sr-only">
+						{t("auth.form.nameLabel")}
+					</label>
+					<input
+						id="auth-name"
+						type="text"
+						name="name"
+						placeholder={t("auth.form.nameLabel")}
+						value={name}
+						onChange={handleChange}
+						className={inputClass}
+						required
+					/>
+				</div>
+			)}
+			<div className="flex flex-col gap-1.5">
+				<label htmlFor="auth-email" className="sr-only">
+					{t("auth.form.emailLabel")}
+				</label>
 				<input
-					type="text"
-					name="name"
-					placeholder={t("auth.form.nameLabel")}
-					value={name}
+					id="auth-email"
+					type="email"
+					name="email"
+					placeholder={t("auth.form.emailLabel")}
+					value={email}
 					onChange={handleChange}
 					className={inputClass}
 					required
 				/>
-			)}
-			<input
-				type="email"
-				name="email"
-				placeholder={t("auth.form.emailLabel")}
-				value={email}
-				onChange={handleChange}
-				className={inputClass}
-				required
-			/>
-			<input
-				type="password"
-				name="password"
-				placeholder={t("auth.form.passwordLabel")}
-				value={password}
-				onChange={handleChange}
-				className={inputClass}
-				required
-			/>
+			</div>
+			<div className="flex flex-col gap-1.5">
+				<label htmlFor="auth-password" className="sr-only">
+					{t("auth.form.passwordLabel")}
+				</label>
+				<input
+					id="auth-password"
+					type="password"
+					name="password"
+					placeholder={t("auth.form.passwordLabel")}
+					value={password}
+					onChange={handleChange}
+					className={inputClass}
+					required
+				/>
+			</div>
 
-			{error && <p className="text-sm text-red-400">{error}</p>}
+			{error && (
+				<p role="alert" className="text-sm text-red-400">
+					{error}
+				</p>
+			)}
 
 			<button
 				type="submit"

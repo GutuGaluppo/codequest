@@ -10,7 +10,7 @@ export function CodeSnippetDemo() {
 				<span className="text-xs font-mono text-muted ml-1">challenge.ts</span>
 			</div>
 			<div className="p-5 font-mono text-sm leading-relaxed">
-				<div className="text-muted/60">{"// Complete the function below"}</div>
+				<div className="text-muted">{"// Complete the function below"}</div>
 				<div className="mt-2">
 					<span className="text-amber">function </span>
 					<span className="text-green-400">useCounter</span>
@@ -24,7 +24,7 @@ export function CodeSnippetDemo() {
 					<span className="text-green-400">useState</span>
 					<span className="text-text">(initial);</span>
 				</div>
-				<div className="ml-5 mt-1 text-muted/40">
+				<div className="ml-5 mt-1 text-muted">
 					{"// ✏️ your code here..."}
 				</div>
 				<div className="ml-5 mt-1">

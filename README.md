@@ -182,12 +182,20 @@ Follow the prompts to link the project to your Vercel account.
 ### 4. Start the development server
 
 ```bash
-vercel dev
+npm run dev:full
 ```
 
 This starts the full Vercel environment locally — both the Vite frontend and the Vercel Functions at `/api/*` — at `http://localhost:3000`.
 
-> **Do not use `npm run dev`** for local testing. It starts only the Vite dev server without the Functions; all AI features will fail.
+If you need the frontend only, use:
+
+```bash
+npm run dev
+```
+
+The `npm run dev:vite` alias is also available if you prefer the old command name.
+
+Frontend-only mode expects a separate Vercel Functions process on `http://localhost:3000`, so AI features will fail unless `npm run dev:full` is also running elsewhere.
 
 ### 5. Firestore Security Rules
 
