@@ -1,13 +1,20 @@
-import { useMemo, useState } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	SandpackProvider,
-	SandpackCodeEditor,
-	SandpackPreview,
-} from "@codesandbox/sandpack-react";
 import type { FinalProject } from "../../types/tutorial";
-import { MonacoWrapper } from "../editor/MonacoWrapper";
 import { getSandpackTemplate } from "../../utils/getSandpackTemplate";
+import { EditorPanelFallback } from "./EditorPanelFallback";
+
+const MonacoWrapper = lazy(() =>
+	import("../editor/MonacoWrapper").then((module) => ({
+		default: module.MonacoWrapper,
+	})),
+);
+
+const SandpackWorkspace = lazy(() =>
+	import("./SandpackWorkspace").then((module) => ({
+		default: module.SandpackWorkspace,
+	})),
+);
 
 export function FinalProjectView({
 	project,
@@ -59,30 +66,24 @@ export function FinalProjectView({
 				{/* Right — editor */}
 				<div className="flex flex-col min-h-0">
 					{sandpackTemplate ? (
-						<SandpackProvider
-							template={sandpackTemplate}
-							files={{ "/App.js": project.starterCode }}
-							theme="dark"
-							options={{ recompileDelay: 500 }}
-						>
-							<div className="flex flex-col h-full">
-								<SandpackCodeEditor
-									style={{ flex: 1, overflow: "auto" }}
-									showLineNumbers
-									showInlineErrors
-								/>
-								<SandpackPreview style={{ flex: 1, overflowY: "scroll" }} />
-							</div>
-						</SandpackProvider>
+						<Suspense fallback={<EditorPanelFallback label="preview" />}>
+							<SandpackWorkspace
+								template={sandpackTemplate}
+								starterCode={project.starterCode}
+							/>
+						</Suspense>
 					) : (
-						<MonacoWrapper
-							defaultValue={project.starterCode}
-							onChange={() => {}}
-							challenge={null}
-							model="gemini"
-							userKeys={{}}
-							monacoLanguage={monacoLanguage}
-						/>
+						<Suspense
+							fallback={<EditorPanelFallback label={monacoLanguage ?? "code"} />}
+						>
+							<MonacoWrapper
+								defaultValue={project.starterCode}
+								onChange={() => {}}
+								challenge={null}
+								model="gemini"
+								monacoLanguage={monacoLanguage}
+							/>
+						</Suspense>
 					)}
 				</div>
 			</div>

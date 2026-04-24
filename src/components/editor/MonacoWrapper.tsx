@@ -1,10 +1,10 @@
 import Editor from "@monaco-editor/react";
 
 const transpileCache = new Map<string, string>();
+let sucraseModulePromise: Promise<typeof import("sucrase")> | null = null;
 import type * as MonacoEditor from "monaco-editor";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { transform } from "sucrase";
 import { verifyService } from "../../services/verifyService";
 import { useEditorStore } from "../../stores/editorStore";
 import type {
@@ -33,15 +33,17 @@ export function MonacoWrapper({
 	const [verifying, setVerifying] = useState(false);
 	const { t } = useTranslation();
 
-	function transpile(code: string): string {
+	async function transpile(code: string): Promise<string> {
 		const cached = transpileCache.get(code);
 		if (cached !== undefined) return cached;
+		sucraseModulePromise ??= import("sucrase");
+		const { transform } = await sucraseModulePromise;
 		const result = transform(code, { transforms: ["typescript"] }).code;
 		transpileCache.set(code, result);
 		return result;
 	}
 
-	function handleRun() {
+	async function handleRun() {
 		const nonExecutableLanguages = ["css", "html", "sql", "json"];
 		if (monacoLanguage && nonExecutableLanguages.includes(monacoLanguage)) {
 			setOutput(
@@ -57,7 +59,7 @@ export function MonacoWrapper({
 		console.log = (...args) => logs.push(args.map(String).join(" "));
 
 		try {
-			const compiled = transpile(editorCode);
+			const compiled = await transpile(editorCode);
 			new Function(compiled)();
 			setOutput(logs.join("\n") || t("editor.output.noOutput"));
 		} catch (err) {

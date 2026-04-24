@@ -1,14 +1,20 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type {
 	ModelProvider,
 	TutorialStep,
 } from "../../types/tutorial";
-import { MonacoWrapper } from "../editor/MonacoWrapper";
 import { ChallengeBlock } from "./ChallengeBlock";
 import { ConceptBlock } from "./ConceptBlock";
 import { useEditorStore } from "../../stores/editorStore";
+import { EditorPanelFallback } from "./EditorPanelFallback";
+
+const MonacoWrapper = lazy(() =>
+	import("../editor/MonacoWrapper").then((module) => ({
+		default: module.MonacoWrapper,
+	})),
+);
 
 interface TutorialStepProps {
 	step: TutorialStep;
@@ -84,13 +90,17 @@ export function TutorialStepView({
 
 			{/* Right column — Monaco (key forces remount on step change) */}
 			<div key={step.id} className="flex flex-col min-h-0">
-				<MonacoWrapper
-					defaultValue={completedCode?.[step.id] ?? step.challenge.starterCode}
-					onChange={setEditorCode}
-					challenge={step.challenge}
-					model={model}
-					monacoLanguage={monacoLanguage}
-				/>
+				<Suspense
+					fallback={<EditorPanelFallback label={monacoLanguage ?? "code"} />}
+				>
+					<MonacoWrapper
+						defaultValue={completedCode?.[step.id] ?? step.challenge.starterCode}
+						onChange={setEditorCode}
+						challenge={step.challenge}
+						model={model}
+						monacoLanguage={monacoLanguage}
+					/>
+				</Suspense>
 			</div>
 		</div>
 	);
