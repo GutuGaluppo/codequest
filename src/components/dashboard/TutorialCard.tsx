@@ -66,7 +66,7 @@ export function TutorialCard({
 			<Link
 				to="/tutorial/$id"
 				params={{ id: tutorial.topic }}
-				search={{ level: tutorial.level }}
+				search={{ level: tutorial.level, tutorialId: tutorial.id }}
 				className="mt-auto flex items-center justify-between border border-border text-muted text-xs font-mono px-4 py-2.5 hover:border-amber hover:text-amber transition-colors"
 			>
 				{t("dashboard.card.button")}

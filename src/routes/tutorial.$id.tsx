@@ -2,12 +2,11 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { TutorialLoading } from "../components/tutorial/TutorialLoading";
-import { TutorialStepView } from "../components/tutorial/TutorialStep";
 import { useAuth } from "../hooks/useAuth";
 import { useProgressSync } from "../hooks/useProgressSync";
 import i18n from "../i18n";
@@ -21,13 +20,37 @@ import { useEditorStore } from "../stores/editorStore";
 import { useTutorialNavStore } from "../stores/tutorialNavStore";
 import type { Level } from "../types/tutorial";
 import { detectLanguage } from "../utils/detectLanguage";
-import { TutorialIntro } from "../components/tutorial/TutorialIntro";
-import { FinalProjectView } from "../components/tutorial/FinalProjectView";
-import { TutorialComplete } from "../components/tutorial/TutorialComplete";
+
+const TutorialStepView = lazy(() =>
+	import("../components/tutorial/TutorialStep").then((module) => ({
+		default: module.TutorialStepView,
+	})),
+);
+
+const TutorialIntro = lazy(() =>
+	import("../components/tutorial/TutorialIntro").then((module) => ({
+		default: module.TutorialIntro,
+	})),
+);
+
+const FinalProjectView = lazy(() =>
+	import("../components/tutorial/FinalProjectView").then((module) => ({
+		default: module.FinalProjectView,
+	})),
+);
+
+const TutorialComplete = lazy(() =>
+	import("../components/tutorial/TutorialComplete").then((module) => ({
+		default: module.TutorialComplete,
+	})),
+);
 
 export const Route = createFileRoute("/tutorial/$id")({
 	validateSearch: (search: Record<string, unknown>) => ({
 		level: (search.level as Level) || "beginner",
+		...(typeof search.tutorialId === "string"
+			? { tutorialId: search.tutorialId }
+			: {}),
 	}),
 	pendingComponent: () => (
 		<p className="text-muted p-8">{i18n.t("tutorial.pending")}</p>
@@ -40,7 +63,7 @@ export const Route = createFileRoute("/tutorial/$id")({
 
 function TutorialPage() {
 	const { id } = Route.useParams();
-	const { level } = Route.useSearch();
+	const { level, tutorialId: savedTutorialId } = Route.useSearch();
 	const { user, loading } = useAuth();
 	const { currentStep, setCurrentStep, editorCode } = useEditorStore();
 	const queryClient = useQueryClient();
@@ -54,7 +77,7 @@ function TutorialPage() {
 	const setShowFinalProject = useEditorStore((s) => s.setShowFinalProject);
 
 	const slug = id.toLowerCase().replace(/\s+/g, "-");
-	const tutorialId = `${slug}-${level}`;
+	const tutorialId = savedTutorialId ?? `${slug}-${level}`;
 
 	const { data: profile } = useQuery({
 		...userProfileQueryOptions(user?.uid ?? ""),
@@ -75,6 +98,7 @@ function TutorialPage() {
 			level,
 			i18n.language,
 			user?.uid,
+			savedTutorialId,
 		),
 		enabled: !loading,
 	});
@@ -142,28 +166,39 @@ function TutorialPage() {
 	if (tutorialPending || !tutorial) return <TutorialLoading />;
 	if (showIntro)
 		return (
-			<TutorialIntro tutorial={tutorial} onStart={() => setShowIntro(false)} />
+			<Suspense fallback={<TutorialLoading />}>
+				<TutorialIntro tutorial={tutorial} onStart={() => setShowIntro(false)} />
+			</Suspense>
 		);
 	if (!step) return <TutorialLoading />;
 	if (showFinalProject && tutorial.finalProject)
 		return (
-			<FinalProjectView
-				project={tutorial.finalProject}
-				monacoLanguage={monacoLanguage}
-				topic={tutorial.topic ?? id}
-			/>
+			<Suspense fallback={<TutorialLoading />}>
+				<FinalProjectView
+					project={tutorial.finalProject}
+					monacoLanguage={monacoLanguage}
+					topic={tutorial.topic ?? id}
+				/>
+			</Suspense>
 		);
-	if (showFinalProject && !tutorial.finalProject) return <TutorialComplete />;
+	if (showFinalProject && !tutorial.finalProject)
+		return (
+			<Suspense fallback={<TutorialLoading />}>
+				<TutorialComplete />
+			</Suspense>
+		);
 
 	return (
 		<div className="flex flex-col h-[calc(100vh-60px)] px-6 pb-4">
-			<TutorialStepView
-				step={step}
-				model={model}
-				monacoLanguage={monacoLanguage}
-				completedCode={completedCode}
-				onComplete={() => completeStep(step.id)}
-			/>
+			<Suspense fallback={<TutorialLoading />}>
+				<TutorialStepView
+					step={step}
+					model={model}
+					monacoLanguage={monacoLanguage}
+					completedCode={completedCode}
+					onComplete={() => completeStep(step.id)}
+				/>
+			</Suspense>
 		</div>
 	);
 }

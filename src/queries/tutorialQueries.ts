@@ -8,9 +8,10 @@ export const tutorialQueryOptions = (
 	level: Level,
 	language: string,
 	uid?: string,
+	explicitTutorialId?: string,
 ) => {
 	const slug = topic.toLowerCase().replace(/\s+/g, "-");
-	const tutorialId = `${slug}-${level}`;
+	const tutorialId = explicitTutorialId ?? `${slug}-${level}`;
 
 	return {
 		queryKey: ["tutorial", tutorialId],
