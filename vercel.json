@@ -2,6 +2,15 @@
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "devCommand": "npm run dev",
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+  "devCommand": "npm run dev:vite",
+  "rewrites": [
+    {
+      "source": "/((?!api/|@|__vite|src/|node_modules/|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/generate.ts": { "maxDuration": 300 },
+    "api/verify.ts": { "maxDuration": 60 }
+  }
 }

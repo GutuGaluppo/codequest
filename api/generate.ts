@@ -8,11 +8,15 @@ import type { Level, ModelProvider, Tutorial } from "../src/types/tutorial";
 import { validateGenerateBody } from "./_validate";
 import { checkRateLimit, MAX_GENERATE } from "./_rateLimit";
 import { setCorsHeaders } from "./_cors";
-import { adminAuth, adminDb } from "./_firebaseAdmin";
+import {
+	FirebaseAdminConfigError,
+	getAdminAuth,
+	getAdminDb,
+} from "./_firebaseAdmin";
 import { decrypt } from "./_encrypt";
 
 async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
-	const snap = await adminDb
+	const snap = await getAdminDb()
 		.collection("users")
 		.doc(uid)
 		.collection("encryptedKeys")
@@ -55,9 +59,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	let uid: string | null = null;
 	if (idToken) {
 		try {
-			const decoded = await adminAuth.verifyIdToken(idToken);
+			const decoded = await getAdminAuth().verifyIdToken(idToken);
 			uid = decoded.uid;
-		} catch {
+		} catch (error) {
+			if (error instanceof FirebaseAdminConfigError) {
+				return res.status(500).json({ error: error.message });
+			}
 			return res.status(401).json({ error: "Invalid or expired token" });
 		}
 	}
@@ -101,7 +108,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		} else {
 			const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
 			const result = await ai.models.generateContent({
-				model: "gemini-2.5-flash-lite",
+				model: "gemini-2.0-flash",
 				contents: `${buildSystemPrompt(level, language)} Topic: ${wrappedTopic}`,
 			});
 			raw = { ...(parseAiJson(result.text || "") as Tutorial), generatedWith: "gemini", createdAt: null };
