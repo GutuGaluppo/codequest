@@ -462,6 +462,14 @@ const entries: EntryMeta[] = [
 		tags: ["fix", "ux", "design"],
 		key: "accessibility_polish",
 	},
+	{
+		date: "05-05-2026",
+		commit: "9545da3",
+		phaseKey: "ai",
+		tags: ["ai", "ux", "refactor"],
+		key: "multi_provider_ai_beta_modal",
+		hasDecisions: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {

@@ -752,6 +752,16 @@
 			"accessibility_polish": {
 				"title": "Accessibility improvements, image optimisation and UI polish",
 				"description": "Form inputs across LoginDrawer and TopicSearchForm now have sr-only labels for screen reader compatibility. LoginDrawer is conditionally mounted only when open, removing a hidden render from every page. Avatar images in the header use getOptimizedImageUrl to request a 64x64 resized version and set decoding=async to unblock the main thread. Provider links in ApiKeyBanner extracted to a modelKeyLinks utility. SEO meta description and theme-color added to index.html. Minor visual fixes across landing, profile and tutorial components."
+			},
+			"multi_provider_ai_beta_modal": {
+				"title": "Multi-provider AI key support and BetaModal onboarding",
+				"description": "Gemini and a custom OpenAI-compatible provider are now available as user-key options alongside Claude and OpenAI. The server-side Gemini fallback was removed — all tutorial generation now requires a user-supplied key. The API (save-key, generate, verify) was extended to accept gemini and other providers; for other, modelName and baseUrl are stored unencrypted in the user profile while the API key is encrypted as usual. On the frontend, the key inputs were extracted from ProfileInputs into a standalone ApiKeyInputs component that is reused in both ProfileForm and the new BetaModal. ApiKeyInputs detects when a key is already saved and collapses into a configured state with a Change AI Model button. BetaModal is a motion-animated overlay mounted in the root layout that explains the beta requirement, embeds ApiKeyInputs, and navigates directly to the pending tutorial after a successful save. It is triggered automatically after login if no key is configured, and on every generate attempt when the preferred model has no associated key.",
+				"decisions": [
+					"Server-side Gemini quota was exhausted — removing the fallback avoids silent failures and makes the cost model transparent to users",
+					"Custom provider uses the OpenAI SDK with a configurable baseURL rather than a separate SDK, covering the majority of third-party APIs (Groq, Together, Mistral, Cohere) with a single code path",
+					"betaModalStore keeps a pendingNav payload so the modal can resume the blocked navigation after the key is saved, avoiding a second manual submit",
+					"The after-login trigger uses a useRef Set cleared on logout so the modal re-appears on every new login without relying on localStorage or sessionStorage"
+				]
 			}
 		}
 	}
