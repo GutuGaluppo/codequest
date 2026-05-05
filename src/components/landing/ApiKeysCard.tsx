@@ -8,7 +8,7 @@ export function ApiKeysCard({ uid }: { uid: string }) {
 	const { data: profile } = useQuery(userProfileQueryOptions(uid));
 	const { t } = useTranslation();
 
-	const allConfigured = !!profile?.configuredKeys?.anthropic && !!profile?.configuredKeys?.openai;
+	const allConfigured = !!(profile?.configuredKeys && Object.values(profile.configuredKeys).some(Boolean));
 
 	return (
 		<div className="w-full max-w-2xl border border-border p-4 text-left flex items-center justify-between gap-4">

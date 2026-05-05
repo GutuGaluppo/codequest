@@ -9,7 +9,6 @@ import type { ModelProvider, UserProfile } from "../../types/user";
 import { ImageInput } from "./ImageInput";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileInputs } from "./ProfileInputs";
-import { ProfileSelectInput } from "./ProfileSelectInput";
 
 export default function ProfileForm({
 	uid,
@@ -35,13 +34,16 @@ export default function ProfileForm({
 		},
 	});
 
-	const [anthropicKey, setAnthropicKey] = useState("");
-	const [openaiKey, setOpenaiKey] = useState("");
 	const [preferredModel, setPreferredModel] = useState<ModelProvider>(
 		profile?.preferredModel ?? "gemini",
 	);
-
 	const [displayName, setDisplayName] = useState(profile?.displayName ?? "");
+	const [anthropicKey, setAnthropicKey] = useState("");
+	const [openaiKey, setOpenaiKey] = useState("");
+	const [geminiKey, setGeminiKey] = useState("");
+	const [otherKey, setOtherKey] = useState("");
+	const [otherModelName, setOtherModelName] = useState(profile?.otherModel?.name ?? "");
+	const [otherBaseUrl, setOtherBaseUrl] = useState(profile?.otherModel?.baseUrl ?? "");
 	const [photoFile, setPhotoFile] = useState<File | null>(null);
 	const [photoPreview, setPhotoPreview] = useState<string | null>(
 		profile?.photoURL ?? null,
@@ -104,11 +106,11 @@ export default function ProfileForm({
 		setPhotoPreview(URL.createObjectURL(file));
 	}
 
-	function handlePreferredModelChange(model: ModelProvider) {
-		setPreferredModel(model);
-	}
-
-	async function saveKey(provider: "anthropic" | "openai", key: string) {
+	async function saveKey(
+		provider: "anthropic" | "openai" | "gemini" | "other",
+		key: string,
+		extra?: { modelName: string; baseUrl: string },
+	) {
 		const token = await getAuth().currentUser?.getIdToken();
 		if (!token) return;
 		const res = await fetch("/api/save-key", {
@@ -117,7 +119,7 @@ export default function ProfileForm({
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify({ provider, key }),
+			body: JSON.stringify({ provider, key, ...extra }),
 		});
 		if (!res.ok) {
 			const body = await res.json().catch(() => ({}));
@@ -142,8 +144,20 @@ export default function ProfileForm({
 
 			if (anthropicKey.trim()) await saveKey("anthropic", anthropicKey.trim());
 			if (openaiKey.trim()) await saveKey("openai", openaiKey.trim());
+			if (geminiKey.trim()) await saveKey("gemini", geminiKey.trim());
+			if (otherKey.trim()) {
+				await saveKey("other", otherKey.trim(), {
+					modelName: otherModelName.trim(),
+					baseUrl: otherBaseUrl.trim(),
+				});
+			}
 
-			saveProfile({ displayName, photoURL, preferredModel });
+			const profileData: Partial<UserProfile> = { displayName, photoURL, preferredModel };
+			if (preferredModel === "other" && otherModelName && otherBaseUrl) {
+				profileData.otherModel = { name: otherModelName.trim(), baseUrl: otherBaseUrl.trim() };
+			}
+
+			saveProfile(profileData);
 		} finally {
 			setUploading(false);
 		}
@@ -167,16 +181,22 @@ export default function ProfileForm({
 						<ProfileInputs
 							displayName={displayName}
 							setDisplayName={setDisplayName}
+							preferredModel={preferredModel}
+							onModelChange={setPreferredModel}
+							configuredKeys={profile?.configuredKeys}
+							otherModel={profile?.otherModel}
 							anthropicKey={anthropicKey}
-							// TODO: Create handlers to avoid passing setters directly to the component
 							setAnthropicKey={setAnthropicKey}
 							openaiKey={openaiKey}
 							setOpenaiKey={setOpenaiKey}
-						/>
-
-						<ProfileSelectInput
-							preferredModel={preferredModel}
-							setPreferredModel={handlePreferredModelChange}
+							geminiKey={geminiKey}
+							setGeminiKey={setGeminiKey}
+							otherKey={otherKey}
+							setOtherKey={setOtherKey}
+							otherModelName={otherModelName}
+							setOtherModelName={setOtherModelName}
+							otherBaseUrl={otherBaseUrl}
+							setOtherBaseUrl={setOtherBaseUrl}
 						/>
 
 						<button

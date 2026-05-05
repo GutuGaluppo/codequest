@@ -15,7 +15,9 @@ import {
 } from "./_firebaseAdmin";
 import { decrypt } from "./_encrypt";
 
-async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
+type Provider = "anthropic" | "openai" | "gemini" | "other";
+
+async function getUserApiKey(uid: string, provider: Provider): Promise<string | null> {
 	const snap = await getAdminDb()
 		.collection("users")
 		.doc(uid)
@@ -25,6 +27,13 @@ async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Pro
 	if (!snap.exists) return null;
 	const { ciphertext, iv } = snap.data() as { ciphertext: string; iv: string };
 	return decrypt(ciphertext, iv);
+}
+
+async function getUserOtherModel(uid: string): Promise<{ name: string; baseUrl: string } | null> {
+	const snap = await getAdminDb().collection("users").doc(uid).get();
+	if (!snap.exists) return null;
+	const data = snap.data() as { otherModel?: { name: string; baseUrl: string } };
+	return data.otherModel ?? null;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -52,7 +61,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		language: string;
 	};
 
-	// Verify Firebase ID token to identify the user
 	const authHeader = req.headers.authorization ?? "";
 	const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
@@ -81,12 +89,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 			const message = await client.messages.create({
 				model: "claude-3-5-sonnet-20241022",
 				max_tokens: 4096,
-				messages: [
-					{
-						role: "user",
-						content: `${buildSystemPrompt(level, language)} Topic: ${wrappedTopic}`,
-					},
-				],
+				messages: [{ role: "user", content: `${buildSystemPrompt(level, language)} Topic: ${wrappedTopic}` }],
 			});
 			const text = message.content[0].type === "text" ? message.content[0].text : "";
 			raw = { ...(parseAiJson(text) as Tutorial), generatedWith: "claude", createdAt: null };
@@ -105,13 +108,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 			});
 			const text = response.choices[0].message.content ?? "";
 			raw = { ...(parseAiJson(text) as Tutorial), generatedWith: "openai", createdAt: null };
-		} else {
-			const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+		} else if (model === "gemini") {
+			const apiKey = uid ? await getUserApiKey(uid, "gemini") : null;
+			if (!apiKey) return res.status(400).json({ error: "Gemini API key not configured." });
+
+			const ai = new GoogleGenAI({ apiKey });
 			const result = await ai.models.generateContent({
 				model: "gemini-2.0-flash",
 				contents: `${buildSystemPrompt(level, language)} Topic: ${wrappedTopic}`,
 			});
 			raw = { ...(parseAiJson(result.text || "") as Tutorial), generatedWith: "gemini", createdAt: null };
+		} else {
+			const apiKey = uid ? await getUserApiKey(uid, "other") : null;
+			if (!apiKey) return res.status(400).json({ error: "API key not configured." });
+
+			const otherModel = uid ? await getUserOtherModel(uid) : null;
+			if (!otherModel) return res.status(400).json({ error: "Custom AI model not configured." });
+
+			const client = new OpenAI({ apiKey, baseURL: otherModel.baseUrl });
+			const response = await client.chat.completions.create({
+				model: otherModel.name,
+				messages: [
+					{ role: "system", content: buildSystemPrompt(level, language) },
+					{ role: "user", content: `Topic: ${wrappedTopic}` },
+				],
+			});
+			const text = response.choices[0].message.content ?? "";
+			raw = { ...(parseAiJson(text) as Tutorial), generatedWith: "other", createdAt: null };
 		}
 
 		return res.status(200).json(raw);

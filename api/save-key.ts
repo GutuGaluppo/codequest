@@ -7,7 +7,7 @@ import {
 import { encrypt } from "./_encrypt";
 import { setCorsHeaders } from "./_cors";
 
-const VALID_PROVIDERS = ["anthropic", "openai"] as const;
+const VALID_PROVIDERS = ["anthropic", "openai", "gemini", "other"] as const;
 type Provider = (typeof VALID_PROVIDERS)[number];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -17,7 +17,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		return res.status(405).json({ error: "Method not allowed" });
 	}
 
-	// Verify Firebase ID token
 	const authHeader = req.headers.authorization ?? "";
 	const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
 	if (!idToken) {
@@ -35,8 +34,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		return res.status(401).json({ error: "Invalid or expired token" });
 	}
 
-	// Validate body
-	const { provider, key } = (req.body ?? {}) as { provider: unknown; key: unknown };
+	const { provider, key, modelName, baseUrl } = (req.body ?? {}) as {
+		provider: unknown;
+		key: unknown;
+		modelName?: unknown;
+		baseUrl?: unknown;
+	};
 
 	if (!VALID_PROVIDERS.includes(provider as Provider)) {
 		return res.status(400).json({ error: `provider must be one of: ${VALID_PROVIDERS.join(", ")}` });
@@ -47,8 +50,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	if (key.length > 512) {
 		return res.status(400).json({ error: "key exceeds maximum allowed length" });
 	}
+	if (provider === "other") {
+		if (typeof modelName !== "string" || modelName.trim().length === 0) {
+			return res.status(400).json({ error: "modelName is required for provider 'other'" });
+		}
+		if (typeof baseUrl !== "string" || baseUrl.trim().length === 0) {
+			return res.status(400).json({ error: "baseUrl is required for provider 'other'" });
+		}
+	}
 
-	// Encrypt and persist — only ciphertext + IV stored, never the plaintext
 	try {
 		const { ciphertext, iv } = encrypt(key.trim());
 		const adminDb = getAdminDb();
@@ -59,11 +69,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 			{ ciphertext, iv, updatedAt: new Date().toISOString() },
 		);
 
-		batch.set(
-			adminDb.collection("users").doc(uid),
-			{ configuredKeys: { [provider as string]: true } },
-			{ merge: true },
-		);
+		const profileUpdate: Record<string, unknown> = {
+			configuredKeys: { [provider as string]: true },
+		};
+		if (provider === "other") {
+			profileUpdate.otherModel = {
+				name: (modelName as string).trim(),
+				baseUrl: (baseUrl as string).trim(),
+			};
+		}
+
+		batch.set(adminDb.collection("users").doc(uid), profileUpdate, { merge: true });
 
 		await batch.commit();
 

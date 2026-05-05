@@ -7,7 +7,8 @@ export interface UserProfile {
 	displayName: string | null;
 	photoURL: string | null;
 	preferredModel: ModelProvider;
-	configuredKeys?: { anthropic?: boolean; openai?: boolean };
+	configuredKeys?: { anthropic?: boolean; openai?: boolean; gemini?: boolean; other?: boolean };
+	otherModel?: { name: string; baseUrl: string };
 	createdAt: FieldValue | Timestamp;
 }
 

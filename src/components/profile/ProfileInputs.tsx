@@ -1,25 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { modelKeyLinks } from "../../utils/modelKeyLinks";
 import { Input } from "../ui";
+import { ApiKeyInputs } from "./ApiKeyInputs";
+import type { ApiKeyInputsProps } from "./ApiKeyInputs";
 
-export function ProfileInputs({
-	displayName,
-	anthropicKey,
-	openaiKey,
-	setDisplayName,
-	setAnthropicKey,
-	setOpenaiKey,
-}: {
+type ProfileInputsProps = {
 	displayName: string;
-	anthropicKey: string;
-	openaiKey: string;
 	setDisplayName: (name: string) => void;
-	setAnthropicKey: (key: string) => void;
-	setOpenaiKey: (key: string) => void;
-}) {
+} & ApiKeyInputsProps;
+
+export function ProfileInputs({ displayName, setDisplayName, ...keyProps }: ProfileInputsProps) {
 	const { t } = useTranslation();
-	const keyButtonClass =
-		"self-start text-xs font-mono text-muted border border-border px-2 py-1 hover:border-amber/50 hover:text-text transition-colors";
 
 	return (
 		<>
@@ -38,57 +28,7 @@ export function ProfileInputs({
 				/>
 			</div>
 
-			<div className="flex flex-col gap-1.5">
-				<div className="flex items-center justify-between gap-3">
-					<label
-						htmlFor="profile-anthropic-key"
-						className="text-xs font-mono uppercase tracking-widest text-muted"
-					>
-						{t("profile.anthropicKeyLabel")}
-					</label>
-					<a
-						href={modelKeyLinks.claude}
-						target="_blank"
-						rel="noopener noreferrer"
-						className={keyButtonClass}
-					>
-						{t("profile.anthropicKeyCta")}
-					</a>
-				</div>
-				<Input
-					id="profile-anthropic-key"
-					value={anthropicKey}
-					type="password"
-					onChange={(e) => setAnthropicKey(e.target.value)}
-					placeholder={t("profile.anthropicKeyPlaceholder")}
-				/>
-			</div>
-
-			<div className="flex flex-col gap-1.5">
-				<div className="flex items-center justify-between gap-3">
-					<label
-						htmlFor="profile-openai-key"
-						className="text-xs font-mono uppercase tracking-widest text-muted"
-					>
-						{t("profile.openaiKeyLabel")}
-					</label>
-					<a
-						href={modelKeyLinks.openai}
-						target="_blank"
-						rel="noopener noreferrer"
-						className={keyButtonClass}
-					>
-						{t("profile.openaiKeyCta")}
-					</a>
-				</div>
-				<Input
-					id="profile-openai-key"
-					value={openaiKey}
-					type="password"
-					onChange={(e) => setOpenaiKey(e.target.value)}
-					placeholder={t("profile.openaiKeyPlaceholder")}
-				/>
-			</div>
+			<ApiKeyInputs {...keyProps} />
 		</>
 	);
 }

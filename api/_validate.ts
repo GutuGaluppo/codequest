@@ -1,4 +1,4 @@
-const VALID_MODELS = ["gemini", "claude", "openai"] as const;
+const VALID_MODELS = ["gemini", "claude", "openai", "other"] as const;
 const VALID_LEVELS = ["beginner", "intermediate", "advanced"] as const;
 const VALID_LANGUAGES = ["en", "pt-BR", "es", "de", "el", "pl"] as const;
 

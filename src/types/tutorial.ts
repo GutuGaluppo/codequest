@@ -1,4 +1,4 @@
-export type ModelProvider = "gemini" | "claude" | "openai";
+export type ModelProvider = "gemini" | "claude" | "openai" | "other";
 export type Level = "beginner" | "intermediate" | "advanced";
 
 export interface Challenge {

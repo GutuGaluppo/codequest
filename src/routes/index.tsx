@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
 	CodeSnippetDemo,
 	HeroHeadline,
@@ -10,7 +11,10 @@ import {
 } from "../components/landing";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthStore } from "../stores/authStore";
-import type { Level } from "../types/tutorial";
+import { useBetaModalStore } from "../stores/betaModalStore";
+import { userProfileQueryOptions } from "../queries/userQueries";
+import type { Level, ModelProvider } from "../types/tutorial";
+import type { UserProfile } from "../types/user";
 
 const TechStrip = lazy(() => import("../components/landing/TechStrip").then((m) => ({ default: m.TechStrip })));
 const FeatureCards = lazy(() => import("../components/landing/FeatureCards").then((m) => ({ default: m.FeatureCards })));
@@ -19,6 +23,18 @@ const StatsBar = lazy(() => import("../components/landing/StatsBar").then((m) =>
 const EditorPreview = lazy(() => import("../components/landing/EditorPreview").then((m) => ({ default: m.EditorPreview })));
 const FinalCTA = lazy(() => import("../components/landing/FinalCTA").then((m) => ({ default: m.FinalCTA })));
 const LandingFooter = lazy(() => import("../components/landing/LandingFooter").then((m) => ({ default: m.LandingFooter })));
+
+const PROVIDER_FOR_MODEL: Record<ModelProvider, keyof NonNullable<UserProfile["configuredKeys"]>> = {
+	claude: "anthropic",
+	openai: "openai",
+	gemini: "gemini",
+	other: "other",
+};
+
+function hasKeyForModel(profile: UserProfile | null | undefined, model: ModelProvider): boolean {
+	if (!profile?.configuredKeys) return false;
+	return !!profile.configuredKeys[PROVIDER_FOR_MODEL[model]];
+}
 
 export const Route = createFileRoute("/")({
 	component: IndexPage,
@@ -29,7 +45,13 @@ function IndexPage() {
 	const [topic, setTopic] = useState("");
 	const { user } = useAuth();
 	const { openDrawer } = useAuthStore();
+	const { openModal } = useBetaModalStore();
 	const navigate = useNavigate();
+
+	const { data: profile } = useQuery({
+		...userProfileQueryOptions(user?.uid ?? ""),
+		enabled: !!user?.uid,
+	});
 
 	function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -38,6 +60,13 @@ function IndexPage() {
 			openDrawer();
 			return;
 		}
+
+		const model = profile?.preferredModel ?? "gemini";
+		if (!hasKeyForModel(profile, model)) {
+			openModal({ topic: topic.trim(), level });
+			return;
+		}
+
 		navigate({
 			to: "/tutorial/$id",
 			params: { id: topic.trim() },

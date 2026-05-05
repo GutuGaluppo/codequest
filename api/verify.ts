@@ -24,6 +24,8 @@ interface VerifyBody {
 	model: ModelProvider;
 }
 
+type Provider = "anthropic" | "openai" | "gemini" | "other";
+
 function buildPrompt(body: VerifyBody): string {
 	return `You are a code reviewer. The user received the following challenge:
 ${wrapUserInput(body.prompt)}
@@ -42,7 +44,7 @@ Respond ONLY with valid JSON, no markdown:
 {"status":"correct"|"partial"|"incorrect","message":"Feedback in 1–2 sentences, in the same language as the challenge prompt."}`;
 }
 
-async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Promise<string | null> {
+async function getUserApiKey(uid: string, provider: Provider): Promise<string | null> {
 	const snap = await getAdminDb()
 		.collection("users")
 		.doc(uid)
@@ -52,6 +54,13 @@ async function getUserApiKey(uid: string, provider: "anthropic" | "openai"): Pro
 	if (!snap.exists) return null;
 	const { ciphertext, iv } = snap.data() as { ciphertext: string; iv: string };
 	return decrypt(ciphertext, iv);
+}
+
+async function getUserOtherModel(uid: string): Promise<{ name: string; baseUrl: string } | null> {
+	const snap = await getAdminDb().collection("users").doc(uid).get();
+	if (!snap.exists) return null;
+	const data = snap.data() as { otherModel?: { name: string; baseUrl: string } };
+	return data.otherModel ?? null;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -75,7 +84,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	const body = req.body as VerifyBody;
 	const userPrompt = buildPrompt(body);
 
-	// Verify Firebase ID token to identify the user
 	const authHeader = req.headers.authorization ?? "";
 	const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
@@ -118,13 +126,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 				max_tokens: 256,
 			});
 			feedback = parseAiJson(result.choices[0].message.content ?? "") as Feedback;
-		} else {
-			const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+		} else if (body.model === "gemini") {
+			const apiKey = uid ? await getUserApiKey(uid, "gemini") : null;
+			if (!apiKey) return res.status(400).json({ error: "Gemini API key not configured." });
+
+			const ai = new GoogleGenAI({ apiKey });
 			const result = await ai.models.generateContent({
 				model: "gemini-2.5-flash-lite",
 				contents: userPrompt,
 			});
 			feedback = parseAiJson(result.text ?? "") as Feedback;
+		} else {
+			const apiKey = uid ? await getUserApiKey(uid, "other") : null;
+			if (!apiKey) return res.status(400).json({ error: "API key not configured." });
+
+			const otherModel = uid ? await getUserOtherModel(uid) : null;
+			if (!otherModel) return res.status(400).json({ error: "Custom AI model not configured." });
+
+			const client = new OpenAI({ apiKey, baseURL: otherModel.baseUrl });
+			const result = await client.chat.completions.create({
+				model: otherModel.name,
+				messages: [{ role: "user", content: userPrompt }],
+				max_tokens: 256,
+			});
+			feedback = parseAiJson(result.choices[0].message.content ?? "") as Feedback;
 		}
 
 		return res.status(200).json(feedback);
