@@ -25,7 +25,7 @@ export function FinalCTA({
 			</div>
 			<button
 				onClick={() => (user ? navigate({ to: "/dashboard" }) : openDrawer())}
-				className="bg-background text-amber px-8 py-4 font-black uppercase text-sm tracking-wide flex items-center gap-2 shrink-0"
+				className="bg-background text-amber px-8 py-4 font-black uppercase text-sm tracking-wide flex items-center gap-2 shrink-0 outline outline-1 outline-transparent outline-offset-0 transition-[outline-color,outline-offset,transform,filter] duration-300 ease-out hover:outline-background hover:outline-offset-4 focus-visible:outline-background focus-visible:outline-offset-4"
 			>
 				{user ? t("landing.finalCta.dashboard") : t("landing.finalCta.start")}
 				<ChevronRight size={16} />
