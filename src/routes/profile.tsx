@@ -1,19 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { createFileRoute } from "@tanstack/react-router";
+import { getAuth } from "firebase/auth";
 import { userProfileQueryOptions } from "../queries/userQueries";
 import ProfileForm from "../components/profile";
-import { auth } from "../lib/firebase";
+import { requireAuthenticatedRoute } from "../utils/requireAuthenticatedRoute";
 
 export const Route = createFileRoute("/profile")({
-	beforeLoad: () =>
-		new Promise<void>((resolve, reject) => {
-			const unsub = onAuthStateChanged(auth, (user) => {
-				unsub();
-				if (!user) reject(redirect({ to: "/" }));
-				else resolve();
-			});
-		}),
+	beforeLoad: () => requireAuthenticatedRoute("/profile"),
 
 	component: ProfilePage,
 });

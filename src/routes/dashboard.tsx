@@ -1,19 +1,11 @@
 // @refresh reset
 
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { onAuthStateChanged } from "firebase/auth";
+import { createFileRoute } from "@tanstack/react-router";
 import { DashboardContent, DashboardHeader } from "../components/dashboard";
-import { auth } from "../lib/firebase";
+import { requireAuthenticatedRoute } from "../utils/requireAuthenticatedRoute";
 
 export const Route = createFileRoute("/dashboard")({
-	beforeLoad: () =>
-		new Promise<void>((resolve, reject) => {
-			const unsub = onAuthStateChanged(auth, (user) => {
-				unsub();
-				if (!user) reject(redirect({ to: "/" }));
-				else resolve();
-			});
-		}),
+	beforeLoad: () => requireAuthenticatedRoute("/dashboard"),
 	component: DashboardPage,
 });
 

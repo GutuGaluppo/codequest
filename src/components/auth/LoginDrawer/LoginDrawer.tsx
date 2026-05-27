@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "@tanstack/react-router";
 
 export function LoginDrawer() {
-	const { drawerOpen, closeDrawer } = useAuthStore();
+	const { drawerOpen, closeDrawer, redirectTo } = useAuthStore();
 	const { signInWithEmail, signUpWithEmail } = useAuth();
 	const navigate = useNavigate();
 
@@ -51,8 +51,9 @@ export function LoginDrawer() {
 			} else {
 				await signUpWithEmail(formData.name, formData.email, formData.password);
 			}
+			const destination = redirectTo ?? "/dashboard";
 			closeDrawer();
-			navigate({ to: "/dashboard" });
+			navigate({ to: destination });
 		} catch (err: unknown) {
 			if (err instanceof Error) setError(friendlyError(err.message));
 		} finally {
@@ -64,7 +65,9 @@ export function LoginDrawer() {
 		setError("");
 		try {
 			await fn();
+			const destination = redirectTo ?? "/dashboard";
 			closeDrawer();
+			navigate({ to: destination });
 		} catch (err: unknown) {
 			if (err instanceof Error) setError(friendlyError(err.message));
 		}

@@ -125,7 +125,7 @@ export function Header() {
 					</>
 				) : (
 					<button
-						onClick={openDrawer}
+						onClick={() => openDrawer()}
 						className="text-xs font-black uppercase tracking-wide bg-amber text-background px-4 py-2"
 					>
 						{t("header.logIn")}

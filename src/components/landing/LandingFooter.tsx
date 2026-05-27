@@ -1,22 +1,104 @@
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../hooks/useAuth";
+import { useAuthStore, type AuthRedirectTo } from "../../stores/authStore";
+import { GITHUB_REPO_URL } from "../../constants/links";
+
+type FooterPublicLink =
+	| "/challenges"
+	| "/progress"
+	| "/docs"
+	| "/design"
+	| "/devlog"
+	| "/about"
+	| "/blog"
+	| "/privacy"
+	| "/terms";
+
+type FooterLink =
+	| { label: string; kind: "public"; to: FooterPublicLink }
+	| { label: string; kind: "auth"; to: AuthRedirectTo }
+	| { label: string; kind: "external"; href: string };
 
 export function LandingFooter() {
 	const { t } = useTranslation();
+	const { user } = useAuth();
+	const { openDrawer } = useAuthStore();
+	const navigate = useNavigate();
+	const interactiveClass =
+		"text-sm text-muted font-mono transition-colors hover:text-text";
 
 	const columns = [
 		{
 			title: t("landing.footer.product"),
-			links: ["Challenges", "Dashboard", "Progress", "API Keys"],
+			links: [
+				{ label: "Challenges", kind: "public", to: "/challenges" },
+				{ label: "Dashboard", kind: "auth", to: "/dashboard" },
+				{ label: "Progress", kind: "public", to: "/progress" },
+				{ label: "API Keys", kind: "auth", to: "/api-keys" },
+			] satisfies FooterLink[],
 		},
 		{
 			title: t("landing.footer.developers"),
-			links: ["Docs", "Design System", "Dev Log", "GitHub"],
+			links: [
+				{ label: "Docs", kind: "public", to: "/docs" },
+				{ label: "Design System", kind: "public", to: "/design" },
+				{ label: "Dev Log", kind: "public", to: "/devlog" },
+				{ label: "GitHub", kind: "external", href: GITHUB_REPO_URL },
+			] satisfies FooterLink[],
 		},
 		{
 			title: t("landing.footer.company"),
-			links: ["About", "Blog", "Privacy", "Terms"],
+			links: [
+				{ label: "About", kind: "public", to: "/about" },
+				{ label: "Blog", kind: "public", to: "/blog" },
+				{ label: "Privacy", kind: "public", to: "/privacy" },
+				{ label: "Terms", kind: "public", to: "/terms" },
+			] satisfies FooterLink[],
 		},
 	];
+
+	function handleAuthLink(to: AuthRedirectTo) {
+		if (user) {
+			navigate({ to });
+			return;
+		}
+
+		openDrawer(to);
+	}
+
+	function renderLink(link: FooterLink) {
+		if (link.kind === "public") {
+			return (
+				<Link to={link.to} className={interactiveClass}>
+					{link.label}
+				</Link>
+			);
+		}
+
+		if (link.kind === "external") {
+			return (
+				<a
+					href={link.href}
+					target="_blank"
+					rel="noopener noreferrer"
+					className={interactiveClass}
+				>
+					{link.label}
+				</a>
+			);
+		}
+
+		return (
+			<button
+				type="button"
+				onClick={() => handleAuthLink(link.to)}
+				className={`${interactiveClass} text-left`}
+			>
+				{link.label}
+			</button>
+		);
+	}
 
 	return (
 		<footer className="border-t border-border">
@@ -36,10 +118,8 @@ export function LandingFooter() {
 						</p>
 						<ul className="flex flex-col gap-2.5">
 							{col.links.map((link) => (
-								<li key={link}>
-									<span className="text-sm text-muted font-mono cursor-default">
-										{link}
-									</span>
+								<li key={link.label}>
+									{renderLink(link)}
 								</li>
 							))}
 						</ul>

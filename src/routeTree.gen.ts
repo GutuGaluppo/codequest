@@ -9,16 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as DevlogRouteImport } from './routes/devlog'
 import { Route as DesignRouteImport } from './routes/design'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ChallengesRouteImport } from './routes/challenges'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ApiKeysRouteImport } from './routes/api-keys'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TutorialIdRouteImport } from './routes/tutorial.$id'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevlogRoute = DevlogRouteImport.update({
@@ -36,6 +64,26 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChallengesRoute = ChallengesRouteImport.update({
+  id: '/challenges',
+  path: '/challenges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKeysRoute = ApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,66 +97,156 @@ const TutorialIdRoute = TutorialIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/blog': typeof BlogRoute
+  '/challenges': typeof ChallengesRoute
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
+  '/docs': typeof DocsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
+  '/terms': typeof TermsRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/blog': typeof BlogRoute
+  '/challenges': typeof ChallengesRoute
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
+  '/docs': typeof DocsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
+  '/terms': typeof TermsRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/blog': typeof BlogRoute
+  '/challenges': typeof ChallengesRoute
   '/dashboard': typeof DashboardRoute
   '/design': typeof DesignRoute
   '/devlog': typeof DevlogRoute
+  '/docs': typeof DocsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
+  '/terms': typeof TermsRoute
   '/tutorial/$id': typeof TutorialIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/api-keys'
+    | '/blog'
+    | '/challenges'
     | '/dashboard'
     | '/design'
     | '/devlog'
+    | '/docs'
+    | '/privacy'
     | '/profile'
+    | '/progress'
+    | '/terms'
     | '/tutorial/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/design' | '/devlog' | '/profile' | '/tutorial/$id'
+  to:
+    | '/'
+    | '/about'
+    | '/api-keys'
+    | '/blog'
+    | '/challenges'
+    | '/dashboard'
+    | '/design'
+    | '/devlog'
+    | '/docs'
+    | '/privacy'
+    | '/profile'
+    | '/progress'
+    | '/terms'
+    | '/tutorial/$id'
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/api-keys'
+    | '/blog'
+    | '/challenges'
     | '/dashboard'
     | '/design'
     | '/devlog'
+    | '/docs'
+    | '/privacy'
     | '/profile'
+    | '/progress'
+    | '/terms'
     | '/tutorial/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ApiKeysRoute: typeof ApiKeysRoute
+  BlogRoute: typeof BlogRoute
+  ChallengesRoute: typeof ChallengesRoute
   DashboardRoute: typeof DashboardRoute
   DesignRoute: typeof DesignRoute
   DevlogRoute: typeof DevlogRoute
+  DocsRoute: typeof DocsRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
+  ProgressRoute: typeof ProgressRoute
+  TermsRoute: typeof TermsRoute
   TutorialIdRoute: typeof TutorialIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/devlog': {
@@ -132,6 +270,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/challenges': {
+      id: '/challenges'
+      path: '/challenges'
+      fullPath: '/challenges'
+      preLoaderRoute: typeof ChallengesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-keys': {
+      id: '/api-keys'
+      path: '/api-keys'
+      fullPath: '/api-keys'
+      preLoaderRoute: typeof ApiKeysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -151,10 +317,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ApiKeysRoute: ApiKeysRoute,
+  BlogRoute: BlogRoute,
+  ChallengesRoute: ChallengesRoute,
   DashboardRoute: DashboardRoute,
   DesignRoute: DesignRoute,
   DevlogRoute: DevlogRoute,
+  DocsRoute: DocsRoute,
+  PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
+  ProgressRoute: ProgressRoute,
+  TermsRoute: TermsRoute,
   TutorialIdRoute: TutorialIdRoute,
 }
 export const routeTree = rootRouteImport
