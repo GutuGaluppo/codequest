@@ -3,9 +3,9 @@ import {
 	FirebaseAdminConfigError,
 	getAdminAuth,
 	getAdminDb,
-} from "./_firebaseAdmin";
-import { encrypt } from "./_encrypt";
-import { setCorsHeaders } from "./_cors";
+} from "./_firebaseAdmin.js";
+import { encrypt } from "./_encrypt.js";
+import { setCorsHeaders } from "./_cors.js";
 
 const VALID_PROVIDERS = ["anthropic", "openai", "gemini", "other"] as const;
 type Provider = (typeof VALID_PROVIDERS)[number];

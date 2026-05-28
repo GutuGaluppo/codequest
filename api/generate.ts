@@ -2,18 +2,18 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { GoogleGenAI } from "@google/genai";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
-import { buildSystemPrompt, wrapUserInput } from "../src/services/systemPrompt";
-import { parseAiJson } from "../src/utils/parseAiJson";
-import type { Level, ModelProvider, Tutorial } from "../src/types/tutorial";
-import { validateGenerateBody } from "./_validate";
-import { checkRateLimit, MAX_GENERATE } from "./_rateLimit";
-import { setCorsHeaders } from "./_cors";
+import { buildSystemPrompt, wrapUserInput } from "../src/services/systemPrompt.js";
+import { parseAiJson } from "../src/utils/parseAiJson.js";
+import type { Level, ModelProvider, Tutorial } from "../src/types/tutorial.js";
+import { validateGenerateBody } from "./_validate.js";
+import { checkRateLimit, MAX_GENERATE } from "./_rateLimit.js";
+import { setCorsHeaders } from "./_cors.js";
 import {
 	FirebaseAdminConfigError,
 	getAdminAuth,
 	getAdminDb,
-} from "./_firebaseAdmin";
-import { decrypt } from "./_encrypt";
+} from "./_firebaseAdmin.js";
+import { decrypt } from "./_encrypt.js";
 
 type Provider = "anthropic" | "openai" | "gemini" | "other";
 
@@ -50,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	}
 
 	const validation = validateGenerateBody(req.body);
-	if (!validation.ok) {
+	if (validation.ok === false) {
 		return res.status(400).json({ error: validation.message });
 	}
 

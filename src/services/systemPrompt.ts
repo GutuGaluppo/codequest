@@ -1,4 +1,4 @@
-import type { Level } from "../types/tutorial";
+import type { Level } from "../types/tutorial.js";
 
 const languageNames: Record<string, string> = {
 	en: "English",

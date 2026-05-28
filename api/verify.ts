@@ -2,19 +2,19 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { GoogleGenAI } from "@google/genai";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
-import { parseAiJson } from "../src/utils/parseAiJson";
-import { wrapUserInput } from "../src/services/systemPrompt";
-import type { ModelProvider } from "../src/types/tutorial";
-import type { Feedback } from "../src/stores/editorStore";
-import { validateVerifyBody } from "./_validate";
-import { checkRateLimit, MAX_VERIFY } from "./_rateLimit";
-import { setCorsHeaders } from "./_cors";
+import { parseAiJson } from "../src/utils/parseAiJson.js";
+import { wrapUserInput } from "../src/services/systemPrompt.js";
+import type { ModelProvider } from "../src/types/tutorial.js";
+import type { Feedback } from "../src/stores/editorStore.js";
+import { validateVerifyBody } from "./_validate.js";
+import { checkRateLimit, MAX_VERIFY } from "./_rateLimit.js";
+import { setCorsHeaders } from "./_cors.js";
 import {
 	FirebaseAdminConfigError,
 	getAdminAuth,
 	getAdminDb,
-} from "./_firebaseAdmin";
-import { decrypt } from "./_encrypt";
+} from "./_firebaseAdmin.js";
+import { decrypt } from "./_encrypt.js";
 
 interface VerifyBody {
 	prompt: string;
@@ -77,7 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	}
 
 	const validation = validateVerifyBody(req.body);
-	if (!validation.ok) {
+	if (validation.ok === false) {
 		return res.status(400).json({ error: validation.message });
 	}
 
