@@ -118,16 +118,14 @@ export function LandingFooter() {
 						</p>
 						<ul className="flex flex-col gap-2.5">
 							{col.links.map((link) => (
-								<li key={link.label}>
-									{renderLink(link)}
-								</li>
+								<li key={link.label}>{renderLink(link)}</li>
 							))}
 						</ul>
 					</div>
 				))}
 			</div>
 			<div className="border-t border-border">
-				<div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+				<div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2 text-center md:flex-row md:items-center md:justify-between md:text-left">
 					<span className="text-xs font-mono text-muted">
 						{t("landing.footer.copyright")}
 					</span>
