@@ -108,7 +108,7 @@ export function Header() {
 
 						<Link
 							to="/profile"
-							className="w-8 h-8 overflow-hidden border border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
+							className="w-8 h-8 overflow-hidden border-2 rounded-2xl border-border hover:border-amber transition-colors flex items-center justify-center bg-surface shrink-0"
 							aria-label={t("profile.title")}
 							title={t("profile.title")}
 						>
