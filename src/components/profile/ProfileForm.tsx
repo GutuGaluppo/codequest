@@ -151,8 +151,8 @@ export default function ProfileForm({
 
 			const profileData: Partial<UserProfile> = {
 				displayName,
-				photoURL,
 				preferredModel,
+				...(photoURL !== undefined && { photoURL }),
 			};
 			if (preferredModel === "other" && otherModelName && otherBaseUrl) {
 				profileData.otherModel = {
