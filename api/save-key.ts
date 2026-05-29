@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { FieldValue } from "firebase-admin/firestore";
 import {
 	FirebaseAdminConfigError,
 	getAdminAuth,
@@ -24,9 +25,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	}
 
 	let uid: string;
+	let email: string | null;
 	try {
 		const decoded = await getAdminAuth().verifyIdToken(idToken);
 		uid = decoded.uid;
+		email = decoded.email ?? null;
 	} catch (error) {
 		if (error instanceof FirebaseAdminConfigError) {
 			return res.status(500).json({ error: error.message });
@@ -63,15 +66,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		const { ciphertext, iv } = encrypt(key.trim());
 		const adminDb = getAdminDb();
 		const batch = adminDb.batch();
+		const userRef = adminDb.collection("users").doc(uid);
+		const userSnap = await userRef.get();
+		const existingProfile = userSnap.data() as
+			| {
+					uid?: string;
+					email?: string | null;
+					createdAt?: unknown;
+					configuredKeys?: Partial<Record<Provider, boolean>>;
+			  }
+			| undefined;
 
 		batch.set(
-			adminDb.collection("users").doc(uid).collection("encryptedKeys").doc(provider as Provider),
+			userRef.collection("encryptedKeys").doc(provider as Provider),
 			{ ciphertext, iv, updatedAt: new Date().toISOString() },
 		);
 
 		const profileUpdate: Record<string, unknown> = {
-			configuredKeys: { [provider as string]: true },
+			uid: typeof existingProfile?.uid === "string" ? existingProfile.uid : uid,
+			email:
+				typeof existingProfile?.email !== "undefined"
+					? existingProfile.email
+					: email,
+			configuredKeys: {
+				...(existingProfile?.configuredKeys ?? {}),
+				[provider]: true,
+			},
 		};
+		if (!userSnap.exists || typeof existingProfile?.createdAt === "undefined") {
+			profileUpdate.createdAt = FieldValue.serverTimestamp();
+		}
 		if (provider === "other") {
 			profileUpdate.otherModel = {
 				name: (modelName as string).trim(),
@@ -79,7 +103,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 			};
 		}
 
-		batch.set(adminDb.collection("users").doc(uid), profileUpdate, { merge: true });
+		batch.set(userRef, profileUpdate, { merge: true });
 
 		await batch.commit();
 
