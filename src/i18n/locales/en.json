@@ -781,6 +781,55 @@
 					"betaModalStore keeps a pendingNav payload so the modal can resume the blocked navigation after the key is saved, avoiding a second manual submit",
 					"The after-login trigger uses a useRef Set cleared on logout so the modal re-appears on every new login without relying on localStorage or sessionStorage"
 				]
+			},
+			"footer_routes": {
+				"title": "Footer links wired to real routes",
+				"description": "Footer links previously used placeholder hrefs. Each link in the Developers and Product columns was connected to its corresponding TanStack Router route (/devlog, /blog, /dashboard, /tutorial) using the Link component, ensuring type-safe navigation and correct active states."
+			},
+			"footer_cta_hover": {
+				"title": "Outline hover style on final CTA",
+				"description": "The final call-to-action button on the landing page gained an outline hover state to provide clearer visual feedback. The hover now shifts from a filled background to a bordered style, consistent with the rest of the design system's interactive elements."
+			},
+			"footer_layout_polish": {
+				"title": "Footer layout polish and localhost artifact cleanup",
+				"description": "Minor layout adjustments to the landing footer improved column spacing and alignment on smaller viewports. Localhost-generated build artifacts were added to .gitignore to prevent accidental commits of local-only files."
+			},
+			"avatar_cropper": {
+				"title": "Modal avatar cropper for profile photos",
+				"description": "Profile photo uploads now go through a crop step before being sent to Cloudinary. A modal overlay presents a circular crop interface powered by react-easy-crop, letting users reframe and zoom the image before confirming. The cropped canvas blob is converted to a File and passed to the existing Cloudinary upload flow, so no changes were needed on the server side.",
+				"decisions": [
+					"react-easy-crop chosen over manual canvas manipulation — handles touch, pinch-zoom, and aspect-ratio locking out of the box",
+					"Crop modal is mounted lazily inside a Suspense boundary so the library is not included in the initial bundle"
+				]
+			},
+			"vercel_esm_fix": {
+				"title": "Vercel Functions fixed for ESM compilation",
+				"description": "The serverless functions under /api were failing to compile after the TypeScript config was tightened to emit ESM modules. The issue was that Vercel's function bundler expected CommonJS by default. Fixed by explicitly setting moduleResolution and target in the functions tsconfig and aligning the output format with the Vercel runtime expectations.",
+				"bugs": [
+					"Functions compiled locally but crashed at cold-start on Vercel because the emitted import() calls were not resolved in the CommonJS-mode bundle"
+				]
+			},
+			"footer_refactor": {
+				"title": "Landing footer split into focused modules",
+				"description": "The footer was a single 200-line component mixing layout, link data, and render logic. It was split into FooterBrand, FooterColumn, FooterLinks, and FooterBottom components, each with a single responsibility. Link data was moved to a utils.ts file and types extracted to types.ts, making it straightforward to add or remove sections without touching render code.",
+				"decisions": [
+					"Link data kept in utils.ts as a plain array rather than a constant object so columns can be reordered without destructuring changes",
+					"FooterColumn accepts a generic links prop typed against the FooterPublicLink union, catching broken hrefs at compile time"
+				]
+			},
+			"api_key_reset_fix": {
+				"title": "API key input state preserved after configuration",
+				"description": "After saving an API key in the BetaModal, the input field briefly flashed back to empty before the modal closed. The reset call was firing synchronously before the save confirmation animation completed.",
+				"bugs": [
+					"Input state was reset immediately on submit success, causing a visible flicker before the modal dismissed — deferred the reset to run after the close animation"
+				]
+			},
+			"profile_metadata_fix": {
+				"title": "Profile metadata preserved when saving user settings",
+				"description": "Saving display name or avatar URL from ProfileForm was overwriting other profile fields (provider, createdAt, preferredModel) because the Firestore update used set() without merge. Switched to updateDoc() with only the changed fields, so unrelated metadata is never touched.",
+				"bugs": [
+					"set() without merge replaced the entire profile document on every save, silently deleting fields not present in the form payload"
+				]
 			}
 		}
 	}

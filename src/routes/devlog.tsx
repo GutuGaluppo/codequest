@@ -470,6 +470,67 @@ const entries: EntryMeta[] = [
 		key: "multi_provider_ai_beta_modal",
 		hasDecisions: true,
 	},
+	{
+		date: "27-05-2026",
+		commit: "48e2821",
+		phaseKey: "landing",
+		tags: ["feature", "design"],
+		key: "footer_routes",
+	},
+	{
+		date: "27-05-2026",
+		commit: "c8fc898",
+		phaseKey: "polish",
+		tags: ["polish", "ux", "design"],
+		key: "footer_cta_hover",
+	},
+	{
+		date: "28-05-2026",
+		commit: "fcebee0",
+		phaseKey: "polish",
+		tags: ["polish", "ux"],
+		key: "footer_layout_polish",
+	},
+	{
+		date: "28-05-2026",
+		commit: "f72f6a1",
+		phaseKey: "profile",
+		tags: ["feature", "ux", "design"],
+		key: "avatar_cropper",
+		hasDecisions: true,
+	},
+	{
+		date: "28-05-2026",
+		commit: "250ae6e",
+		phaseKey: "deploy",
+		tags: ["fix", "deploy"],
+		key: "vercel_esm_fix",
+		hasBugs: true,
+	},
+	{
+		date: "29-05-2026",
+		commit: "2e8f445",
+		phaseKey: "landing",
+		tags: ["refactor", "components"],
+		key: "footer_refactor",
+		hasDecisions: true,
+	},
+	{
+		date: "29-05-2026",
+		commit: "7ba530f",
+		phaseKey: "polish",
+		tags: ["fix", "ux"],
+		key: "api_key_reset_fix",
+		hasBugs: true,
+	},
+	{
+		date: "29-05-2026",
+		commit: "7cbad40",
+		phaseKey: "profile",
+		tags: ["fix", "data"],
+		key: "profile_metadata_fix",
+		hasBugs: true,
+	},
 ];
 
 const tagColors: Record<string, string> = {
@@ -542,7 +603,7 @@ function DevlogPage() {
 			<div className="relative flex flex-col gap-0">
 				<div className="absolute left-1.75 top-2 bottom-2 w-px bg-border" />
 
-				{entries.map((entry, i) => {
+				{[...entries].reverse().map((entry, i) => {
 					const bugs = t(`devlog.entry.${entry.key}.bugs`, {
 						returnObjects: true,
 					});
