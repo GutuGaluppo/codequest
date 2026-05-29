@@ -39,16 +39,26 @@ export const firestoreService = {
 	async saveProfile(uid: string, data: Partial<UserProfile>): Promise<void> {
 		const ref = doc(db, "users", uid);
 		const snap = await getDoc(ref);
+		const existingProfile = snap.exists()
+			? (snap.data() as Partial<UserProfile>)
+			: undefined;
 
-		const base = snap.exists()
-			? {}
-			: {
-					uid,
-					email: getAuth().currentUser?.email ?? "",
-					createdAt: serverTimestamp(),
-				};
+		const profileUpdate: Record<string, unknown> = {
+			...data,
+			uid:
+				typeof existingProfile?.uid === "string"
+					? existingProfile.uid
+					: uid,
+			email:
+				typeof existingProfile?.email !== "undefined"
+					? existingProfile.email
+					: (getAuth().currentUser?.email ?? null),
+		};
+		if (!snap.exists() || typeof existingProfile?.createdAt === "undefined") {
+			profileUpdate.createdAt = serverTimestamp();
+		}
 
-		await setDoc(ref, { ...base, ...data }, { merge: true });
+		await setDoc(ref, profileUpdate, { merge: true });
 	},
 
 	async getProgress(tutorialId: string, uid: string) {
