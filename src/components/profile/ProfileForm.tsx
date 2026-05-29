@@ -57,9 +57,21 @@ export default function ProfileForm({
 	const [cropperOpen, setCropperOpen] = useState(false);
 
 	useEffect(() => {
-		const nextPhotoUrl = profile?.photoURL ?? null;
-		setSavedPhotoUrl(nextPhotoUrl);
+		setSavedPhotoUrl(profile?.photoURL ?? null);
 	}, [profile?.photoURL]);
+
+	useEffect(() => {
+		setPreferredModel(profile?.preferredModel ?? "gemini");
+	}, [profile?.preferredModel]);
+
+	useEffect(() => {
+		setDisplayName(profile?.displayName ?? "");
+	}, [profile?.displayName]);
+
+	useEffect(() => {
+		setOtherModelName(profile?.otherModel?.name ?? "");
+		setOtherBaseUrl(profile?.otherModel?.baseUrl ?? "");
+	}, [profile?.otherModel?.name, profile?.otherModel?.baseUrl]);
 
 	async function uploadToCloudinary(file: Blob): Promise<string> {
 		if (!cloudinaryCloudName || !cloudinaryUploadPreset) {

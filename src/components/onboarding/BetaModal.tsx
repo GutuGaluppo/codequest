@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
@@ -34,6 +34,10 @@ export function BetaModal() {
 	const [otherModelName, setOtherModelName] = useState("");
 	const [otherBaseUrl, setOtherBaseUrl] = useState("");
 	const [saving, setSaving] = useState(false);
+
+	useEffect(() => {
+		if (profile?.preferredModel) setPreferredModel(profile.preferredModel);
+	}, [profile?.preferredModel]);
 
 	function resetState() {
 		setAnthropicKey("");
