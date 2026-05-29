@@ -64,7 +64,13 @@ export function ApiKeyInputs({
 	const isConfigured = !!configuredKeys?.[provider];
 
 	useEffect(() => {
-		if (isConfigured) setIsChanging(false);
+		if (!isConfigured) return;
+
+		const timeout = window.setTimeout(() => {
+			setIsChanging(false);
+		}, 0);
+
+		return () => window.clearTimeout(timeout);
 	}, [isConfigured]);
 
 	const keyButtonClass =
